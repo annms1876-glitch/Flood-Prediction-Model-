@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["python310", "gcc", "glib"]
+
+[phases.install]
+cmds = ["cd ml-service", "pip install -r requirements.txt"]
+
+[phases.build]
+cmds = ["cd ml-service", "python setup_models.py"]
+
+[phases.start]
+cmd = "cd ml-service && uvicorn app:app --host 0.0.0.0 --port $PORT"
