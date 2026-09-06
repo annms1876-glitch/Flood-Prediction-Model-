@@ -8,6 +8,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
+// Import Supabase client
+const { supabase } = require('./config/supabase');
+
 // Import routes
 const sensorRoutes = require('./routes/sensors');
 const apiRoutes = require('./routes/api');
@@ -52,6 +55,52 @@ app.use(express.urlencoded({
   extended: true,
   limit: '1mb'
 }));
+
+// ============================================================
+// REAL-TIME SUBSCRIPTIONS (Supabase)
+// ============================================================
+
+// Set up real-time subscription for sensor readings
+// This listens for new INSERT events on the sensor_readings table
+if (supabase) {
+  const channel = supabase
+    .channel('sensor-readings')
+    .on(
+      'postgres_changes',
+      {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'sensor_readings'
+      },
+      (payload) => {
+        console.log('📊 New sensor reading:', payload.new);
+        
+        // Later: Trigger risk calculation
+        // Later: Send alerts if risk is high
+        // Example:
+        // const { calculateRisk } = require('./services/riskService');
+        // calculateRisk(payload.new).then(alert => {
+        //   if (alert.requiresAction) {
+        //     notificationService.sendAlert(alert);
+        //   }
+        // });
+      }
+    )
+    .subscribe((status, err) => {
+      if (status === 'SUBSCRIBED') {
+        console.log('✅ Real-time subscription established for sensor_readings');
+      } else if (status === 'TIMED_OUT') {
+        console.warn('⚠️  Real-time subscription timed out');
+      } else if (err) {
+        console.error('❌ Real-time subscription error:', err.message);
+      }
+    });
+
+  // Store channel reference for cleanup on shutdown
+  app.set('realtimeChannel', channel);
+} else {
+  console.warn('⚠️  Supabase client not available. Real-time subscriptions disabled.');
+}
 
 // ============================================================
 // ROUTES
@@ -366,6 +415,14 @@ const server = app.listen(PORT, () => {
 // Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('\nSIGTERM received. Shutting down gracefully...');
+  
+  // Unsubscribe from real-time channels
+  const channel = app.get('realtimeChannel');
+  if (channel && typeof channel.unsubscribe === 'function') {
+    channel.unsubscribe();
+    console.log('✅ Real-time subscriptions closed');
+  }
+  
   server.close(() => {
     console.log('Server closed');
     process.exit(0);
@@ -374,6 +431,14 @@ process.on('SIGTERM', () => {
 
 process.on('SIGINT', () => {
   console.log('\nSIGINT received. Shutting down gracefully...');
+  
+  // Unsubscribe from real-time channels
+  const channel = app.get('realtimeChannel');
+  if (channel && typeof channel.unsubscribe === 'function') {
+    channel.unsubscribe();
+    console.log('✅ Real-time subscriptions closed');
+  }
+  
   server.close(() => {
     console.log('Server closed');
     process.exit(0);
