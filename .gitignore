@@ -68,4 +68,9 @@ ml-service/pretrained/*.pkl
 # Embedded repos (managed separately)
 .ponytail/
 Flood-Prediction-Model-/
-flood-prediction-backend/
+
+# Backend specific ignores
+flood-prediction-backend/node_modules/
+flood-prediction-backend/.env
+flood-prediction-backend/.env.local
+flood-prediction-backend/config/service-account.json

@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Environment files (NEVER commit these)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Security files (contain secrets)
+config/service-account.json
+
+# Logs
+logs/
+*.log
+
+# Temp files
+tmp/
+temp/
+
+# Environment files (NEVER commit these)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Firebase service account key (contains secrets)
+config/service-account.json
+
+# Firestore local emulator data
+.firebaserc
+*.firebaseapp.com
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+
+# Certificate files (if any)
+*.pem
+*.key

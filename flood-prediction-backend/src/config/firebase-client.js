@@ -3,6 +3,8 @@
 //
 // This is different from firebase-admin which is for backend server operations.
 
+let auth = null;
+let firebaseApp = null;
 let configured = false;
 
 try {

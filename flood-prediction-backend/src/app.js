@@ -23,9 +23,9 @@ const path = require('path');
 const yaml = require('js-yaml');
 const swaggerSpec = yaml.load(fs.readFileSync(path.join(__dirname, '../swagger.yaml'), 'utf8'));
 const { rateLimitMiddleware } = require('./middleware/rateLimit');
-const { errorHandler, notFoundHandler, securityHeaders, secureLogging, sanitizeInput } = require('./middleware/security');
+const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
+const riskService = require('./services/riskService');
 const alertService = require('./services/alertService');
->>>>>>> 34461a8038a47a65a1335acf6fa06fcea68816c3
 
 // Create Express app
 const app = express();
@@ -59,10 +59,6 @@ app.use(express.urlencoded({
   extended: true,
   limit: '1mb'
 }));
-
-// Security middleware
-app.use(securityHeaders());
-app.use(sanitizeInput);
 
 // ============================================================
 // REAL-TIME SUBSCRIPTIONS (Supabase)
@@ -165,20 +161,106 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   filter: true
 }));
 
-<<<<<<< HEAD
-// Root endpoint - health check and API info
-=======
 // Redirect root to Swagger UI (Express serves the last matching route)
->>>>>>> 34461a8038a47a65a1335acf6fa06fcea68816c3
 app.get('/', (req, res) => {
-  res.json({
-    status: 'ok',
-    service: 'Flood Prediction Backend',
-    version: '1.0.0',
-    timestamp: new Date().toISOString(),
-    environment: NODE_ENV,
-    uptime: process.uptime()
-  });
+  res.redirect('/api-docs');
+});
+
+// Risk calculation endpoint (placeholder - will be implemented with ML models)
+app.get('/api/risk', async (req, res) => {
+  try {
+    const { location, water_level, rainfall, soil_moisture } = req.query;
+
+    // Validate input
+    if (!location && !water_level && !rainfall && !soil_moisture) {
+      return res.status(400).json({
+        error: 'At least one parameter required: location, water_level, rainfall, or soil_moisture',
+        code: 'MISSING_PARAMETERS'
+      });
+    }
+
+    // Placeholder risk calculation (to be replaced with actual ML models)
+    // This is a simple rule-based system for now
+    let riskScore = 0;
+    let riskLevel = 'normal';
+    let factors = [];
+
+    // Water level risk
+    if (water_level) {
+      const wl = parseFloat(water_level);
+      if (wl > 5) {
+        riskScore += 40;
+        factors.push({ factor: 'water_level', value: wl, weight: 40, reason: 'High water level' });
+      } else if (wl > 3) {
+        riskScore += 25;
+        factors.push({ factor: 'water_level', value: wl, weight: 25, reason: 'Elevated water level' });
+      } else if (wl > 1) {
+        riskScore += 10;
+        factors.push({ factor: 'water_level', value: wl, weight: 10, reason: 'Moderate water level' });
+      }
+    }
+
+    // Rainfall risk
+    if (rainfall) {
+      const rf = parseFloat(rainfall);
+      if (rf > 50) {
+        riskScore += 35;
+        factors.push({ factor: 'rainfall', value: rf, weight: 35, reason: 'Heavy rainfall' });
+      } else if (rf > 25) {
+        riskScore += 20;
+        factors.push({ factor: 'rainfall', value: rf, weight: 20, reason: 'Moderate rainfall' });
+      } else if (rf > 10) {
+        riskScore += 10;
+        factors.push({ factor: 'rainfall', value: rf, weight: 10, reason: 'Light rainfall' });
+      }
+    }
+
+    // Soil moisture risk
+    if (soil_moisture) {
+      const sm = parseFloat(soil_moisture);
+      if (sm > 80) {
+        riskScore += 25;
+        factors.push({ factor: 'soil_moisture', value: sm, weight: 25, reason: 'Saturated soil' });
+      } else if (sm > 60) {
+        riskScore += 15;
+        factors.push({ factor: 'soil_moisture', value: sm, weight: 15, reason: 'Wet soil' });
+      }
+    }
+
+    // Determine risk level
+    if (riskScore >= 70) {
+      riskLevel = 'critical';
+    } else if (riskScore >= 50) {
+      riskLevel = 'high';
+    } else if (riskScore >= 30) {
+      riskLevel = 'warning';
+    } else if (riskScore >= 10) {
+      riskLevel = 'watch';
+    }
+
+    // Cap risk score at 100
+    riskScore = Math.min(riskScore, 100);
+
+    // Add timestamp and location
+    const response = {
+      location: location || 'unknown',
+      risk_score: riskScore,
+      risk_level: riskLevel,
+      factors: factors,
+      timestamp: new Date().toISOString(),
+      model_version: 'rule_based_v1.0',
+      note: 'This is a placeholder risk calculation. Replace with ML model integration.'
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error('Risk calculation error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      code: 'CALCULATION_ERROR',
+      message: NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
 });
 
 // API info endpoint
