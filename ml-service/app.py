@@ -34,11 +34,17 @@ async def lifespan(app: FastAPI):
         predictor = FloodPredictor(str(pretrained_dir))
         logger.info("Predictor loaded successfully with 4 models: LSTM, XGBoost, GNN, PINN")
     except Exception as e:
-        logger.warning(f"Predictor init failed: {e}. Using fallback.")
-        predictor = FloodPredictor(str(pretrained_dir))
+        logger.warning(f"Predictor init failed: {e}. Running without ML models.")
     
-    data_processor = SensorDataProcessor()
-    ensemble = EnsembleAggregator()
+    try:
+        data_processor = SensorDataProcessor()
+    except Exception as e:
+        logger.warning(f"DataProcessor init failed: {e}")
+    
+    try:
+        ensemble = EnsembleAggregator()
+    except Exception as e:
+        logger.warning(f"Ensemble init failed: {e}")
     
     logger.info("ML service ready")
     yield
