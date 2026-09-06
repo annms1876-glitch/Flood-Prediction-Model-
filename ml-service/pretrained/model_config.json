@@ -1,0 +1,55 @@
+{
+  "architecture": {
+    "seq_len": 15,
+    "input_size": 8,
+    "hidden_size": 128,
+    "num_layers": 2,
+    "dropout": 0.2
+  },
+  "input_scalers": {
+    "yj_transformer": {
+      "raw_input_cols": []
+    },
+    "mm_scaler": {
+      "applies_to": []
+    },
+    "feature_scaler": {
+      "applies_to": []
+    }
+  },
+  "dynamic_cols": [
+    "water_level_m",
+    "rainfall_mm",
+    "soil_moisture_percent",
+    "tilt_degrees",
+    "temperature_c",
+    "humidity_percent",
+    "water_level_delta",
+    "rainfall_delta"
+  ],
+  "flat_cols": [
+    "water_level_m",
+    "rainfall_mm",
+    "soil_moisture_percent",
+    "tilt_degrees",
+    "temperature_c",
+    "humidity_percent",
+    "water_level_delta",
+    "rainfall_delta"
+  ],
+  "sensor_features": [
+    "water_level_m",
+    "rainfall_mm",
+    "soil_moisture_percent",
+    "tilt_degrees",
+    "temperature_c",
+    "humidity_percent"
+  ],
+  "model_info": {
+    "name": "floodcast-sensor",
+    "version": "1.0.0",
+    "description": "Hybrid LSTM + XGBoost flood prediction for IoT sensors",
+    "based_on": "sridipbasu/floodcast",
+    "license": "MIT"
+  }
+}

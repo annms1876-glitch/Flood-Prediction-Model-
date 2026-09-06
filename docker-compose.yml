@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./flood-prediction-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - ML_API_URL=http://ml-service:8000
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+    depends_on:
+      - ml-service
+    volumes:
+      - ./flood-prediction-backend:/app
+      - /app/node_modules
+
+  ml-service:
+    build: ./ml-service
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./ml-service:/app
+      - /app/pretrained
+
+volumes:
+  backend-data:
