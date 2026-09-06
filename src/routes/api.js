@@ -7,6 +7,7 @@ const router = express.Router();
 const supabaseService = require('../services/supabaseService');
 const firebaseService = require('../services/firebaseService');
 
+
 /**
  * Health check endpoint
  * GET /api/health
@@ -304,3 +305,4 @@ router.get('/dashboard/summary', async (req, res) => {
 });
 
 module.exports = router;
+

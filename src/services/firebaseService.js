@@ -13,7 +13,7 @@ class FirebaseService {
    * Initialize the service (call after Firebase is initialized)
    */
   init() {
-    if (firebaseConfig.isInitialized()) {
+    if (firebaseConfig.isInitialized() && firebaseConfig.admin) {
       this.app = firebaseConfig.admin.app();
       this.db = firebaseConfig.getFirestore();
     }

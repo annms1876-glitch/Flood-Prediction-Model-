@@ -3,6 +3,7 @@
 
 const supabaseConfig = require('../config/supabase');
 
+
 class SupabaseService {
   constructor() {
     this.supabase = supabaseConfig.supabase;
@@ -145,3 +146,4 @@ class SupabaseService {
 const supabaseService = new SupabaseService();
 
 module.exports = supabaseService;
+
