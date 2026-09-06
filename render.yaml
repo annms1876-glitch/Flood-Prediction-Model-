@@ -1,0 +1,52 @@
+---
+services:
+  - type: web
+    name: flood-prediction-backend
+    runtime: node
+    plan: free
+    region: oregon
+
+    buildCommand: npm ci
+    startCommand: npm start
+
+    healthCheckPath: /api/health
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "18"
+      - key: LOG_LEVEL
+        value: info
+      - key: ALLOWED_ORIGINS
+        value: "*"
+
+      # Supabase (REQUIRED) - Set these in Render dashboard
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+
+      # JWT Security (REQUIRED) - Generate and set in Render dashboard
+      - key: JWT_SECRET
+        sync: false
+
+      # Firebase (OPTIONAL) - Set if using push notifications / client auth
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CREDENTIAL_PATH
+        sync: false
+
+      # Alert Configuration (OPTIONAL)
+      - key: DEFAULT_ALERT_THRESHOLD
+        value: "50"
+      - key: ALERT_CHANNELS
+        value: "fcm"
+
+      # Keep-Alive Configuration (for Render sleep prevention)
+      - key: KEEP_ALIVE_INTERVAL_MINUTES
+        value: "4"
+
+    # Auto-deploy latest commit to main branch
+    branch: main
+    pullRequestPreviewsEnabled: true

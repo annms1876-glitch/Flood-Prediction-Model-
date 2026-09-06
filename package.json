@@ -1,0 +1,96 @@
+{
+  "name": "flood-prediction-backend",
+  "version": "1.0.0",
+  "description": "Flood Prediction Backend API Service",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:ml\"",
+    "dev:backend": "nodemon src/app.js",
+    "dev:ml": "cd ../ml-service && python -m uvicorn app:app --reload --port 8000",
+    "start:ml": "cd ../ml-service && python -m uvicorn app:app --host 0.0.0.0 --port 8000",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --coverageReporters=text --coverageReporters=lcov",
+    "test:system": "node tests/system-test.js",
+    "test:integration": "node scripts/run-tests.js",
+    "test:demo": "node scripts/run-tests.js --demo",
+    "simulate": "node scripts/run-tests.js --simulate",
+    "firebase:setup": "node scripts/setup-firebase.js",
+    "firebase:check": "node scripts/setup-firebase.js --check",
+    "ml:health": "curl http://localhost:8000/health",
+    "ml:info": "curl http://localhost:8000/model/info"
+  },
+  "keywords": [
+    "flood",
+    "prediction",
+    "api",
+    "backend"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.115.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "js-yaml": "^4.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "firebase": "^10.13.1",
+    "firebase-admin": "^12.7.0",
+    "helmet": "^7.1.0",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^9.0.2",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.14"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.test.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ]
+  },
+  "security": {
+    "best_practices": [
+      "Use strong JWT secrets (32+ characters)",
+      "Enable rate limiting on all endpoints",
+      "Validate and sanitize all user input",
+      "Use HTTPS in production",
+      "Set secure HTTP headers",
+      "Implement CORS properly",
+      "Never commit secrets to version control",
+      "Rotate credentials regularly"
+    ]
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/annms1876-glitch/Flood-Prediction-Model-.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/annms1876-glitch/Flood-Prediction-Model-/issues"
+  },
+  "homepage": "https://github.com/annms1876-glitch/Flood-Prediction-Model-#readme"
+}
