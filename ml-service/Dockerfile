@@ -8,12 +8,11 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for caching
-COPY requirements.txt .
+# Copy only ml-service files
+COPY ml-service/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all files
-COPY . .
+COPY ml-service/ .
 
 # Generate model weights
 RUN python setup_models.py
