@@ -2,19 +2,16 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy only ml-service files
-COPY ml-service/requirements.txt .
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ml-service/ .
+COPY . .
 
-# Generate model weights
 RUN python setup_models.py
 
 EXPOSE 8000
