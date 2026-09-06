@@ -63,6 +63,8 @@ app.use(express.urlencoded({
 // Set up real-time subscription for sensor readings
 // This listens for new INSERT events on the sensor_readings table
 if (supabase) {
+  const previousRiskResults = new Map();
+  
   const channel = supabase
     .channel('sensor-readings')
     .on(
@@ -72,23 +74,44 @@ if (supabase) {
         schema: 'public',
         table: 'sensor_readings'
       },
-      (payload) => {
-        console.log('📊 New sensor reading:', payload.new);
+      async (payload) => {
+        console.log('\n📊 New sensor reading received:', payload.new.location);
+        console.log('   Rainfall:', payload.new.rainfall_mm, 'mm');
+        console.log('   Water Level:', payload.new.water_level_m, 'm');
+        console.log('   Soil Moisture:', payload.new.soil_moisture_percent, '%');
         
-        // Later: Trigger risk calculation
-        // Later: Send alerts if risk is high
-        // Example:
-        // const { calculateRisk } = require('./services/riskService');
-        // calculateRisk(payload.new).then(alert => {
-        //   if (alert.requiresAction) {
-        //     notificationService.sendAlert(alert);
-        //   }
-        // });
+        try {
+          // Calculate risk for this reading
+          const riskResult = await riskService.calculateRiskWithTrend(payload.new, previousRiskResults.get(payload.new.location));
+          
+          // Store for trend detection
+          previousRiskResults.set(payload.new.location, riskResult);
+          
+          // Log risk result
+          console.log(`   Risk Score: ${riskResult.risk_score}/100 (${riskResult.risk_level.toUpperCase()})`);
+          console.log(`   Trend: ${riskResult.trend} (${riskResult.trend_description})`);
+          
+          // Check for rapid changes and send alerts
+          const rapidChangeAlert = alertService.checkRapidChange(riskResult, previousRiskResults.get(payload.new.location));
+          
+          // Process risk result and send alerts if needed
+          if (riskResult.requires_action) {
+            console.log(`\n🚨 REQUIRES ACTION: ${riskResult.risk_level.toUpperCase()} risk in ${payload.new.location}`);
+            const alertResult = await alertService.processRiskResult(riskResult);
+            console.log(`   Alert sent via: ${alertResult.channels_used?.join(', ') || 'none'}`);
+          }
+          
+          console.log('='.repeat(60));
+        } catch (error) {
+          console.error('❌ Error processing sensor reading:', error.message);
+        }
       }
     )
     .subscribe((status, err) => {
       if (status === 'SUBSCRIBED') {
         console.log('✅ Real-time subscription established for sensor_readings');
+        console.log('   Listening for INSERT events...');
+        console.log('   When new readings arrive, risk will be calculated automatically.\n');
       } else if (status === 'TIMED_OUT') {
         console.warn('⚠️  Real-time subscription timed out');
       } else if (err) {
@@ -313,6 +336,18 @@ app.get('/api', (req, res) => {
     timestamps: {
       generated: new Date().toISOString()
     }
+  });
+});
+
+// Subscription health check endpoint
+app.get('/api/subscription/health', (req, res) => {
+  const channel = app.get('realtimeChannel');
+  
+  res.json({
+    status: channel ? 'connected' : 'disconnected',
+    channel_name: channel ? 'sensor-readings' : null,
+    database: supabase ? 'connected' : 'not_configured',
+    timestamp: new Date().toISOString()
   });
 });
 
