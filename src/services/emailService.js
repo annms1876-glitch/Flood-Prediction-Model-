@@ -113,7 +113,7 @@ class EmailService {
       to,
       subject,
       html,
-      text: this._ StripHTML(html),
+      text: this._stripHTML(html),
       from
     });
   }
@@ -805,5 +805,6 @@ const emailService = new EmailService({
   mailgunDomain: process.env.MAILGUN_DOMAIN
 });
 
-export default emailService;
-export { EmailService };
+module.exports = emailService;
+module.exports.EmailService = EmailService;
+module.exports.default = emailService;

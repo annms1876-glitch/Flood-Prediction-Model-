@@ -7,8 +7,22 @@ require('dotenv').config();
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
-// Create and export Supabase client
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create and export Supabase client.
+// Missing/invalid credentials must not crash the process: the app should
+// still boot (health endpoint reports `database: not_configured`).
+let supabase = null;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('⚠️  SUPABASE_URL / SUPABASE_ANON_KEY not set. Database features disabled.');
+} else {
+  try {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+    console.log('✅ Supabase client initialized');
+  } catch (error) {
+    console.error('❌ Supabase client initialization failed:', error.message);
+    supabase = null;
+  }
+}
 
 /**
  * Check Supabase connection health

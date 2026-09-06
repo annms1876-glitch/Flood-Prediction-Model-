@@ -380,5 +380,6 @@ const dataSimulator = new DataSimulator({
   stormProbability: 0.10
 });
 
-export { DataSimulator };
-export default dataSimulator;
+module.exports = dataSimulator;
+module.exports.DataSimulator = DataSimulator;
+module.exports.default = dataSimulator;

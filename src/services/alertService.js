@@ -312,5 +312,6 @@ class AlertService {
 // Singleton instance
 const alertService = new AlertService();
 
-export { AlertService };
-export default alertService;
+module.exports = alertService;
+module.exports.AlertService = AlertService;
+module.exports.default = alertService;

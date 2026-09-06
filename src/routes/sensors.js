@@ -1,16 +1,16 @@
 // Sensor API Routes
 // CRUD endpoints for sensor readings using Supabase service
 
-import express from 'express';
-import supabaseService from '../services/supabaseService.js';
-import { validateSensorReading } from '../middleware/validation.js';
+const express = require('express');
+const supabaseService = require('../services/supabaseService');
+const { validateSensorReading } = require('../middleware/validation');
 
 const router = express.Router();
 
 /**
  * GET /api/sensors/readings
  * Get the most recent sensor readings
- * 
+ *
  * Query Parameters:
  * - limit: Number of readings to return (default: 100, max: 1000)
  */
@@ -71,10 +71,10 @@ router.get('/readings/latest', async (req, res) => {
 /**
  * GET /api/sensors/:location/readings
  * Get sensor readings for a specific location
- * 
+ *
  * Path Parameters:
  * - location: Location identifier (required)
- * 
+ *
  * Query Parameters:
  * - limit: Number of readings to return (default: 100, max: 1000)
  */
@@ -106,7 +106,7 @@ router.get('/:location/readings', async (req, res) => {
 /**
  * POST /api/sensors/readings
  * Insert a new sensor reading
- * 
+ *
  * Request Body:
  * - location (required): Location identifier
  * - rainfall_mm: Rainfall in mm
@@ -161,7 +161,7 @@ router.post('/readings', validateSensorReading, async (req, res) => {
 /**
  * GET /api/sensors/:location/stats
  * Get statistical summary for a location
- * 
+ *
  * Path Parameters:
  * - location: Location identifier (required)
  */
@@ -188,10 +188,10 @@ router.get('/:location/stats', async (req, res) => {
 /**
  * GET /api/sensors/:location/aggregated
  * Get aggregated readings for a location over time
- * 
+ *
  * Path Parameters:
  * - location: Location identifier (required)
- * 
+ *
  * Query Parameters:
  * - groupBy: Time grouping - 'hour', 'day', 'week' (default: 'hour')
  * - limit: Number of groups to return (default: 24)
@@ -272,10 +272,10 @@ router.get('/subscribe', (req, res) => {
 /**
  * POST /api/sensors/subscribe
  * Start a real-time subscription (for server-side use)
- * 
+ *
  * This endpoint is for demonstration - in production, subscriptions
  * are typically set up in the application logic, not via HTTP endpoint.
- * 
+ *
  * Request Body (optional):
  * - callback_url: URL to send webhook notifications
  */
@@ -314,4 +314,4 @@ router.post('/subscribe', async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

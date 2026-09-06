@@ -2,8 +2,13 @@
 // Provides authentication functions using Firebase Auth client SDK
 // These functions are designed for client-side use (browser/mobile)
 
-import { auth, isConfigured } from '../config/firebase-client.js';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, getIdToken } from 'firebase/auth';
+const { auth, isConfigured } = require('../config/firebase-client');
+const {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  getIdToken
+} = require('firebase/auth');
 
 class FirebaseAuthService {
   constructor() {
@@ -396,5 +401,6 @@ class FirebaseAuthService {
 // Singleton instance
 const firebaseAuthService = new FirebaseAuthService();
 
-export default firebaseAuthService;
-export { FirebaseAuthService };
+module.exports = firebaseAuthService;
+module.exports.FirebaseAuthService = FirebaseAuthService;
+module.exports.default = firebaseAuthService;

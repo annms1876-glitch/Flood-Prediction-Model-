@@ -1,7 +1,7 @@
 // Supabase Service Layer
 // Provides data access methods for sensor readings and real-time subscriptions
 
-import { supabase } from '../config/supabase.js';
+const { supabase } = require('../config/supabase');
 
 class SupabaseService {
   constructor() {
@@ -216,31 +216,74 @@ class SupabaseService {
         timeBucket = '(recorded_at::timestamp::date + recorded_at::time::interval \'1 hour\' - recorded_at::time)';
     }
 
+    // PostgREST cannot reference the select alias in ORDER BY; fetch ordered
+    // rows (bucket excluded) and group in memory instead.
     const { data, error } = await this.supabase
       .from('sensor_readings')
-      .select(`
-        location,
-        ${timeBucket} as time_bucket,
-        AVG(water_level_m) as avg_water_level,
-        MAX(water_level_m) as max_water_level,
-        MIN(water_level_m) as min_water_level,
-        AVG(rainfall_mm) as avg_rainfall,
-        SUM(rainfall_mm) as total_rainfall,
-        AVG(soil_moisture_percent) as avg_soil_moisture,
-        AVG(temperature_c) as avg_temperature,
-        AVG(humidity_percent) as avg_humidity,
-        COUNT(*) as reading_count
-      `)
+      .select('*')
       .eq('location', location)
-      .order(timeBucket, { ascending: false })
-      .limit(limit);
+      .order('recorded_at', { ascending: false })
+      .limit(1000);
 
     if (error) {
       console.error('Error fetching aggregated readings:', error);
       throw error;
     }
 
-    return data || [];
+    const readings = data || [];
+    const buckets = new Map();
+
+    for (const reading of readings) {
+      const ts = new Date(reading.recorded_at);
+      if (Number.isNaN(ts.getTime())) continue;
+
+      let bucketKey;
+      if (groupBy === 'week') {
+        const d = new Date(ts);
+        const day = (d.getDay() + 6) % 7; // Monday as first day
+        d.setDate(d.getDate() - day);
+        bucketKey = d.toISOString().slice(0, 10);
+      } else if (groupBy === 'day') {
+        bucketKey = ts.toISOString().slice(0, 10);
+      } else {
+        bucketKey = ts.toISOString().slice(0, 13); // YYYY-MM-DDTHH
+      }
+
+      if (!buckets.has(bucketKey)) {
+        buckets.set(bucketKey, []);
+      }
+      buckets.get(bucketKey).push(reading);
+
+      if (buckets.size >= limit) break;
+    }
+
+    const aggregated = [];
+    for (const [bucketKey, group] of buckets) {
+      const pick = (field) => group.map(r => r[field]).filter(v => v !== null && v !== undefined);
+      const avg = (arr) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : null;
+      const waterLevels = pick('water_level_m');
+      const rainfall = pick('rainfall_mm');
+
+      aggregated.push({
+        time_bucket: bucketKey,
+        location,
+        avg_water_level: avg(waterLevels),
+        max_water_level: waterLevels.length ? Math.max(...waterLevels) : null,
+        min_water_level: waterLevels.length ? Math.min(...waterLevels) : null,
+        avg_rainfall: avg(rainfall),
+        total_rainfall: rainfall.reduce((a, b) => a + b, 0),
+        avg_soil_moisture: avg(pick('soil_moisture_percent')),
+        avg_temperature: avg(pick('temperature_c')),
+        avg_humidity: avg(pick('humidity_percent')),
+        reading_count: group.length
+      });
+    }
+
+    aggregated.sort((a, b) => (a.time_bucket < b.time_bucket ? 1 : -1));
+
+    return aggregated;
+
+    return [];
   }
 
   /**
