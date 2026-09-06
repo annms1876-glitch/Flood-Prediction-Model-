@@ -9,6 +9,10 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --coverageReporters=text --coverageReporters=lcov",
+    "test:system": "node tests/system-test.js",
+    "test:integration": "node scripts/run-tests.js",
+    "test:demo": "node scripts/run-tests.js --demo",
+    "simulate": "node scripts/run-tests.js --simulate",
     "firebase:setup": "node scripts/setup-firebase.js",
     "firebase:check": "node scripts/setup-firebase.js --check"
   },

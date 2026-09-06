@@ -436,20 +436,151 @@ npm run firebase:check
 
 ## 🧪 Testing
 
+### System Tests
+
+Run the comprehensive system test suite:
+
+```bash
+# Run all system tests (Supabase, Firebase, API, Realtime, Storage)
+npm run test:system
+
+# Run integration tests with simulator
+npm run test:integration
+
+# Run demo mode (generates data and shows alerts)
+npm run test:demo
+
+# Start data simulator only
+npm run simulate
+```
+
+### Test Coverage
+
+The test suite verifies:
+
+1. **Supabase Connection**
+   - Client initialization
+   - Database connectivity
+   - Query execution
+
+2. **Firebase Authentication**
+   - SDK configuration
+   - Auth instance availability
+
+3. **API Endpoints**
+   - GET / - Health check
+   - GET /api/health - Detailed health (DB + services)
+   - GET /api - API documentation
+   - GET /api/readings - Get latest readings
+   - GET /api/risk - Risk calculation
+   - GET /api/subscription/health - Realtime subscription status
+
+4. **Real-time Subscriptions**
+   - Subscription establishment
+   - Event reception on INSERT
+   - Risk calculation trigger
+
+5. **Data Storage**
+   - Insert sensor readings
+   - Fetch latest readings
+   - Query by location
+   - Calculate statistics
+
 ### Manual Testing with curl
 
 ```bash
 # Health check
 curl http://localhost:3000/api/health
 
-# Get sensors
-curl http://localhost:3000/api/sensors
+# Get latest readings
+curl http://localhost:3000/api/readings?limit=10
 
-# Get predictions
-curl "http://localhost:3000/api/predictions?min_risk=50"
+# Get readings by location
+curl http://localhost:3000/api/readings/village_a?limit=5
 
-# Dashboard summary
-curl http://localhost:3000/api/dashboard/summary
+# Calculate risk score
+curl http://localhost:3000/api/risk
+
+# Check subscription status
+curl http://localhost:3000/api/subscription/health
+```
+
+### Data Simulator
+
+The data simulator generates realistic mock sensor data for testing:
+
+```bash
+# Start server + simulator
+npm run test:integration
+
+# Or just the simulator
+npm run simulate
+```
+
+**Simulated Data:**
+- Rainfall: 0-50 mm (storm: 25-400 mm)
+- Water Level: 0.5-8 m (storm: 1.5-20 m)
+- Soil Moisture: 20-90% (storm: 60-126%)
+- Tilt: 0-2° (storm: 0.5-3°)
+- Temperature: 18-30°C (storm: 16-22°C)
+- Humidity: 40-90% (storm: 70-117%)
+- **10% chance of storm conditions**
+
+### Test Output
+
+When running tests, you'll see:
+
+```
+📡 Sensor Reading #1
+Location: village_a
+Timestamp: 2026-09-06T12:00:00Z
+──────────────────────────────────────────────────
+Rainfall: 12.5 mm
+Water Level: 2.34 m
+Soil Moisture: 65%
+Tilt: 0.85°
+Temperature: 25.3°C
+Humidity: 70%
+──────────────────────────────────────────────────
+
+📊 Risk Assessment - village_a:
+   Score: 45/100 (warning)
+   Trend: stable (No significant change)
+
+⚠️  WARNING ALERT - Conditions should be monitored
+   Alert sent via: console
+============================================================
+```
+
+### Alert Summary
+
+At the end of tests, you'll see a summary:
+
+```
+══════════════════════════════════════════════════════════════════════
+🚨 ALERT SUMMARY
+══════════════════════════════════════════════════════════════════════
+Critical Alerts: 2 🚨
+High Alerts: 5 🚨
+Warning Alerts: 12 ⚠️
+Sensor Readings: 20
+Storms Detected: 3 ⛈️
+Successful Insertions: 20 ✅
+Insert Errors: 0 ❌
+══════════════════════════════════════════════════════════════════════
+```
+
+### Unit Tests
+
+```bash
+# Run unit tests with coverage
+npm test
+
+# Run with watch mode
+npm run test:watch
+
+# Generate coverage report
+npm run test:coverage
 ```
 
 ### Using Postman
@@ -457,10 +588,7 @@ curl http://localhost:3000/api/dashboard/summary
 1. Import the API endpoints
 2. Set base URL to `http://localhost:3000/api`
 3. Test each endpoint
-
-### Automated Tests
-
-(Coming soon - test suite to be added)
+4. Use Authorization tab for Firebase token (if testing protected routes)
 
 ---
 
