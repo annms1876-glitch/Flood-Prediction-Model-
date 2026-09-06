@@ -8,6 +8,23 @@ npm-debug.log*
 .env.*.local
 *.env
 
+# Security files (contain secrets)
+config/service-account.json
+
+# Logs
+logs/
+*.log
+
+# Temp files
+tmp/
+temp/
+
+# Environment files (NEVER commit these)
+.env
+.env.local
+.env.*.local
+*.env
+
 # Firebase service account key (contains secrets)
 config/service-account.json
 

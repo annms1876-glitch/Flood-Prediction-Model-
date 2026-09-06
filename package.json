@@ -22,7 +22,28 @@
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
     "express": "^4.22.2",
-    "firebase-admin": "^12.7.0"
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "firebase-admin": "^12.7.0",
+    "helmet": "^7.1.0",
+    "hpp": "^0.2.4",
+    "jsonwebtoken": "^9.0.2",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "security": {
+    "best_practices": [
+      "Use strong JWT secrets (32+ characters)",
+      "Enable rate limiting on all endpoints",
+      "Validate and sanitize all user input",
+      "Use HTTPS in production",
+      "Set secure HTTP headers",
+      "Implement CORS properly",
+      "Never commit secrets to version control",
+      "Rotate credentials regularly"
+    ]
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
