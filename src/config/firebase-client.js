@@ -7,8 +7,8 @@
 // This is different from firebase-admin which is for backend server operations.
 // Use this for client-side authentication and Firebase services.
 
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+const { initializeApp } = require('firebase/app');
+const { getAuth } = require('firebase/auth');
 
 // Firebase configuration from environment variables
 const firebaseConfig = {

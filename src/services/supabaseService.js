@@ -1,7 +1,7 @@
 // Supabase Service Layer
 // Provides data access methods for sensor readings and real-time subscriptions
 
-import { supabase } from '../config/supabase.js';
+const { supabase } = require('../config/supabase');
 
 class SupabaseService {
   constructor() {

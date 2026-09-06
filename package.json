@@ -71,5 +71,17 @@
       "Never commit secrets to version control",
       "Rotate credentials regularly"
     ]
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/annms1876-glitch/Flood-Prediction-Model-.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/annms1876-glitch/Flood-Prediction-Model-/issues"
+  },
+  "homepage": "https://github.com/annms1876-glitch/Flood-Prediction-Model-#readme"
 }
