@@ -4,8 +4,9 @@
 const express = require('express');
 const router = express.Router();
 
-// Import Supabase service
+// Import services
 const supabaseService = require('../services/supabaseService');
+const mlService = require('../services/mlService');
 
 // ============================================================
 // POST /api/readings
@@ -319,6 +320,206 @@ router.get('/readings/health', async (req, res) => {
       status: 'unhealthy',
       database: 'error',
       error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// ============================================================
+// POST /api/ml/predict
+// Run ML prediction for a location
+// Request body: { location, readings: [...], prev_water_level }
+// ============================================================
+
+router.post('/ml/predict', async (req, res) => {
+  try {
+    const { location, readings, prev_water_level } = req.body;
+
+    if (!location) {
+      return res.status(400).json({
+        success: false,
+        error: 'Location is required',
+        code: 'MISSING_LOCATION',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    if (!readings || !Array.isArray(readings) || readings.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Readings array is required',
+        code: 'MISSING_READINGS',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Try ML prediction with fallback to rule-based
+    const result = await mlService.getPrediction(location, readings);
+
+    res.json({
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('ML prediction error:', error);
+
+    res.status(500).json({
+      success: false,
+      error: 'ML prediction failed',
+      code: 'ML_PREDICTION_ERROR',
+      message: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// ============================================================
+// GET /api/ml/health
+// Check ML service health
+// ============================================================
+
+router.get('/ml/health', async (req, res) => {
+  try {
+    const health = await mlService.healthCheck();
+
+    res.json({
+      success: true,
+      data: health,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('ML health check error:', error);
+
+    res.status(503).json({
+      success: false,
+      status: 'unhealthy',
+      error: 'ML service unavailable',
+      message: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// ============================================================
+// GET /api/ml/model-info
+// Get ML model information
+// ============================================================
+
+router.get('/ml/model-info', async (req, res) => {
+  try {
+    const info = await mlService.getModelInfo();
+
+    res.json({
+      success: true,
+      data: info,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('ML model info error:', error);
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get model info',
+      message: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// ============================================================
+// POST /api/ml/predict/batch
+// Batch prediction for multiple locations
+// Request body: { locations: ["loc1", "loc2", ...] }
+// ============================================================
+
+router.post('/ml/predict/batch', async (req, res) => {
+  try {
+    const { locations } = req.body;
+
+    if (!locations || !Array.isArray(locations) || locations.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Locations array is required',
+        code: 'MISSING_LOCATIONS',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    const result = await mlService.predictBatch(locations);
+
+    res.json({
+      success: true,
+      data: result,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Batch prediction error:', error);
+
+    res.status(500).json({
+      success: false,
+      error: 'Batch prediction failed',
+      message: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// ============================================================
+// Enhanced GET /api/risk - Now uses ML with fallback
+// ============================================================
+
+router.get('/risk/ml', async (req, res) => {
+  try {
+    // Get readings for ML prediction
+    const readings = await supabaseService.getLatestReadings(15);
+
+    if (readings.length === 0) {
+      return res.json({
+        risk_score: 0,
+        risk_level: 'normal',
+        message: 'No sensor data available',
+        timestamp: new Date().toISOString(),
+        model_version: 'ml_v1.0'
+      });
+    }
+
+    const location = readings[0].location || 'unknown';
+
+    // Try ML prediction
+    let mlResult;
+    try {
+      mlResult = await mlService.predict(location, readings);
+    } catch (mlError) {
+      console.warn('ML prediction failed, using rule-based:', mlError.message);
+      mlResult = await mlService.predictRuleBased(location, readings);
+    }
+
+    // Also get rule-based for comparison
+    let ruleBasedResult;
+    try {
+      ruleBasedResult = await mlService.predictRuleBased(location, readings);
+    } catch (e) {
+      ruleBasedResult = { risk_score: 0, risk_level: 'normal' };
+    }
+
+    res.json({
+      success: true,
+      data: {
+        ml_prediction: mlResult,
+        rule_based: ruleBasedResult,
+        location,
+        timestamp: new Date().toISOString(),
+        model_version: 'ensemble_v1.0'
+      }
+    });
+  } catch (error) {
+    console.error('Risk calculation error:', error);
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to calculate risk',
+      message: error.message,
       timestamp: new Date().toISOString()
     });
   }

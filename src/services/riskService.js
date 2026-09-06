@@ -414,5 +414,6 @@ class RiskCalculationService {
 const riskService = new RiskCalculationService();
 
 // Export the class and singleton
-export { RiskCalculationService };
-export default riskService;
+module.exports = riskService;
+module.exports.RiskCalculationService = RiskCalculationService;
+module.exports.default = riskService;

@@ -2,25 +2,20 @@
 services:
   - type: web
     name: flood-prediction-backend
-    env: node
-    runtime: nodejs18
-    plan: starter
+    runtime: node
+    plan: free
     region: oregon
 
     buildCommand: npm ci
     startCommand: npm start
 
     healthCheckPath: /api/health
-    healthCheckTimeout: 10
-    healthCheckInterval: 30
-    healthCheckThreshold: 3
-    healthCheckPort: 10000
 
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 10000
+      - key: NODE_VERSION
+        value: "18"
       - key: LOG_LEVEL
         value: info
       - key: ALLOWED_ORIGINS
@@ -36,7 +31,7 @@ services:
       - key: JWT_SECRET
         sync: false
 
-      # Firebase (OPTIONAL) - Set if using push notifications
+      # Firebase (OPTIONAL) - Set if using push notifications / client auth
       - key: FIREBASE_PROJECT_ID
         sync: false
       - key: FIREBASE_CREDENTIAL_PATH
