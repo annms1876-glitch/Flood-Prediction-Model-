@@ -211,17 +211,38 @@ class DataSimulator {
     console.log(`🚀 Data Simulator started - generating readings every ${this.intervalMs}ms`);
     console.log(`   Locations: ${this.locations.join(', ')}`);
     console.log(`   Storm probability: ${(this.stormProbability * 100)}%`);
-    console.log(`   API URL: ${this.apiBaseUrl}\n`);
+    console.log(`   API URL: ${this.apiBaseUrl}`);
+
+    // Enable health endpoint keep-alive ping (every 1 minute)
+    // This serves double duty: generates data AND keeps the app awake
+    const ENABLE_HEALTH_PING = process.env.ENABLE_HEALTH_PING !== 'false';
+    const HEALTH_PING_INTERVAL_MS = 60 * 1000; // 1 minute
+    
+    if (ENABLE_HEALTH_PING) {
+      console.log(`   🔄 Health ping enabled: pinging /api/health every 1 minute`);
+    }
 
     // Generate first reading immediately
     this.generateAndInsert().catch(console.error);
 
-    // Set up interval
+    // Set up interval for sensor data generation
     this.timer = setInterval(() => {
       if (this.isRunning) {
         this.generateAndInsert().catch(console.error);
       }
     }, this.intervalMs);
+
+    // Set up separate interval for health pings (every 1 minute)
+    if (ENABLE_HEALTH_PING) {
+      this.healthPingTimer = setInterval(() => {
+        if (this.isRunning) {
+          this.pingHealthEndpoint().catch(() => {});
+        }
+      }, HEALTH_PING_INTERVAL_MS);
+      
+      // Initial health ping after a short delay
+      setTimeout(() => this.pingHealthEndpoint().catch(() => {}), 5000);
+    }
   }
 
   /**
@@ -232,6 +253,13 @@ class DataSimulator {
       clearInterval(this.timer);
       this.timer = null;
     }
+    
+    // Stop health ping timer if it exists
+    if (this.healthPingTimer) {
+      clearInterval(this.healthPingTimer);
+      this.healthPingTimer = null;
+    }
+    
     this.isRunning = false;
     console.log(`⏹️  Data Simulator stopped`);
   }
@@ -257,6 +285,62 @@ class DataSimulator {
   }
 
   /**
+   * Make a GET request helper
+   */
+  async makeRequest(path, method = 'GET') {
+    return new Promise((resolve, reject) => {
+      const url = new URL(this.apiBaseUrl);
+      
+      const options = {
+        hostname: url.hostname,
+        port: url.port || (url.protocol === 'https:' ? 443 : 80),
+        path: path,
+        method: method,
+        timeout: 5000
+      };
+
+      const req = http.request(options, (res) => {
+        let data = '';
+        
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        
+        res.on('end', () => {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve({ success: true, statusCode: res.statusCode });
+          } else {
+            reject(new Error(`HTTP ${res.statusCode}`));
+          }
+        });
+      });
+
+      req.on('error', (error) => {
+        reject(new Error(`Request failed: ${error.message}`));
+      });
+
+      req.on('timeout', () => {
+        req.destroy();
+        reject(new Error('Request timeout'));
+      });
+
+      req.end();
+    });
+  }
+
+  /**
+   * Ping the health endpoint to keep the app awake
+   */
+  async pingHealthEndpoint() {
+    try {
+      await this.makeRequest('/api/health');
+      // Silent success - don't clutter logs
+    } catch (error) {
+      // Silently fail - we don't want to spam logs
+    }
+  }
+
+  /**
    * Get statistics
    */
   getStats() {
@@ -267,7 +351,8 @@ class DataSimulator {
       locations: this.locations,
       stormProbability: this.stormProbability,
       apiUrl: this.apiBaseUrl,
-      lastReading: this.lastReading
+      lastReading: this.lastReading,
+      healthPingEnabled: !!this.healthPingTimer
     };
   }
 

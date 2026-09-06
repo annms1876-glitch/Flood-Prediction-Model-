@@ -447,6 +447,59 @@ const server = app.listen(PORT, () => {
   `);
 });
 
+// ============================================================
+// KEEP-ALIVE MECHANISM (Prevent Render/Platform from sleeping)
+// Pings own health endpoint every 4 minutes in production
+// ============================================================
+
+// Only enable keep-alive in production (not during local dev)
+const ENABLE_KEEP_ALIVE = NODE_ENV === 'production';
+const KEEP_ALIVE_INTERVAL_MINUTES = parseInt(process.env.KEEP_ALIVE_INTERVAL_MINUTES) || 4;
+
+if (ENABLE_KEEP_ALIVE) {
+  const http = require('http');
+  
+  console.log(`\n🔄 Keep-alive enabled: pinging /api/health every ${KEEP_ALIVE_INTERVAL_MINUTES} minutes`);
+  
+  // Create a simple HTTP client for keep-alive pings
+  function pingHealthEndpoint() {
+    const url = new URL(`/api/health`, process.env.INTERNAL_URL || `http://localhost:${PORT}`);
+    
+    const options = {
+      hostname: url.hostname,
+      port: url.port || (url.protocol === 'https:' ? 443 : 80),
+      path: url.pathname,
+      method: 'GET',
+      timeout: 5000 // 5 second timeout
+    };
+    
+    const req = http.request(options, (res) => {
+      res.on('data', () => {});
+      res.on('end', () => {
+        // Health ping successful - no need to log every time to avoid clutter
+      });
+    });
+    
+    req.on('error', (error) => {
+      // Silently fail - we don't want to spam logs if health check fails
+      // The server will still be running, just the health check had an issue
+    });
+    
+    req.on('timeout', () => {
+      req.destroy();
+    });
+    
+    req.end();
+  }
+  
+  // Start keep-alive interval
+  const keepAliveIntervalMs = KEEP_ALIVE_INTERVAL_MINUTES * 60 * 1000;
+  setInterval(pingHealthEndpoint, keepAliveIntervalMs);
+  
+  // Ping immediately on startup to ensure first keep-alive happens promptly
+  setTimeout(pingHealthEndpoint, 1000);
+}
+
 // Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('\nSIGTERM received. Shutting down gracefully...');
