@@ -201,6 +201,7 @@ class GraphAttentionLayer(nn.Module):
         edge_features: Optional[torch.Tensor] = None
     ) -> torch.Tensor:
         residual = x
+        num_nodes = x.shape[0]
         
         Q = self.query(x).view(-1, self.num_heads, self.head_dim)
         K = self.key(x).view(-1, self.num_heads, self.head_dim)
@@ -214,10 +215,15 @@ class GraphAttentionLayer(nn.Module):
             edge_weights = torch.sigmoid(edge_features.mean(dim=-1, keepdim=True))
             attn_scores = attn_scores * edge_weights
         
-        attn_weights = torch.zeros(x.shape[0], x.shape[0], self.num_heads, device=x.device)
-        attn_weights[dst, src] = attn_scores.softmax(dim=-1)
+        attn_matrix = torch.full(
+            (num_nodes, num_nodes, self.num_heads), float('-inf'), device=x.device
+        )
+        attn_matrix[dst, src] = attn_scores
+        attn_matrix = attn_matrix.softmax(dim=1)
         
-        attn_out = torch.sum(attn_weights[dst, src].unsqueeze(-1) * V[src], dim=1)
+        attn_out = torch.zeros(num_nodes, self.num_heads, self.head_dim, device=x.device)
+        attn_out.index_add_(0, dst, attn_matrix[dst, src].unsqueeze(-1) * V[src])
+        
         attn_out = attn_out.view(-1, self.num_heads * self.head_dim)
         
         out = self.output_proj(attn_out)
