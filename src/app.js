@@ -10,7 +10,13 @@ const cors = require('cors');
 
 // Import routes
 const sensorRoutes = require('./routes/sensors');
+const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
+
+// Swagger/OpenAPI setup
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.yaml');
+const swaggerSpec = typeof swaggerDocument === 'string' ? require('js-yaml').load(swaggerDocument) : swaggerDocument;
 const { rateLimitMiddleware } = require('./middleware/rateLimit');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
@@ -65,7 +71,24 @@ app.get('/', (req, res) => {
 
 // API routes
 app.use('/api/readings', sensorRoutes);
+app.use('/api/readings', apiRoutes); // Consolidated API routes
 app.use('/api/auth', authRoutes);
+
+// Swagger UI documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: `
+    .swagger-ui .topbar { display: none; }
+    .swagger-ui .topbar-wrapper { display: none; }
+  `,
+  customSiteTitle: 'Flood Prediction API Documentation',
+  explorer: true,
+  filter: true
+}));
+
+// Redirect root to Swagger UI
+app.get('/', (req, res) => {
+  res.redirect('/api-docs');
+});
 
 // Risk calculation endpoint (placeholder - will be implemented with ML models)
 app.get('/api/risk', async (req, res) => {

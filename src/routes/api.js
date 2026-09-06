@@ -1,308 +1,331 @@
-// API Routes Definition
-// Defines all endpoint routes for the flood prediction backend
+// API Routes - Consolidated endpoints for flood prediction backend
+// All routes using Supabase service for data operations
 
 const express = require('express');
 const router = express.Router();
 
+// Import Supabase service
 const supabaseService = require('../services/supabaseService');
-const firebaseService = require('../services/firebaseService');
 
+// ============================================================
+// POST /api/readings
+// Insert a new sensor reading
+// Request body: { location, rainfall_mm, water_level_m, soil_moisture_percent, tilt_degrees, temperature_c, humidity_percent }
+// ============================================================
 
-/**
- * Health check endpoint
- * GET /api/health
- */
-router.get('/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    services: {
-      supabase: supabaseService.isReady(),
-      firebase: firebaseService.isReady()
-    },
-    timestamp: new Date().toISOString()
-  });
-});
-
-/**
- * Get all active sensors
- * GET /api/sensors
- */
-router.get('/sensors', async (req, res) => {
+router.post('/readings', async (req, res) => {
   try {
-    const sensors = await supabaseService.getActiveSensors();
-    res.json({
+    const { location, rainfall_mm, water_level_m, soil_moisture_percent, tilt_degrees, temperature_c, humidity_percent } = req.body;
+
+    // Validate required fields
+    if (!location) {
+      return res.status(400).json({
+        success: false,
+        error: 'Location is required',
+        code: 'MISSING_LOCATION',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Insert sensor reading using supabaseService
+    const result = await supabaseService.insertSensorReading({
+      location,
+      rainfall_mm,
+      water_level_m,
+      soil_moisture_percent,
+      tilt_degrees,
+      temperature_c,
+      humidity_percent
+    });
+
+    res.status(201).json({
       success: true,
-      count: sensors.length,
-      data: sensors
+      data: result,
+      message: 'Sensor reading inserted successfully',
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Error fetching sensors:', error);
+    console.error('Error inserting sensor reading:', error);
+
+    // Handle specific errors
+    if (error.message === 'Location is required') {
+      return res.status(400).json({
+        success: false,
+        error: error.message,
+        code: 'VALIDATION_ERROR',
+        timestamp: new Date().toISOString()
+      });
+    }
+
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch sensors',
-      message: error.message
+      error: 'Failed to insert sensor reading',
+      code: 'INSERT_ERROR',
+      message: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      timestamp: new Date().toISOString()
     });
   }
 });
 
-/**
- * Get sensor readings for a location
- * GET /api/sensors/:location/readings
- */
-router.get('/sensors/:location/readings', async (req, res) => {
+// ============================================================
+// GET /api/readings
+// Get the latest sensor readings
+// Query params: limit (default: 100)
+// ============================================================
+
+router.get('/readings', async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 100;
+
+    // Validate limit
+    if (isNaN(limit) || limit < 1) {
+      return res.status(400).json({
+        success: false,
+        error: 'Limit must be a positive number',
+        code: 'INVALID_LIMIT',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Cap limit at 1000
+    const clampedLimit = Math.min(limit, 1000);
+
+    // Get latest readings using supabaseService
+    const readings = await supabaseService.getLatestReadings(clampedLimit);
+
+    res.json({
+      success: true,
+      count: readings.length,
+      data: readings,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error fetching latest readings:', error);
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch sensor readings',
+      code: 'FETCH_ERROR',
+      message: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// ============================================================
+// GET /api/readings/:location
+// Get readings for a specific location
+// ============================================================
+
+router.get('/readings/:location', async (req, res) => {
   try {
     const { location } = req.params;
     const limit = parseInt(req.query.limit) || 100;
 
-    if (!location) {
+    // Validate limit
+    if (isNaN(limit) || limit < 1) {
       return res.status(400).json({
         success: false,
-        error: 'Location parameter is required'
+        error: 'Limit must be a positive number',
+        code: 'INVALID_LIMIT',
+        timestamp: new Date().toISOString()
       });
     }
 
-    const readings = await supabaseService.getSensorReadings(location, limit);
+    const clampedLimit = Math.min(limit, 1000);
+
+    // Get readings by location using supabaseService
+    const readings = await supabaseService.getReadingsByLocation(location, clampedLimit);
+
     res.json({
       success: true,
       location,
       count: readings.length,
-      data: readings
+      data: readings,
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Error fetching sensor readings:', error);
+    console.error(`Error fetching readings for location ${req.params.location}:`, error);
+
+    // Handle specific errors
+    if (error.message === 'Location parameter is required') {
+      return res.status(400).json({
+        success: false,
+        error: error.message,
+        code: 'VALIDATION_ERROR',
+        timestamp: new Date().toISOString()
+      });
+    }
+
     res.status(500).json({
       success: false,
       error: 'Failed to fetch sensor readings',
-      message: error.message
+      code: 'FETCH_ERROR',
+      message: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      timestamp: new Date().toISOString()
     });
   }
 });
 
-/**
- * Create sensor reading (internal use)
- * POST /api/sensors/readings
- */
-router.post('/sensors/readings', async (req, res) => {
-  try {
-    const { sensor_id, water_level, rainfall, soil_moisture, temperature, location } = req.body;
+// ============================================================
+// GET /api/risk
+// Calculate and return risk score based on latest reading
+// Placeholder: simple average of normalized values
+// Returns: { risk_score, risk_level, timestamp }
+// ============================================================
 
-    if (!sensor_id || !location) {
-      return res.status(400).json({
-        success: false,
-        error: 'sensor_id and location are required'
+router.get('/risk', async (req, res) => {
+  try {
+    // Get the latest reading
+    const readings = await supabaseService.getLatestReadings(1);
+
+    if (readings.length === 0) {
+      return res.json({
+        risk_score: 0,
+        risk_level: 'normal',
+        message: 'No sensor data available',
+        timestamp: new Date().toISOString(),
+        model_version: 'placeholder_v1.0'
       });
     }
 
-    const reading = await supabaseService.insertSensorReading({
-      sensor_id,
-      water_level: water_level || 0,
-      rainfall: rainfall || 0,
-      soil_moisture: soil_moisture || 0,
-      temperature: temperature || 0,
-      location
-    });
+    const latest = readings[0];
 
-    res.status(201).json({
-      success: true,
-      data: reading
-    });
-  } catch (error) {
-    console.error('Error creating sensor reading:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to create sensor reading',
-      message: error.message
-    });
-  }
-});
+    // Calculate risk score using placeholder logic
+    // Normalize values and calculate average
+    let riskScore = 0;
+    let factors = [];
 
-/**
- * Get flood predictions/risk scores
- * GET /api/predictions
- */
-router.get('/predictions', async (req, res) => {
-  try {
-    const minRiskScore = parseInt(req.query.min_risk) || 50;
-    const alerts = await supabaseService.getActiveAlerts(minRiskScore);
-
-    res.json({
-      success: true,
-      count: alerts.length,
-      min_risk_threshold: minRiskScore,
-      data: alerts
-    });
-  } catch (error) {
-    console.error('Error fetching predictions:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch predictions',
-      message: error.message
-    });
-  }
-});
-
-/**
- * Create flood prediction
- * POST /api/predictions
- */
-router.post('/predictions', async (req, res) => {
-  try {
-    const { location, risk_score, risk_level, water_level, confidence, model_version } = req.body;
-
-    if (!location || !risk_score) {
-      return res.status(400).json({
-        success: false,
-        error: 'location and risk_score are required'
+    // Water level contribution (0-100 scale, assume 5m = max risk)
+    if (latest.water_level_m !== null && latest.water_level_m !== undefined) {
+      const waterLevelRisk = Math.min((latest.water_level_m / 5) * 100, 100);
+      riskScore += waterLevelRisk * 0.4; // 40% weight
+      factors.push({
+        factor: 'water_level',
+        value: latest.water_level_m,
+        unit: 'm',
+        contribution: Math.round(waterLevelRisk * 0.4)
       });
     }
 
-    // Determine risk level if not provided
-    const level = risk_level || this.calculateRiskLevel(risk_score);
-
-    const prediction = await supabaseService.insertPrediction({
-      location,
-      risk_score,
-      risk_level: level,
-      water_level: water_level || 0,
-      confidence: confidence || 0,
-      model_version
-    });
-
-    res.status(201).json({
-      success: true,
-      data: prediction
-    });
-  } catch (error) {
-    console.error('Error creating prediction:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to create prediction',
-      message: error.message
-    });
-  }
-});
-
-/**
- * Calculate risk level from score
- * @param {number} score - Risk score (0-100)
- * @returns {string} Risk level
- */
-function calculateRiskLevel(score) {
-  if (score >= 80) return 'critical';
-  if (score >= 60) return 'high';
-  if (score >= 40) return 'warning';
-  if (score >= 20) return 'watch';
-  return 'normal';
-}
-
-/**
- * Send flood alert notification
- * POST /api/alerts/send
- */
-router.post('/alerts/send', async (req, res) => {
-  try {
-    const { tokens, alert_data } = req.body;
-
-    if (!tokens || !Array.isArray(tokens) || tokens.length === 0) {
-      return res.status(400).json({
-        success: false,
-        error: 'tokens array is required'
+    // Rainfall contribution (0-100 scale, assume 50mm = max risk)
+    if (latest.rainfall_mm !== null && latest.rainfall_mm !== undefined) {
+      const rainfallRisk = Math.min((latest.rainfall_mm / 50) * 100, 100);
+      riskScore += rainfallRisk * 0.3; // 30% weight
+      factors.push({
+        factor: 'rainfall',
+        value: latest.rainfall_mm,
+        unit: 'mm',
+        contribution: Math.round(rainfallRisk * 0.3)
       });
     }
 
-    if (!alert_data) {
-      return res.status(400).json({
-        success: false,
-        error: 'alert_data is required'
+    // Soil moisture contribution (0-100 scale, assume 80% = max risk)
+    if (latest.soil_moisture_percent !== null && latest.soil_moisture_percent !== undefined) {
+      const soilMoistureRisk = Math.min((latest.soil_moisture_percent / 80) * 100, 100);
+      riskScore += soilMoistureRisk * 0.2; // 20% weight
+      factors.push({
+        factor: 'soil_moisture',
+        value: latest.soil_moisture_percent,
+        unit: '%',
+        contribution: Math.round(soilMoistureRisk * 0.2)
       });
     }
 
-    const result = await firebaseService.sendFloodAlert(tokens, alert_data);
-
-    // Log the alert
-    await firebaseService.logAlert({
-      type: 'flood_alert',
-      risk_level: alert_data.risk_level,
-      location: alert_data.location,
-      tokens_count: tokens.length,
-      success_count: result.success_count || 0,
-      failure_count: result.failure_count || 0
-    });
-
-    res.json({
-      success: true,
-      sent: result.success_count || 0,
-      failed: result.failure_count || 0,
-      total: tokens.length
-    });
-  } catch (error) {
-    console.error('Error sending alert:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to send alert',
-      message: error.message
-    });
-  }
-});
-
-/**
- * Get single sensor by ID
- * GET /api/sensors/:id
- */
-router.get('/sensors/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (!supabaseService.isReady()) {
-      return res.status(503).json({
-        success: false,
-        error: 'Database service unavailable'
+    // Tilt contribution (0-100 scale, assume 10° = max risk)
+    if (latest.tilt_degrees !== null && latest.tilt_degrees !== undefined) {
+      const tiltRisk = Math.min((Math.abs(latest.tilt_degrees) / 10) * 100, 100);
+      riskScore += tiltRisk * 0.1; // 10% weight
+      factors.push({
+        factor: 'tilt',
+        value: latest.tilt_degrees,
+        unit: '°',
+        contribution: Math.round(tiltRisk * 0.1)
       });
     }
 
-    // This would need implementation in supabaseService
-    res.json({
-      success: true,
-      data: { id, message: 'Sensor detail endpoint ready' }
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+    // Round risk score
+    riskScore = Math.round(riskScore);
 
-/**
- * Get risk summary for dashboard
- * GET /api/dashboard/summary
- */
-router.get('/dashboard/summary', async (req, res) => {
-  try {
-    const alerts = await supabaseService.getActiveAlerts(40);
+    // Determine risk level based on score
+    let riskLevel;
+    if (riskScore >= 80) {
+      riskLevel = 'critical';
+    } else if (riskScore >= 60) {
+      riskLevel = 'high';
+    } else if (riskScore >= 40) {
+      riskLevel = 'warning';
+    } else if (riskScore >= 20) {
+      riskLevel = 'watch';
+    } else {
+      riskLevel = 'normal';
+    }
 
-    const summary = {
-      total_alerts: alerts.length,
-      critical: alerts.filter(a => a.risk_level === 'critical').length,
-      high: alerts.filter(a => a.risk_level === 'high').length,
-      warning: alerts.filter(a => a.risk_level === 'warning').length,
-      watch: alerts.filter(a => a.risk_level === 'watch').length,
-      locations: [...new Set(alerts.map(a => a.location))].length
+    // Add location info if available
+    const response = {
+      risk_score: riskScore,
+      risk_level: riskLevel,
+      location: latest.location || 'unknown',
+      timestamp: latest.recorded_at || new Date().toISOString(),
+      model_version: 'placeholder_v1.0',
+      factors: factors.length > 0 ? factors : undefined
     };
 
-    res.json({
-      success: true,
-      data: summary
-    });
+    res.json(response);
   } catch (error) {
-    console.error('Error fetching dashboard summary:', error);
+    console.error('Error calculating risk score:', error);
+
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch dashboard summary',
-      message: error.message
+      error: 'Failed to calculate risk score',
+      code: 'CALCULATION_ERROR',
+      message: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      timestamp: new Date().toISOString()
     });
   }
 });
 
-module.exports = router;
+// ============================================================
+// GET /api/readings/health
+// Check if sensor readings endpoint is working
+// ============================================================
 
+router.get('/readings/health', async (req, res) => {
+  try {
+    const isInitialized = supabaseService.isInitialized();
+
+    if (!isInitialized) {
+      return res.status(503).json({
+        status: 'unhealthy',
+        database: 'not_configured',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Try a simple query
+    const readings = await supabaseService.getLatestReadings(1);
+
+    res.json({
+      status: 'healthy',
+      database: 'connected',
+      has_data: readings.length > 0,
+      reading_count: readings.length,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Health check error:', error);
+
+    res.status(503).json({
+      status: 'unhealthy',
+      database: 'error',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// ============================================================
+// Export router
+// ============================================================
+
+module.exports = router;
