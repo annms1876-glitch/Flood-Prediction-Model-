@@ -12,6 +12,7 @@ from pydantic import BaseModel, Field
 from services.predictor import FloodPredictor
 from services.data_processor import SensorDataProcessor
 from models.ensemble import EnsembleAggregator
+from demo_data import SCENARIOS, get_scenario, get_all_scenarios, get_demo_prediction
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -320,6 +321,94 @@ async def get_stats():
             for loc, readings in (data_processor.reading_buffer.items() if data_processor else {})
         },
         "models": ["lstm", "xgboost", "gnn", "pinn", "ensemble"]
+    }
+
+
+@app.get("/demo/scenarios")
+async def demo_scenarios():
+    return {"scenarios": get_all_scenarios()}
+
+
+@app.get("/demo/scenario/{scenario_name}")
+async def demo_scenario(scenario_name: str):
+    if scenario_name not in SCENARIOS:
+        raise HTTPException(status_code=404, detail=f"Scenario '{scenario_name}' not found")
+    return get_demo_prediction(scenario_name)
+
+
+@app.get("/demo/predict/{scenario_name}")
+async def demo_predict(scenario_name: str):
+    start_time = time.time()
+    
+    if scenario_name not in SCENARIOS:
+        raise HTTPException(status_code=404, detail=f"Scenario '{scenario_name}' not found")
+    
+    scenario = get_scenario(scenario_name)
+    demo_pred = get_demo_prediction(scenario_name)
+    
+    try:
+        readings_dicts = scenario["readings"]
+        
+        for reading in readings_dicts:
+            data_processor.add_reading(reading)
+        
+        data_processor.compute_deltas(readings_dicts[-1]["location"])
+        
+        enriched_readings = data_processor.get_location_buffer(readings_dicts[-1]["location"])
+        if not enriched_readings:
+            enriched_readings = readings_dicts
+        
+        ml_result = predictor.predict(enriched_readings) if predictor else {}
+        
+        processing_time = (time.time() - start_time) * 1000
+        
+        return {
+            "scenario": scenario["name"],
+            "description": scenario["description"],
+            "icon": scenario["icon"],
+            "sensor_readings": scenario["readings"],
+            "ml_prediction": ml_result if ml_result else None,
+            "demo_prediction": {
+                "risk_score": demo_pred["risk_score"],
+                "risk_level": demo_pred["risk_level"],
+                "flood_probability": demo_pred["flood_probability"],
+                "predicted_water_level": demo_pred["predicted_water_level"],
+                "lead_time_hours": demo_pred["lead_time_hours"],
+                "model_breakdown": demo_pred["models"],
+                "recommendations": demo_pred["recommendations"]
+            },
+            "processing_time_ms": round(processing_time, 2),
+            "model_version": "demo_v1.0"
+        }
+    
+    except Exception as e:
+        logger.error(f"Demo prediction failed: {e}")
+        return {
+            "scenario": scenario["name"],
+            "description": scenario["description"],
+            "sensor_readings": scenario["readings"],
+            "demo_prediction": demo_pred,
+            "model_version": "demo_v1.0"
+        }
+
+
+@app.post("/demo/run-all")
+async def demo_run_all():
+    results = []
+    
+    for scenario_key in SCENARIOS.keys():
+        demo_pred = get_demo_prediction(scenario_key)
+        results.append({
+            "key": scenario_key,
+            **demo_pred
+        })
+    
+    return {
+        "scenarios": results,
+        "architecture": {
+            "formula": "LSTM*0.4 + XGBoost*0.3 + GNN*0.2 + PINN*0.1",
+            "models": ["lstm", "xgboost", "gnn", "pinn"]
+        }
     }
 
 
