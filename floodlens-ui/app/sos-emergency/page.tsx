@@ -22,6 +22,7 @@ import {
   ArrowRight,
   Send,
 } from "lucide-react";
+import { playEmergencySiren } from "@/lib/notifications";
 
 interface SOSBeaconResponse {
   id: string;
@@ -106,6 +107,7 @@ export default function SOSEmergencyPage() {
   }, [countdown]);
 
   const startCountdown = () => {
+    void playEmergencySiren();
     setIsActivating(true);
     setCountdown(3);
   };
