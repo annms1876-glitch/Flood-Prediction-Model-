@@ -33,10 +33,27 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(249,166,0,.35); 
 .ghost-button { align-items: center; gap: 8px; border: 1px solid var(--espresso); border-radius: 8px; padding: 8px 16px; color: var(--espresso); font-size: 14px; font-weight: 492; transition: background .18s ease, transform .16s ease; }
 .ghost-button:hover { background: #fffdf8; }
 .ghost-button:active { transform: scale(.97); }
+.risk-analytics-page > div { transition: transform .18s ease, box-shadow .18s ease; }
+.risk-analytics-page > div:hover { transform: translateY(-2px); }
+.escape-guide-panel { position: relative; overflow: hidden; }
+.escape-guide-panel::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: linear-gradient(180deg, var(--amber), var(--gold), var(--terracotta)); opacity: .9; }
+.escape-guide-panel .text-\[\#261b07\] { color: var(--espresso); }
+.escape-guide-panel button { transition: transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease; }
+.escape-guide-panel button:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(38,27,7,.08); }
+.escape-guide-panel [id="active-step-spotlight"] { animation: guide-pulse 2.8s ease-in-out infinite; }
+.escape-guide-panel [id^="route-step-card-"] { animation: step-in .36s cubic-bezier(.23,1,.32,1) both; }
+.escape-guide-panel [id^="route-step-card-"]:nth-child(2) { animation-delay: 45ms; }
+.escape-guide-panel [id^="route-step-card-"]:nth-child(3) { animation-delay: 90ms; }
+.escape-guide-panel [id^="route-step-card-"]:nth-child(4) { animation-delay: 135ms; }
+@keyframes guide-pulse { 0%, 100% { box-shadow: 0 4px 8px rgba(38,27,7,.06); } 50% { box-shadow: 0 8px 20px rgba(249,166,0,.13); } }
+@keyframes step-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
 @media (prefers-reduced-motion: no-preference) {
   .rise-in { animation: rise-in .45s cubic-bezier(.23,1,.32,1) both; }
   @keyframes rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .escape-guide-panel [id="active-step-spotlight"], .escape-guide-panel [id^="route-step-card-"] { animation: none; }
 }
 
 @layer utilities { .text-balance { text-wrap: balance; } }
