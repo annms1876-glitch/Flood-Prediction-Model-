@@ -13,7 +13,7 @@ export function ModelBreakdown({ prediction }: ModelBreakdownProps) {
 
   const predictions = {
     lstm: prediction.models.lstm?.prediction || 0,
-    xgboost: prediction.models.xgboost?.prediction || 0,
+    xgboost: prediction.models.xgboost?.prediction ?? prediction.models.xgboost?.correction ?? 0,
     gnn: prediction.models.gnn?.prediction || 0,
     pinn: prediction.models.pinn?.prediction || 0,
   };

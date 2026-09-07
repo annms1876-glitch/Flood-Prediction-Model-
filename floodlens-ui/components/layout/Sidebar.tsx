@@ -18,7 +18,7 @@ const navItems = [
   { href: "/", label: "Home", icon: LayoutDashboard },
   { href: "/dashboard", label: "Dashboard", icon: Gauge },
   { href: "/predictions", label: "Predict", icon: Droplets },
-  { href: "/predictions", label: "Spatial", icon: MapPinned },
+  { href: "/map", label: "3D Map", icon: MapPinned },
   { href: "/sensors", label: "Sensors", icon: Camera },
   { href: "/alerts", label: "Alerts", icon: AlertTriangle },
   { href: "/demo", label: "Demo", icon: FlaskConical },

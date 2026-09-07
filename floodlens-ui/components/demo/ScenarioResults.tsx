@@ -37,6 +37,7 @@ export function ScenarioResults({ prediction }: ScenarioResultsProps) {
       <ModelBreakdown
         prediction={{
           ...prediction,
+          location: "Demo Region",
           risk_score: prediction.risk_score,
           risk_level: prediction.risk_level,
           flood_probability: prediction.flood_probability,

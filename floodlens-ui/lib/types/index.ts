@@ -18,7 +18,7 @@ export interface PredictionResponse {
   lead_time_hours?: number;
   models?: {
     lstm?: { prediction: number; weight: number };
-    xgboost?: { correction: number; weight: number };
+    xgboost?: { correction?: number; prediction?: number; weight: number };
     gnn?: { prediction: number; weight: number };
     pinn?: { prediction: number; weight: number };
   };

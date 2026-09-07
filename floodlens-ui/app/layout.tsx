@@ -4,8 +4,12 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Sidebar } from "@/components/layout/Sidebar";
 
 export const metadata: Metadata = {
-  title: "FloodLens — Umeed AI",
-  description: "AI-Powered Flood Prediction & Early Warning System",
+  title: "FloodLens — AI Flood Prediction",
+  description: "Real-time flood risk assessment and early warning system for hilly regions using an ensemble AI architecture.",
+  openGraph: {
+    title: "FloodLens — AI Flood Prediction",
+    description: "Real-time flood risk assessment and early warning system for hilly regions using an ensemble AI architecture.",
+  },
   icons: {
     icon: "/favicon.ico",
   },

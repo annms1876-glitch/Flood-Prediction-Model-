@@ -1,0 +1,8 @@
+{
+  "name": "FloodLens — AI Flood Prediction",
+  "description": "Real-time flood risk assessment and early warning system for hilly regions using an ensemble AI architecture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
