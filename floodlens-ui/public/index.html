@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FloodLens — Umeed AI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0e1a; color: #e5e7eb; min-height: 100vh; }
+    .navbar { height: 64px; background: rgba(17,24,39,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+    .navbar h1 { font-size: 1.5rem; font-weight: 700; color: white; }
+    .navbar h1 span { color: #3b82f6; }
+    .nav-links { display: flex; gap: 20px; }
+    .nav-links a { color: #9ca3af; text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+    .nav-links a:hover { color: #e5e7eb; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+    .hero { text-align: center; padding: 80px 0 60px; }
+    .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 16px; }
+    .hero h1 span { color: #3b82f6; }
+    .hero p { font-size: 1.25rem; color: #9ca3af; max-width: 600px; margin: 0 auto 32px; }
+    .badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 60px; }
+    .badge { padding: 6px 14px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; border: 1px solid; }
+    .badge-blue { background: rgba(59,130,246,0.1); color: #60a5fa; border-color: rgba(59,130,246,0.3); }
+    .badge-green { background: rgba(34,197,94,0.1); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+    .badge-yellow { background: rgba(234,179,8,0.1); color: #facc15; border-color: rgba(234,179,8,0.3); }
+    .badge-red { background: rgba(239,68,68,0.1); color: #f87171; border-color: rgba(239,68,68,0.3); }
+    .badge-purple { background: rgba(168,85,247,0.1); color: #a78bfa; border-color: rgba(168,85,247,0.3); }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 40px 0; }
+    .card { background: rgba(17,24,39,0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 28px; transition: transform 0.2s, border-color 0.2s; }
+    .card:hover { transform: translateY(-4px); border-color: rgba(59,130,246,0.3); }
+    .card-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .card h3 { font-size: 1.125rem; font-weight: 600; color: white; margin-bottom: 8px; }
+    .card p { font-size: 0.875rem; color: #9ca3af; line-height: 1.5; }
+    .section { margin: 60px 0; }
+    .section h2 { font-size: 2rem; font-weight: 700; color: white; margin-bottom: 24px; text-align: center; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 32px 0; }
+    .stat { text-align: center; padding: 24px; background: rgba(17,24,39,0.6); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+    .stat-value { font-size: 2.5rem; font-weight: 800; color: #3b82f6; }
+    .stat-label { font-size: 0.875rem; color: #9ca3af; margin-top: 8px; }
+    .footer { text-align: center; padding: 24px; color: #4b5563; font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.05); }
+    .gauge-container { display: flex; justify-content: center; gap: 40px; margin: 40px 0; flex-wrap: wrap; }
+    .gauge { width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+    .gauge .score { font-size: 2rem; font-weight: 800; }
+    .gauge .label { font-size: 0.75rem; color: #9ca3af; }
+    @media (max-width: 768px) { .stats { grid-template-columns: repeat(2, 1fr); } .hero h1 { font-size: 2rem; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <h1>FloodLens <span>Umeed AI</span></h1>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/predict">Predict</a>
+      <a href="/sensors">Sensors</a>
+      <a href="/demo">Demo</a>
+      <a href="/model">Model</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="hero">
+      <h1>AI-Powered Flood <span>Prediction</span></h1>
+      <p>Real-time flood risk assessment for hilly regions using 4-model ensemble AI — LSTM + XGBoost + GNN + PINN</p>
+      <div class="badges">
+        <span class="badge badge-blue">Next.js 15</span>
+        <span class="badge badge-blue">TypeScript</span>
+        <span class="badge badge-green">Tailwind CSS</span>
+        <span class="badge badge-yellow">Zustand</span>
+        <span class="badge badge-red">PyTorch</span>
+        <span class="badge badge-purple">FastAPI</span>
+        <span class="badge badge-green">Docker</span>
+        <span class="badge badge-red">SIH 2026</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>System Overview</h2>
+      <div class="stats">
+        <div class="stat"><div class="stat-value">4</div><div class="stat-label">AI Models</div></div>
+        <div class="stat"><div class="stat-value">8</div><div class="stat-label">Sensor Inputs</div></div>
+        <div class="stat"><div class="stat-value">5</div><div class="stat-label">Risk Levels</div></div>
+        <div class="stat"><div class="stat-value">6</div><div class="stat-label">Demo Scenarios</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Key Features</h2>
+      <div class="cards">
+        <div class="card"><div class="card-icon">🎯</div><h3>Real-time Risk Scoring</h3><p>8 IoT sensor inputs produce a 0-100 flood risk score with 5 severity levels</p></div>
+        <div class="card"><div class="card-icon">🤖</div><h3>4-Model Ensemble</h3><p>LSTM (40%) + XGBoost (30%) + GNN (20%) + PINN (10%) working together</p></div>
+        <div class="card"><div class="card-icon">🗺️</div><h3>Spatial Prediction</h3><p>GNN-based area-level flood mapping for regional awareness</p></div>
+        <div class="card"><div class="card-icon">🚨</div><h3>Multi-Channel Alerts</h3><p>Configurable alert system with Firebase push notifications</p></div>
+        <div class="card"><div class="card-icon">🎮</div><h3>Demo Scenarios</h3><p>6 pre-computed realistic flood scenarios to test the AI</p></div>
+        <div class="card"><div class="card-icon">📊</div><h3>Ensemble Breakdown</h3><p>Visualize each model's contribution to the final prediction</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Architecture</h2>
+      <div class="cards">
+        <div class="card"><div class="card-icon">⚡</div><h3>ML Service (Port 8000)</h3><p>Python/FastAPI with LSTM, XGBoost, GNN, PINN models</p></div>
+        <div class="card"><div class="card-icon">🔗</div><h3>Node Backend (Port 3000)</h3><p>Express.js with Supabase + Firebase integration</p></div>
+        <div class="card"><div class="card-icon">🎨</div><h3>Frontend (Port 3001)</h3><p>Next.js 15 + TypeScript + Tailwind CSS + Zustand</p></div>
+        <div class="card"><div class="card-icon">🐳</div><h3>Docker Compose</h3><p>One-command deployment for the entire stack</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Quick Links</h2>
+      <div class="cards">
+        <div class="card" onclick="window.location.href='/'"><div class="card-icon">🏠</div><h3>Go to Home</h3><p>Click to navigate to the main page</p></div>
+        <div class="card" onclick="window.location.href='/dashboard'"><div class="card-icon">📊</div><h3>Dashboard</h3><p>Real-time monitoring overview</p></div>
+        <div class="card" onclick="window.location.href='/predict'"><div class="card-icon">🎯</div><h3>Make Prediction</h3><p>Enter sensor data for flood prediction</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>FloodLens Umeed AI — SIH 2026 — Hilly Regions Flood Prediction System</p>
+    <p style="margin-top: 4px;">Built with ❤️ by annms1876-glitch</p>
+  </div>
+</body>
+</html>
