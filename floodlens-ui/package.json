@@ -9,8 +9,11 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@google/genai": "^2.21.0",
     "@vis.gl/react-google-maps": "^1.10.0",
     "clsx": "^2.1.0",
+    "echarts": "^6.1.0",
+    "echarts-for-react": "^3.0.6",
     "firebase": "^12.18.0",
     "i18next": "^26.4.2",
     "lucide-react": "^0.400.0",
@@ -19,6 +22,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^17.0.13",
     "tailwind-merge": "^2.2.0",
+    "zod": "^4.5.4",
     "zustand": "^5.0.0"
   },
   "devDependencies": {

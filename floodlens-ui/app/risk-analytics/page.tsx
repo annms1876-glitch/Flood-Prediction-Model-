@@ -15,6 +15,7 @@ import {
   Sliders,
   CheckCircle2,
 } from "lucide-react";
+import { AdvancedAnalyticsBoard } from "@/components/analytics/AdvancedAnalyticsBoard";
 
 export default function RiskAnalyticsPage() {
   const [rainRate, setRainRate] = useState<number>(35); // mm/h
@@ -398,6 +399,7 @@ export default function RiskAnalyticsPage() {
           <div className="paper-card p-5"><div><p className="text-sm font-semibold text-[#261b07]">Alert acknowledgement funnel</p><p className="mt-1 text-xs text-[#8f897e]">Most recent CAP broadcast reach</p></div><div className="mt-6 space-y-2">{[["Geo-audience",3420,"100%"],["Delivered",3298,"96.4%"],["Opened",2880,"84.2%"],["Acknowledged",3044,"89.0%"]].map(([label,value,pct])=><div key={label} className="flex items-center gap-3"><span className="w-24 text-[11px] font-semibold text-[#61594a]">{label}</span><div className="h-7 flex-1 overflow-hidden rounded-r-md bg-[#f2efe8]"><div className="flex h-full items-center rounded-r-md bg-[#f9a600] px-2 text-[10px] font-semibold text-[#261b07]" style={{width:`${Math.max(30, Number(String(pct).replace("%","")))}%`}}>{value.toLocaleString()}</div></div><span className="w-10 text-right text-[10px] text-[#8f897e]">{pct}</span></div>)}</div><p className="mt-4 text-[11px] text-[#8f897e]">Channels: Cell SMS · mountain siren · app push</p></div>
         </div>
       </section>
+      <AdvancedAnalyticsBoard />
     </div>
   );
 }
