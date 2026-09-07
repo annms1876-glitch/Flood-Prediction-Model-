@@ -27,5 +27,16 @@ services:
       - ./ml-service:/app
       - /app/pretrained
 
+  floodlens-ui:
+    build: ./floodlens-ui
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+      - ml-service
+    environment:
+      - NEXT_PUBLIC_ML_URL=http://ml-service:8000
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:3000
+
 volumes:
   backend-data:
