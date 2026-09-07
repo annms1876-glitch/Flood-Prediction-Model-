@@ -48,6 +48,7 @@ export default function RiskAnalyticsPage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#261b07] tracking-tight flex items-center gap-3">
             Predictive Risk &amp; Ensemble Analytics
           </h1>
+          <p className="mt-2 inline-flex items-center rounded-md bg-[#e3dfd5] px-2.5 py-1 text-[11px] font-semibold text-[#61594a]">Admin-only read view · Locked model snapshot</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -265,7 +266,9 @@ export default function RiskAnalyticsPage() {
                 min="0"
                 max="80"
                 value={rainRate}
-                onChange={(e) => setRainRate(Number(e.target.value))}
+                onChange={() => undefined}
+                disabled
+                aria-readonly="true"
                 className="w-full accent-cyan-500 cursor-pointer"
               />
               <div className="flex justify-between text-[10px] font-mono text-[#aca89f] mt-1">
@@ -286,7 +289,9 @@ export default function RiskAnalyticsPage() {
                 min="20"
                 max="100"
                 value={soilSaturation}
-                onChange={(e) => setSoilSaturation(Number(e.target.value))}
+                onChange={() => undefined}
+                disabled
+                aria-readonly="true"
                 className="w-full accent-emerald-500 cursor-pointer"
               />
               <div className="flex justify-between text-[10px] font-mono text-[#aca89f] mt-1">
@@ -307,7 +312,9 @@ export default function RiskAnalyticsPage() {
                 min="20"
                 max="300"
                 value={upstreamRelease}
-                onChange={(e) => setUpstreamRelease(Number(e.target.value))}
+                onChange={() => undefined}
+                disabled
+                aria-readonly="true"
                 className="w-full accent-amber-500 cursor-pointer"
               />
               <div className="flex justify-between text-[10px] font-mono text-[#aca89f] mt-1">

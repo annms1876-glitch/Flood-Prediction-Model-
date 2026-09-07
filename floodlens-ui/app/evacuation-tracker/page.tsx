@@ -125,10 +125,10 @@ export default function EvacuationTrackerPage() {
   const overallOccupancyPct = Math.round((totalOccupied / totalCapacity) * 100);
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto space-y-6">
+    <div className="evacuation-tracker-page mx-auto w-full max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed top-24 right-6 z-50 p-4 rounded-xl bg-cyan-600 text-white shadow-2xl flex items-center gap-3 border border-cyan-400/40 animate-slide-in">
+        <div className="fixed top-24 right-6 z-50 p-4 rounded-xl bg-cyan-600 text-[#261b07] shadow-[0_4px_8px_rgba(38,27,7,.06)] flex items-center gap-3 border border-cyan-400/40 animate-slide-in">
           <CheckCircle2 className="w-5 h-5 shrink-0" />
           <span className="text-xs font-semibold">{toastMessage}</span>
         </div>
@@ -137,12 +137,12 @@ export default function EvacuationTrackerPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 mb-1">
+          <div className="flex items-center gap-2 text-xs font-mono text-[#e89b01] mb-1">
             <span className="uppercase tracking-wider">DDMA Evacuation Logistics</span>
-            <span className="text-slate-600">•</span>
+            <span className="text-[#8f897e]">•</span>
             <span>Civil Protection &amp; Shelters</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#261b07] tracking-tight flex items-center gap-3">
             Evacuation &amp; Relief Tracker
           </h1>
         </div>
@@ -150,14 +150,14 @@ export default function EvacuationTrackerPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => showToast("Shelter census & headcount updated across all 3 bases.")}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#e3dfd5] hover:bg-slate-700 text-[#261b07] text-xs font-bold border border-[#d5d2cd] transition"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Sync Census</span>
           </button>
           <button
             onClick={() => showToast("Dispatched emergency requisition for 3 additional HRTC relief buses.")}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold shadow-lg shadow-cyan-600/30 transition"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-[#f9a600] text-[#261b07] text-xs font-bold shadow-lg shadow-cyan-600/30 transition"
           >
             <Truck className="w-4 h-4" />
             <span>Request Extra Convoys</span>
@@ -166,24 +166,24 @@ export default function EvacuationTrackerPage() {
       </div>
 
       {/* Overall Progress Meter */}
-      <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-4">
+      <div className="p-6 rounded-3xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 className="text-base font-bold text-white">Total District Relief Camp Capacity</h2>
-            <p className="text-xs text-slate-400">
+            <h2 className="text-base font-bold text-[#261b07]">Total District Relief Camp Capacity</h2>
+            <p className="text-xs text-[#8f897e]">
               {totalOccupied} citizens safe across 3 designated high-ground shelters
             </p>
           </div>
           <div className="flex items-baseline gap-2 font-mono">
-            <span className="text-2xl font-black text-cyan-400">{totalOccupied}</span>
-            <span className="text-xs text-slate-400">/ {totalCapacity} Beds Total</span>
-            <span className="text-xs font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 ml-2">
+            <span className="text-2xl font-black text-[#e89b01]">{totalOccupied}</span>
+            <span className="text-xs text-[#8f897e]">/ {totalCapacity} Beds Total</span>
+            <span className="text-xs font-bold px-2 py-0.5 rounded bg-[#f9a600]/20 text-[#e89b01] ml-2">
               {overallOccupancyPct}% Occupied
             </span>
           </div>
         </div>
 
-        <div className="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden">
+        <div className="w-full bg-[#e3dfd5] h-3.5 rounded-full overflow-hidden">
           <div
             className="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full transition-all duration-500"
             style={{ width: `${overallOccupancyPct}%` }}
@@ -191,25 +191,25 @@ export default function EvacuationTrackerPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs font-mono">
-          <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center justify-between">
-            <span className="text-slate-400">Sector 4 (Basin) Evacuated:</span>
-            <span className="text-emerald-400 font-bold">82% (340/415)</span>
+          <div className="p-3 rounded-xl bg-[#e3dfd5]/60 border border-[#d5d2cd]/60 flex items-center justify-between">
+            <span className="text-[#8f897e]">Sector 4 (Basin) Evacuated:</span>
+            <span className="text-[#6f8d54] font-bold">82% (340/415)</span>
           </div>
-          <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center justify-between">
-            <span className="text-slate-400">Sector 9 (Lowland) Evacuated:</span>
-            <span className="text-amber-400 font-bold">68% (190/280)</span>
+          <div className="p-3 rounded-xl bg-[#e3dfd5]/60 border border-[#d5d2cd]/60 flex items-center justify-between">
+            <span className="text-[#8f897e]">Sector 9 (Lowland) Evacuated:</span>
+            <span className="text-[#e89b01] font-bold">68% (190/280)</span>
           </div>
-          <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-center justify-between">
-            <span className="text-slate-400">Remaining in Risk Zones:</span>
-            <span className="text-rose-400 font-bold">165 Persons</span>
+          <div className="p-3 rounded-xl bg-[#e3dfd5]/60 border border-[#d5d2cd]/60 flex items-center justify-between">
+            <span className="text-[#8f897e]">Remaining in Risk Zones:</span>
+            <span className="text-[#d94b3b] font-bold">165 Persons</span>
           </div>
         </div>
       </div>
 
       {/* Shelter Camps Breakdown */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2">
-          <Building className="w-5 h-5 text-cyan-400" />
+        <h2 className="text-lg font-bold text-[#261b07] flex items-center gap-2">
+          <Building className="w-5 h-5 text-[#e89b01]" />
           <span>Designated Safe Shelters &amp; Triage Camps</span>
         </h2>
 
@@ -219,29 +219,29 @@ export default function EvacuationTrackerPage() {
             return (
               <div
                 key={shelter.id}
-                className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl flex flex-col justify-between space-y-4"
+                className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] flex flex-col justify-between space-y-4"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span
                       className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                         shelter.status === "NEAR_CAPACITY"
-                          ? "bg-amber-500/20 text-amber-300"
-                          : "bg-emerald-500/20 text-emerald-400"
+                          ? "bg-[#f9a600]/20 text-[#e89b01]"
+                          : "bg-[#6f8d54]/20 text-[#6f8d54]"
                       }`}
                     >
                       {shelter.status}
                     </span>
-                    <span className="text-xs font-mono font-bold text-white">{pct}%</span>
+                    <span className="text-xs font-mono font-bold text-[#261b07]">{pct}%</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white">{shelter.name}</h3>
-                  <p className="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                  <h3 className="text-base font-bold text-[#261b07]">{shelter.name}</h3>
+                  <p className="text-xs text-[#8f897e] mt-1 flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#e89b01] shrink-0" />
                     <span>{shelter.location}</span>
                   </p>
 
-                  <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
+                  <div className="w-full bg-[#e3dfd5] h-2 rounded-full overflow-hidden mt-3">
                     <div
                       className={`h-full rounded-full ${
                         pct > 70 ? "bg-amber-400" : "bg-emerald-400"
@@ -250,32 +250,32 @@ export default function EvacuationTrackerPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-800 text-xs">
+                  <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-[#e3dfd5] text-xs">
                     <div>
-                      <span className="text-[10px] font-mono text-slate-400 uppercase block">
+                      <span className="text-[10px] font-mono text-[#8f897e] uppercase block">
                         Beds Free
                       </span>
-                      <span className="font-mono font-bold text-emerald-400 mt-0.5 block">
+                      <span className="font-mono font-bold text-[#6f8d54] mt-0.5 block">
                         {shelter.capacity - shelter.occupied} Beds
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] font-mono text-slate-400 uppercase block">
+                      <span className="text-[10px] font-mono text-[#8f897e] uppercase block">
                         Dry Rations
                       </span>
-                      <span className="font-mono font-bold text-white mt-0.5 block">
+                      <span className="font-mono font-bold text-[#261b07] mt-0.5 block">
                         {shelter.rationStockDays} Days Stock
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800 text-xs text-slate-400 space-y-1">
+                <div className="pt-3 border-t border-[#e3dfd5] text-xs text-[#8f897e] space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="truncate">{shelter.contactPerson}</span>
                     <a
                       href={`tel:${shelter.phone}`}
-                      className="text-cyan-400 font-mono font-bold hover:underline"
+                      className="text-[#e89b01] font-mono font-bold hover:underline"
                     >
                       CALL
                     </a>
@@ -288,9 +288,9 @@ export default function EvacuationTrackerPage() {
       </div>
 
       {/* Live Evacuation Convoys & Transit Fleet */}
-      <div className="rounded-3xl bg-slate-900 border border-slate-800 p-6 shadow-2xl space-y-4">
-        <h2 className="text-base font-bold text-white flex items-center gap-2">
-          <Truck className="w-5 h-5 text-cyan-400" />
+      <div className="rounded-3xl bg-white border border-[#e3dfd5] p-6 shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-4">
+        <h2 className="text-base font-bold text-[#261b07] flex items-center gap-2">
+          <Truck className="w-5 h-5 text-[#e89b01]" />
           <span>Active Rescue Transport Convoys (HRTC &amp; SDRF)</span>
         </h2>
 
@@ -298,22 +298,22 @@ export default function EvacuationTrackerPage() {
           {convoys.map((convoy) => (
             <div
               key={convoy.id}
-              className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-2 text-xs"
+              className="p-4 rounded-xl bg-[#e3dfd5]/60 border border-[#d5d2cd]/60 space-y-2 text-xs"
             >
               <div className="flex items-center justify-between">
-                <span className="font-bold text-white font-mono">{convoy.id}</span>
-                <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-[10px] font-bold">
+                <span className="font-bold text-[#261b07] font-mono">{convoy.id}</span>
+                <span className="px-2 py-0.5 rounded-full bg-[#f9a600]/20 text-[#e89b01] font-mono text-[10px] font-bold">
                   {convoy.status}
                 </span>
               </div>
-              <p className="font-semibold text-slate-200">{convoy.unit}</p>
-              <p className="text-[11px] text-slate-400">Route: {convoy.route}</p>
+              <p className="font-semibold text-[#261b07]">{convoy.unit}</p>
+              <p className="text-[11px] text-[#8f897e]">Route: {convoy.route}</p>
 
-              <div className="flex items-center justify-between pt-2 border-t border-slate-700/60 text-slate-300">
+              <div className="flex items-center justify-between pt-2 border-t border-[#d5d2cd]/60 text-[#61594a]">
                 <span>
                   Load: <strong>{convoy.passengers} / {convoy.capacity}</strong>
                 </span>
-                <span className="text-cyan-400 font-mono font-bold">
+                <span className="text-[#e89b01] font-mono font-bold">
                   ETA: ~{convoy.etaShelterMin} mins
                 </span>
               </div>

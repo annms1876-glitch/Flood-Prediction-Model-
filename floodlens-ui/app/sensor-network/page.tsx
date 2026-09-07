@@ -126,10 +126,10 @@ export default function SensorNetworkPage() {
   };
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto space-y-6">
+    <div className="sensor-telemetry-page mx-auto w-full max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed top-24 right-6 z-50 p-4 rounded-xl bg-cyan-600 text-white shadow-2xl flex items-center gap-3 border border-cyan-400/40 animate-slide-in">
+        <div className="fixed top-24 right-6 z-50 p-4 rounded-xl bg-cyan-600 text-[#261b07] shadow-[0_4px_8px_rgba(38,27,7,.06)] flex items-center gap-3 border border-cyan-400/40 animate-slide-in">
           <CheckCircle2 className="w-5 h-5 shrink-0" />
           <span className="text-xs font-semibold">{toastMessage}</span>
         </div>
@@ -138,12 +138,12 @@ export default function SensorNetworkPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 mb-1">
+          <div className="flex items-center gap-2 text-xs font-mono text-[#e89b01] mb-1">
             <span className="uppercase tracking-wider">IoT Hydro-Meteorological Gateway</span>
-            <span className="text-slate-600">•</span>
+            <span className="text-[#8f897e]">•</span>
             <span>LoRaWAN 868 MHz &amp; 4G Dual Uplink</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#261b07] tracking-tight flex items-center gap-3">
             Sensor Network &amp; Telemetry Health
           </h1>
         </div>
@@ -153,14 +153,14 @@ export default function SensorNetworkPage() {
             id="ping-sensors-btn"
             onClick={handlePingAll}
             disabled={isPinging}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#e3dfd5] hover:bg-slate-700 text-[#261b07] text-xs font-bold border border-[#d5d2cd] transition"
           >
             <RefreshCw className={`w-4 h-4 ${isPinging ? "animate-spin" : ""}`} />
             <span>{isPinging ? "Querying Nodes..." : "Ping All Stations"}</span>
           </button>
           <Link
             href="/admin-dashboard"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#e3dfd5] hover:bg-slate-700 text-[#261b07] text-xs font-bold border border-[#d5d2cd] transition"
           >
             <span>← Command Center</span>
           </Link>
@@ -169,48 +169,48 @@ export default function SensorNetworkPage() {
 
       {/* Network Health KPI Strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-1">
-          <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">
+        <div className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-1">
+          <span className="text-[10px] font-mono text-[#8f897e] uppercase font-bold">
             Active Telemetry Nodes
           </span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-emerald-400 font-mono">4 / 4</span>
-            <span className="text-xs text-slate-400 font-mono">100% Online</span>
+            <span className="text-3xl font-black text-[#6f8d54] font-mono">4 / 4</span>
+            <span className="text-xs text-[#8f897e] font-mono">100% Online</span>
           </div>
-          <p className="text-[11px] text-slate-400">Zero packet dropouts past 6 hrs</p>
+          <p className="text-[11px] text-[#8f897e]">Zero packet dropouts past 6 hrs</p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-1">
-          <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">
+        <div className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-1">
+          <span className="text-[10px] font-mono text-[#8f897e] uppercase font-bold">
             Average Uplink RSSI
           </span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-cyan-400 font-mono">-85</span>
-            <span className="text-xs text-slate-400 font-mono">dBm (Strong)</span>
+            <span className="text-3xl font-black text-[#e89b01] font-mono">-85</span>
+            <span className="text-xs text-[#8f897e] font-mono">dBm (Strong)</span>
           </div>
-          <p className="text-[11px] text-slate-400">LoRa Gateway: Solan Ridge Mast</p>
+          <p className="text-[11px] text-[#8f897e]">LoRa Gateway: Solan Ridge Mast</p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-1">
-          <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">
+        <div className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-1">
+          <span className="text-[10px] font-mono text-[#8f897e] uppercase font-bold">
             Battery Array Average
           </span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-white font-mono">12.6</span>
-            <span className="text-xs text-slate-400 font-mono">Volts DC</span>
+            <span className="text-3xl font-black text-[#261b07] font-mono">12.6</span>
+            <span className="text-xs text-[#8f897e] font-mono">Volts DC</span>
           </div>
-          <p className="text-[11px] text-emerald-400">Solar float charge active</p>
+          <p className="text-[11px] text-[#6f8d54]">Solar float charge active</p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-1">
-          <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">
+        <div className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-1">
+          <span className="text-[10px] font-mono text-[#8f897e] uppercase font-bold">
             Telemetry Cadence
           </span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-cyan-400 font-mono">30</span>
-            <span className="text-xs text-slate-400 font-mono">sec interval</span>
+            <span className="text-3xl font-black text-[#e89b01] font-mono">30</span>
+            <span className="text-xs text-[#8f897e] font-mono">sec interval</span>
           </div>
-          <p className="text-[11px] text-slate-400">Storm burst mode enabled</p>
+          <p className="text-[11px] text-[#8f897e]">Storm burst mode enabled</p>
         </div>
       </div>
 
@@ -219,54 +219,54 @@ export default function SensorNetworkPage() {
         {stations.map((station) => (
           <div
             key={station.id}
-            className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-4"
+            className="p-6 rounded-3xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-4"
           >
             {/* Top Bar of Card */}
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-cyan-500/20 text-cyan-300">
+                  <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-[#f9a600]/20 text-[#e89b01]">
                     {station.id}
                   </span>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-xs font-mono text-[#8f897e]">
                     {station.elevation}m MSL
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-white mt-1">{station.name}</h3>
-                <p className="text-xs text-slate-400 mt-0.5">{station.location}</p>
+                <h3 className="text-base font-bold text-[#261b07] mt-1">{station.name}</h3>
+                <p className="text-xs text-[#8f897e] mt-0.5">{station.location}</p>
               </div>
 
               {/* Ping badge */}
               <div className="text-right">
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-mono font-bold flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-full bg-[#6f8d54]/20 text-[#6f8d54] text-[10px] font-mono font-bold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                   LIVE
                 </span>
-                <span className="text-[10px] font-mono text-slate-500 block mt-1">
+                <span className="text-[10px] font-mono text-[#aca89f] block mt-1">
                   Ping: {station.lastPingSec}s ago
                 </span>
               </div>
             </div>
 
             {/* Hardware Telemetry Bar */}
-            <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 text-xs font-mono">
+            <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#e3dfd5]/60 border border-[#d5d2cd]/60 text-xs font-mono">
               <div>
-                <span className="text-[10px] text-slate-500 block uppercase">Power</span>
-                <span className="font-bold text-white mt-0.5 block flex items-center gap-1">
-                  <Battery className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-[10px] text-[#aca89f] block uppercase">Power</span>
+                <span className="font-bold text-[#261b07] mt-0.5 block flex items-center gap-1">
+                  <Battery className="w-3.5 h-3.5 text-[#6f8d54]" />
                   {station.batteryV}V
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-slate-500 block uppercase">Signal</span>
-                <span className="font-bold text-cyan-400 mt-0.5 block flex items-center gap-1">
+                <span className="text-[10px] text-[#aca89f] block uppercase">Signal</span>
+                <span className="font-bold text-[#e89b01] mt-0.5 block flex items-center gap-1">
                   <Wifi className="w-3.5 h-3.5" />
                   {station.rssi} dBm
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-slate-500 block uppercase">Packets</span>
-                <span className="font-bold text-emerald-400 mt-0.5 block">
+                <span className="text-[10px] text-[#aca89f] block uppercase">Packets</span>
+                <span className="font-bold text-[#6f8d54] mt-0.5 block">
                   {station.packetRate}%
                 </span>
               </div>
@@ -274,27 +274,27 @@ export default function SensorNetworkPage() {
 
             {/* Sensor Readings Table */}
             <div className="space-y-2">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block font-bold">
+              <span className="text-[10px] font-mono uppercase text-[#8f897e] block font-bold">
                 Instrument Sensor Array
               </span>
               <div className="space-y-1.5">
                 {station.sensors.map((sensor, i) => (
                   <div
                     key={i}
-                    className="p-2.5 rounded-xl bg-slate-800/40 border border-slate-700/40 flex items-center justify-between text-xs"
+                    className="p-2.5 rounded-xl bg-[#e3dfd5]/40 border border-[#d5d2cd]/40 flex items-center justify-between text-xs"
                   >
-                    <span className="text-slate-300 font-medium">{sensor.type}</span>
+                    <span className="text-[#61594a] font-medium">{sensor.type}</span>
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-white">
+                      <span className="font-mono font-bold text-[#261b07]">
                         {sensor.reading} {sensor.unit}
                       </span>
                       <span
                         className={`px-2 py-0.5 rounded font-mono text-[9px] font-bold ${
                           sensor.status === "CRITICAL"
-                            ? "bg-rose-500/20 text-rose-400"
+                            ? "bg-[#f0624f]/20 text-[#d94b3b]"
                             : sensor.status === "WARNING"
-                            ? "bg-amber-500/20 text-amber-400"
-                            : "bg-emerald-500/20 text-emerald-400"
+                            ? "bg-[#f9a600]/20 text-[#e89b01]"
+                            : "bg-[#6f8d54]/20 text-[#6f8d54]"
                         }`}
                       >
                         {sensor.status}
@@ -306,13 +306,13 @@ export default function SensorNetworkPage() {
             </div>
 
             {/* Diagnostic Action Button */}
-            <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-              <span className="text-slate-500 font-mono text-[11px]">
+            <div className="pt-2 border-t border-[#e3dfd5] flex items-center justify-between text-xs">
+              <span className="text-[#aca89f] font-mono text-[11px]">
                 Firmware: v2.4.1-LoRaWAN
               </span>
               <button
                 onClick={() => showToast(`Sent diagnostic recalibration pulse to ${station.id}.`)}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 font-semibold transition flex items-center gap-1"
+                className="px-3 py-1.5 rounded-lg bg-[#e3dfd5] hover:bg-slate-700 text-[#e89b01] font-semibold transition flex items-center gap-1"
               >
                 <Sliders className="w-3.5 h-3.5" />
                 <span>Zero Recalibrate</span>

@@ -51,6 +51,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(249,166,0,.35); 
 .demo-location-sifter [id^="sifter-card-"]:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(38,27,7,.08); }
 .command-centre-page [id^="beacon-"] { transition: transform .18s ease, box-shadow .18s ease; }
 .command-centre-page [id^="beacon-"]:hover { transform: translateX(3px); box-shadow: 0 5px 12px rgba(38,27,7,.09); }
+.evacuation-tracker-page > div, .alert-dispatch-page > div, .sensor-telemetry-page > div { transition: transform .18s ease, box-shadow .18s ease; }
+.evacuation-tracker-page > div:hover, .alert-dispatch-page > div:hover, .sensor-telemetry-page > div:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(38,27,7,.08); }
+.risk-analytics-page input[type="range"]:disabled { cursor: not-allowed; opacity: .72; filter: saturate(.7); }
 @keyframes guide-pulse { 0%, 100% { box-shadow: 0 4px 8px rgba(38,27,7,.06); } 50% { box-shadow: 0 8px 20px rgba(249,166,0,.13); } }
 @keyframes step-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
