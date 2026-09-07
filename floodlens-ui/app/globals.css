@@ -65,6 +65,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(13, 148, 136, .3
 [data-theme="dark"] .bg-\[\#e8f5e9\] { background-color: #17231f !important; }
 [data-theme="dark"] .text-\[\#212121\],
 [data-theme="dark"] .text-\[\#102331\],
+[data-theme="dark"] .text-\[\#263238\],
 [data-theme="dark"] .text-slate-700,
 [data-theme="dark"] .text-slate-600 { color: #f1f5f4 !important; }
 [data-theme="dark"] .text-slate-500,
