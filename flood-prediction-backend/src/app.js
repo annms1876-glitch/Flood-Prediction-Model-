@@ -66,9 +66,10 @@ app.use(express.urlencoded({
 
 // Set up real-time subscription for sensor readings
 // This listens for new INSERT events on the sensor_readings table
-if (supabase) {
+if (supabase && process.env.SUPABASE_URL && !process.env.SUPABASE_URL.includes('your-project')) {
   const previousRiskResults = new Map();
   
+  try {
   const channel = supabase
     .channel('sensor-readings')
     .on(
@@ -125,8 +126,11 @@ if (supabase) {
 
   // Store channel reference for cleanup on shutdown
   app.set('realtimeChannel', channel);
+  } catch (e) {
+    console.warn('⚠️  Real-time subscription setup failed:', e.message);
+  }
 } else {
-  console.warn('⚠️  Supabase client not available. Real-time subscriptions disabled.');
+  console.warn('⚠️  Supabase not configured. Real-time subscriptions disabled.');
 }
 
 // ============================================================
