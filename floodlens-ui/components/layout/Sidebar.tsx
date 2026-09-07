@@ -6,7 +6,6 @@ import {
   Gauge,
   MapPinned,
   AlertTriangle,
-  FlaskConical,
   Camera,
   Settings,
   Droplets,
@@ -21,7 +20,6 @@ const navItems = [
   { href: "/map", label: "3D Map", icon: MapPinned },
   { href: "/sensors", label: "Sensors", icon: Camera },
   { href: "/alerts", label: "Alerts", icon: AlertTriangle },
-  { href: "/demo", label: "Demo", icon: FlaskConical },
   { href: "/model", label: "Model", icon: Settings },
   { href: "/settings", label: "Settings", icon: Settings },
 ];

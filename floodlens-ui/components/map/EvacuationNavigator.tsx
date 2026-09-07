@@ -14,8 +14,6 @@ import {
   ArrowRight,
   ShieldCheck,
   AlertTriangle,
-  Play,
-  Pause,
   RotateCcw,
   Footprints,
   Compass,
@@ -30,8 +28,6 @@ interface EvacuationNavigatorProps {
   activeStepIndex: number;
   onSelectStep: (stepIndex: number) => void;
   onFlyToStep: (coords: GeoLocation, zoom: number, tilt: number, heading: number) => void;
-  isSimulating: boolean;
-  onToggleSimulate: () => void;
 }
 
 export function EvacuationNavigator({
@@ -39,8 +35,6 @@ export function EvacuationNavigator({
   activeStepIndex,
   onSelectStep,
   onFlyToStep,
-  isSimulating,
-  onToggleSimulate,
 }: EvacuationNavigatorProps) {
   const currentStep = route.steps[activeStepIndex] || route.steps[0];
 
@@ -79,31 +73,6 @@ export function EvacuationNavigator({
           </h3>
         </div>
 
-        {/* 3D Auto-Simulation Controls */}
-        <div className="flex items-center gap-2">
-          <button
-            id="navigator-simulate-btn"
-            type="button"
-            onClick={onToggleSimulate}
-            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-md ${
-              isSimulating
-                ? "bg-amber-500 text-slate-950 animate-pulse hover:bg-amber-400"
-                : "bg-cyan-500 text-slate-950 hover:bg-cyan-400"
-            }`}
-          >
-            {isSimulating ? (
-              <>
-                <Pause className="w-3.5 h-3.5" />
-                <span>Pause Flight</span>
-              </>
-            ) : (
-              <>
-                <Play className="w-3.5 h-3.5" />
-                <span>Auto-Fly 3D Route</span>
-              </>
-            )}
-          </button>
-        </div>
       </div>
 
       {/* Origin -> Destination Quick Banner */}

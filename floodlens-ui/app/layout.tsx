@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/lib/context/AuthContext";
+import { LanguageProvider } from "@/lib/context/LanguageContext";
 import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  title: "FloodShield AI — Community Flood Safety",
+  title: "Umeed AI — Community Flood Safety",
   description:
     "A calm, real-time flood safety dashboard for communities and response teams in hilly regions.",
   openGraph: {
-    title: "FloodShield AI — Community Flood Safety",
+    title: "Umeed AI — Community Flood Safety",
     description: "Real-time flood safety, sensor monitoring and evacuation guidance.",
   },
   icons: {
@@ -36,9 +37,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen antialiased">
-        <AuthProvider>
-          <AppShell>{children}</AppShell>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <AppShell>{children}</AppShell>
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

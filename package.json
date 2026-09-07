@@ -19,6 +19,8 @@
     "@types/google.maps": "^3.66.2",
     "@vis.gl/react-google-maps": "^1.10.0",
     "firebase": "^12.18.0",
-    "framer-motion": "^13.2.0"
+    "framer-motion": "^13.2.0",
+    "i18next": "^26.4.2",
+    "react-i18next": "^17.0.13"
   }
 }

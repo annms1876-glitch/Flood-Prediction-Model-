@@ -45,6 +45,7 @@ import {
 
 interface GoogleMapsEvacuationMapProps {
   initialRouteId?: "A" | "B" | "C";
+  viewMode?: "2d" | "3d";
   className?: string;
 }
 
@@ -114,6 +115,7 @@ function MapCameraHandler({
 
 export function GoogleMapsEvacuationMap({
   initialRouteId = "A",
+  viewMode = "3d",
   className = "",
 }: GoogleMapsEvacuationMapProps) {
   // Config & Keys
@@ -138,26 +140,7 @@ export function GoogleMapsEvacuationMap({
   const [selectedLocation, setSelectedLocation] = useState<DemoLocation | null>(DEMO_LOCATIONS[0]);
   const [infoWindowLocation, setInfoWindowLocation] = useState<DemoLocation | null>(null);
 
-  // 3D Auto-Simulation Loop
-  const [isSimulating, setIsSimulating] = useState(false);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isSimulating) {
-      interval = setInterval(() => {
-        setActiveStepIndex((prev) => {
-          const nextIndex = (prev + 1) % currentRoute.steps.length;
-          const nextStep = currentRoute.steps[nextIndex];
-          setCameraCenter(nextStep.coordinates);
-          setZoom(17.5);
-          setTilt(55);
-          setHeading((nextIndex * 50) % 360);
-          return nextIndex;
-        });
-      }, 3500);
-    }
-    return () => clearInterval(interval);
-  }, [isSimulating, currentRoute.steps]);
+  useEffect(() => { setTilt(viewMode === "3d" ? 45 : 0); }, [viewMode]);
 
   // Smooth Fly-to handler
   const handleFlyToLocation = useCallback(
@@ -207,7 +190,6 @@ export function GoogleMapsEvacuationMap({
                 onClick={() => {
                   setSelectedRouteId(rId);
                   setActiveStepIndex(0);
-                  setIsSimulating(false);
                   setCameraCenter(r.waypoints[0]);
                 }}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
@@ -310,7 +292,7 @@ export function GoogleMapsEvacuationMap({
               defaultZoom={15.5}
               zoom={zoom}
               heading={heading}
-              tilt={tilt}
+              tilt={viewMode === "3d" ? tilt : 0}
               gestureHandling="greedy"
               disableDefaultUI={false}
               mapTypeId={mapType}
@@ -533,16 +515,14 @@ export function GoogleMapsEvacuationMap({
       </div>
 
       {/* 3D Turn-By-Turn Navigator ("Where to Go, How to Go") */}
-      <EvacuationNavigator
-        route={currentRoute}
-        activeStepIndex={activeStepIndex}
+          <EvacuationNavigator
+            route={currentRoute}
+            activeStepIndex={activeStepIndex}
         onSelectStep={setActiveStepIndex}
         onFlyToStep={(coords, targetZoom, targetTilt, targetHeading) => {
           handleFlyToLocation(coords, targetZoom, targetTilt, targetHeading);
         }}
-        isSimulating={isSimulating}
-        onToggleSimulate={() => setIsSimulating(!isSimulating)}
-      />
+          />
 
       {/* Sift Every Demo Location Where Floods Come */}
       <DemoLocationSifter
