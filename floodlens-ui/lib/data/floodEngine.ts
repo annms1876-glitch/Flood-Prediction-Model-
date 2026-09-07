@@ -354,6 +354,14 @@ export function getCurrentRisk(): RiskScore {
   };
 }
 
+export function getRiskScore(location?: string): RiskScore {
+  const current = getCurrentRisk();
+  return {
+    ...current,
+    location: location || current.location,
+  };
+}
+
 export function calculateEnsemblePrediction(params: {
   location: string;
   readings: Partial<SensorReading>[];

@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Validation Blueprint for UserProfile
+    function isValidUserProfile(data) {
+      return data.id is string && data.id.size() <= 128 && data.id == request.auth.uid &&
+             data.email is string && data.email.size() <= 256 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.location is string && data.location.size() > 0 && data.location.size() <= 100 &&
+             (!('age' in data) || (data.age is int && data.age >= 0 && data.age <= 120)) &&
+             (!('gender' in data) || (data.gender in ['male', 'female', 'other', 'prefer_not_to_say'])) &&
+             (!('role' in data) || (data.role in ['resident', 'first_responder', 'emergency_coordinator', 'researcher'])) &&
+             (!('phoneNumber' in data) || (data.phoneNumber is string && data.phoneNumber.size() <= 30));
+    }
+
+    // Users collection with strict PII isolation
+    match /users/{userId} {
+      allow get: if isSignedIn() && isOwner(userId);
+      allow list: if isSignedIn() && resource.data.id == request.auth.uid;
+      allow create: if isSignedIn() && isOwner(userId) && isValidId(userId) &&
+                       isValidUserProfile(incoming()) && incoming().id == userId;
+      allow update: if isSignedIn() && isOwner(userId) && isValidId(userId) &&
+                       isValidUserProfile(incoming()) && incoming().id == existing().id &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['name', 'location', 'age', 'gender', 'role', 'phoneNumber', 'updatedAt', 'email']);
+      allow delete: if isSignedIn() && isOwner(userId);
+    }
+  }
+}

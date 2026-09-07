@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AuthProvider } from "@/lib/context/AuthContext";
+import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  title: "FloodLens — AI Flood Prediction",
-  description: "Real-time flood risk assessment and early warning system for hilly regions using an ensemble AI architecture.",
+  title: "FloodShield AI — Flash Flood Prediction & Evacuation System",
+  description:
+    "Real-time flood prediction and evacuation management system with dual User and Admin command portals for hilly regions in India.",
   openGraph: {
-    title: "FloodLens — AI Flood Prediction",
-    description: "Real-time flood risk assessment and early warning system for hilly regions using an ensemble AI architecture.",
+    title: "FloodShield AI — Flash Flood Prediction & Evacuation System",
+    description:
+      "Real-time flood prediction and evacuation management system with dual User and Admin command portals for hilly regions in India.",
   },
   icons: {
     icon: "/favicon.ico",
@@ -21,17 +23,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-brand-dark min-h-screen">
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar />
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <Navbar />
-            <main className="flex-1 overflow-y-auto scrollbar-thin p-6">
-              {children}
-            </main>
-          </div>
-        </div>
+    <html lang="en" className="dark">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="bg-[#0f131f] text-slate-100 min-h-screen antialiased">
+        <AuthProvider>
+          <AppShell>{children}</AppShell>
+        </AuthProvider>
       </body>
     </html>
   );

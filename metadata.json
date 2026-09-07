@@ -1,7 +1,9 @@
 {
-  "name": "FloodLens — AI Flood Prediction",
-  "description": "Real-time flood risk assessment and early warning system for hilly regions using an ensemble AI architecture.",
-  "requestFramePermissions": [],
+  "name": "FloodShield AI — Flash Flood Prediction & Evacuation System",
+  "description": "Real-time flood prediction and evacuation management system with dual User and Admin command portals for hilly regions in India.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]

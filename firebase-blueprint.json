@@ -1,0 +1,63 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile containing identity, demographic info, and monitoring location",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Firebase Auth UID matching document ID",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address",
+          "maxLength": 256
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name or display name of the user",
+          "maxLength": 100
+        },
+        "location": {
+          "type": "string",
+          "description": "User primary residence or monitoring location",
+          "maxLength": 100
+        },
+        "age": {
+          "type": "integer",
+          "description": "Age of the user"
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender identification",
+          "enum": ["male", "female", "other", "prefer_not_to_say"]
+        },
+        "role": {
+          "type": "string",
+          "description": "Community role for flood alerts",
+          "enum": ["resident", "first_responder", "emergency_coordinator", "researcher"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last update"
+        }
+      },
+      "required": ["id", "email", "name", "location"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile collection isolated to document owner or admins"
+    }
+  }
+}
