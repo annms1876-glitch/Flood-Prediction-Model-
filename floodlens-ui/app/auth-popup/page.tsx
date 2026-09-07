@@ -22,7 +22,7 @@ function AuthPopupHandler() {
 
     const handleAuth = async () => {
       try {
-        // 1. Check if we are returning from redirect
+        // Legacy redirect fallback retained for bookmarked auth-popup URLs.
         setStatus("Checking authentication status...");
         const result = await getRedirectResult(auth);
 

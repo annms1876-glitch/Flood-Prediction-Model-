@@ -192,17 +192,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopupFallback("google");
+      await signInWithPopup(auth, googleProvider);
       setIsAuthModalOpen(false);
-    } catch (fallbackError: any) {
-      console.warn("Popup fallback sign in error, trying direct popup:", fallbackError);
-      try {
-        await signInWithPopup(auth, googleProvider);
-        setIsAuthModalOpen(false);
-      } catch (error: any) {
-        console.error("Google sign in error:", error);
-        throw error;
-      }
+    } catch (error: any) {
+      console.error("Google sign in error:", error);
+      throw error;
     }
   };
 

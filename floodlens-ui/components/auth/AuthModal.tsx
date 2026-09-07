@@ -28,6 +28,13 @@ export function AuthModal() {
 
   if (!isAuthModalOpen) return null;
 
+  const closeAndReset = () => {
+    setEmail("");
+    setPassword("");
+    setError(null);
+    closeAuthModal();
+  };
+
   const handleGoogle = async () => {
     setError(null);
     try {
@@ -92,7 +99,7 @@ export function AuthModal() {
       id="auth-modal-backdrop"
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#261b07]/45 backdrop-blur-xs p-4 overflow-y-auto"
       onClick={(e) => {
-        if (e.target === e.currentTarget) closeAuthModal();
+        if (e.target === e.currentTarget) closeAndReset();
       }}
     >
       <div
@@ -104,7 +111,7 @@ export function AuthModal() {
           <div>
             <h2 className="text-xl font-bold text-[#261b07] flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-[#e89b01]" />
-              {mode === "signin" ? "Sign In to FloodLens" : "Create Your Account"}
+              {mode === "signin" ? "Sign In to Umeed AI" : "Create Your Account"}
             </h2>
             <p className="text-xs text-[#8f897e] mt-1">
               Secure flood alerting & community risk monitoring
@@ -112,7 +119,7 @@ export function AuthModal() {
           </div>
           <button
             id="close-auth-modal-btn"
-            onClick={closeAuthModal}
+            onClick={closeAndReset}
             className="text-[#8f897e] hover:text-[#261b07] p-2 rounded-lg hover:bg-[#f2efe8] transition"
           >
             <X className="w-5 h-5" />
@@ -173,7 +180,7 @@ export function AuthModal() {
           </div>
 
           {/* Email / Password Form */}
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="space-y-3" autoComplete={mode === "signin" ? "on" : "off"}>
             {mode === "signup" && (
               <>
                 <div>
@@ -269,8 +276,10 @@ export function AuthModal() {
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
-                <input
-                  type="email"
+                  <input
+                    type="email"
+                    name="email"
+                    autoComplete={mode === "signin" ? "username" : "email"}
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -286,8 +295,10 @@ export function AuthModal() {
               </label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
-                <input
-                  type="password"
+                  <input
+                    type="password"
+                    name="password"
+                    autoComplete={mode === "signin" ? "current-password" : "new-password"}
                   required
                   minLength={6}
                   value={password}
