@@ -1,5 +1,5 @@
 {
-  "name": "FloodShield AI — Flash Flood Prediction & Evacuation System",
+  "name": "Umeed AI",
   "description": "Real-time flood prediction and evacuation management system with dual User and Admin command portals for hilly regions in India.",
   "requestFramePermissions": [
     "geolocation"

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Background transparent -->
+  <!-- Outer Gold Circle -->
+  <circle cx="250" cy="250" r="230" fill="none" stroke="#ca8a04" stroke-width="8" />
+
+  <!-- Segmented Gold Circle -->
+  <path d="M 40 250 A 210 210 0 1 1 460 250" fill="none" stroke="#ca8a04" stroke-width="8" stroke-linecap="round" />
+  <path d="M 460 250 A 210 210 0 0 1 40 250" fill="none" stroke="#ca8a04" stroke-width="8" stroke-linecap="round" stroke-dasharray="16, 24" />
+
+  <!-- Radiant Golden Sun -->
+  <circle cx="280" cy="225" r="55" fill="#ca8a04" opacity="0.9" />
+  <g stroke="#ca8a04" stroke-width="5" stroke-linecap="round">
+    <line x1="280" y1="140" x2="280" y2="155" />
+    <line x1="340" y1="165" x2="328" y2="177" />
+    <line x1="365" y1="225" x2="350" y2="225" />
+    <line x1="340" y1="285" x2="328" y2="273" />
+    <line x1="280" y1="310" x2="280" y2="295" />
+    <line x1="220" y1="285" x2="232" y2="273" />
+    <line x1="195" y1="225" x2="210" y2="225" />
+    <line x1="220" y1="165" x2="232" y2="177" />
+  </g>
+
+  <!-- Concentric Sensor Network Rings (Dotted mesh structure) -->
+  <path d="M 115 185 A 160 160 0 0 1 385 185" fill="none" stroke="#1e3a5f" stroke-width="4" stroke-dasharray="1, 16" stroke-linecap="round" />
+  <path d="M 95 165 A 185 185 0 0 1 405 165" fill="none" stroke="#1e3a5f" stroke-width="4" stroke-dasharray="1, 16" stroke-linecap="round" />
+  <!-- Connecting links -->
+  <path d="M 95 165 A 185 185 0 0 1 405 165" fill="none" stroke="#1e3a5f" stroke-width="2.5" opacity="0.6" />
+  <path d="M 115 185 A 160 160 0 0 1 385 185" fill="none" stroke="#1e3a5f" stroke-width="2.5" opacity="0.6" />
+
+  <!-- Node Connector Links -->
+  <g stroke="#1e3a5f" stroke-width="3" opacity="0.8">
+    <line x1="145" y1="160" x2="150" y2="182" />
+    <line x1="195" y1="130" x2="198" y2="152" />
+    <line x1="250" y1="120" x2="250" y2="142" />
+    <line x1="305" y1="130" x2="302" y2="152" />
+    <line x1="355" y1="160" x2="350" y2="182" />
+  </g>
+
+  <!-- Network Nodes -->
+  <g fill="#1e3a5f">
+    <!-- Outer Ring Nodes -->
+    <circle cx="145" cy="160" r="7.5" />
+    <circle cx="195" cy="130" r="7.5" />
+    <circle cx="250" cy="120" r="7.5" />
+    <circle cx="305" cy="130" r="7.5" />
+    <circle cx="355" cy="160" r="7.5" />
+    <!-- Inner Ring Nodes -->
+    <circle cx="150" cy="182" r="7.5" />
+    <circle cx="198" cy="152" r="7.5" />
+    <circle cx="250" cy="142" r="7.5" />
+    <circle cx="302" cy="152" r="7.5" />
+    <circle cx="350" cy="182" r="7.5" />
+  </g>
+
+  <!-- Beautiful Styled Waves -->
+  <!-- Dark Blue Deep Wave -->
+  <path d="M 90 270 C 130 220, 180 320, 250 240 C 310 170, 385 300, 410 280 C 415 300, 410 330, 395 345 C 355 385, 310 410, 250 410 C 170 410, 110 350, 90 270 Z" fill="#0b2c4d" />
+  <!-- Royal Blue Mid Wave -->
+  <path d="M 93 275 C 133 230, 181 300, 248 238 C 305 180, 365 270, 400 278 C 360 330, 310 380, 248 380 C 180 380, 120 340, 93 275 Z" fill="#1b4975" />
+  <!-- Light Blue Wave Foam/Accent -->
+  <path d="M 98 280 C 135 240, 180 280, 245 235 C 295 195, 350 255, 385 270 C 350 315, 300 355, 245 355 C 185 355, 125 325, 98 280 Z" fill="#38bdf8" opacity="0.3" />
+  <!-- Gold Sun Reflection on Wave -->
+  <path d="M 235 250 C 255 230, 275 220, 285 205 C 280 225, 270 245, 245 260 Z" fill="#ca8a04" />
+</svg>

@@ -58,12 +58,12 @@ export function AdminSidebar() {
       <div className="flex flex-col">
         {/* Header Branding */}
         <div className="h-20 px-6 flex items-center gap-3 bg-slate-900/40 border-b border-slate-800/80">
-          <div className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold shadow-[0_0_12px_rgba(14,165,233,0.35)]">
-            <ShieldAlert className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center p-0.5 overflow-hidden border border-slate-800">
+            <img src="/logo.svg" alt="Umeed AI Logo" className="h-full w-full object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="text-base font-bold tracking-tight text-white">
-              FloodShield
+              Umeed AI
             </span>
             <span className="text-[10px] text-cyan-400 uppercase tracking-widest font-semibold font-mono">
               NDMA COMMAND

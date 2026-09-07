@@ -5,15 +5,15 @@ import { LanguageProvider } from "@/lib/context/LanguageContext";
 import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  title: "Umeed AI — Community Flood Safety",
+  title: "Umeed AI",
   description:
     "A calm, real-time flood safety dashboard for communities and response teams in hilly regions.",
   openGraph: {
-    title: "Umeed AI — Community Flood Safety",
+    title: "Umeed AI",
     description: "Real-time flood safety, sensor monitoring and evacuation guidance.",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/logo.svg",
   },
 };
 

@@ -30,8 +30,8 @@ export function AppHeader() {
         </button>
       )}
       <Link href="/" className="flex shrink-0 items-center gap-2.5 transition-all duration-200 hover:opacity-90">
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#212121] text-[#26c6da] shadow-sm">
-          <Waves className="h-5 w-5" />
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-transparent overflow-hidden">
+          <img src="/logo.svg" alt="Umeed AI Logo" className="h-full w-full object-contain" />
         </span>
         <span className="hidden sm:block">
           <span className="block text-base font-black tracking-tight text-[#212121] leading-none">Umeed <span className="text-[#0097a7]">AI</span></span>
