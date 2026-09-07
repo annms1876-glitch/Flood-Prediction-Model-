@@ -143,10 +143,10 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto space-y-6">
+    <div className="command-centre-page mx-auto w-full max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed top-24 right-6 z-50 p-4 rounded-xl bg-cyan-600 text-white shadow-2xl flex items-center gap-3 border border-cyan-400/40 animate-slide-in">
+        <div className="fixed top-24 right-6 z-50 p-4 rounded-xl bg-cyan-600 text-[#261b07] shadow-[0_4px_8px_rgba(38,27,7,.06)] flex items-center gap-3 border border-cyan-400/40 animate-slide-in">
           <CheckCircle2 className="w-5 h-5 shrink-0" />
           <span className="text-xs font-semibold">{toastMessage}</span>
         </div>
@@ -155,25 +155,25 @@ export default function AdminDashboardPage() {
       {/* Top Directive & Status Banner */}
       <div
         id="admin-status-banner"
-        className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-rose-950/40 border border-slate-800 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4"
+        className="p-5 rounded-2xl bg-gradient-to-r from-[#261b07] via-[#3b2b12] to-[#fff0ed] border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] flex flex-col md:flex-row md:items-center justify-between gap-4"
       >
         <div className="flex items-start gap-3.5">
-          <div className="p-3 rounded-2xl bg-rose-500/20 text-rose-400 border border-rose-500/30 shrink-0">
+          <div className="p-3 rounded-2xl bg-[#f0624f]/20 text-[#d94b3b] border border-[#f0624f]/30 shrink-0">
             <Radio className="w-6 h-6 animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono text-[10px] font-bold uppercase tracking-wider">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#f0624f]/20 text-[#d94b3b] font-mono text-[10px] font-bold uppercase tracking-wider">
                 TACTICAL INCIDENT COMMAND
               </span>
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-[#8f897e]">
                 District Disaster Management Authority (DDMA) Solan
               </span>
             </div>
-            <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-1">
+            <h1 className="text-xl sm:text-2xl font-black text-[#261b07] tracking-tight mt-1">
               Himalayan Flash Flood Operations Dashboard
             </h1>
-            <p className="text-xs text-slate-300 mt-0.5">
+            <p className="text-xs text-[#61594a] mt-0.5">
               Hydrological telemetry live • 4 Active Catchment Gauges • Ensemble Model v2.1 Online
             </p>
           </div>
@@ -182,14 +182,14 @@ export default function AdminDashboardPage() {
         <div className="flex items-center gap-2 self-start md:self-center">
           <button
             onClick={refreshData}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#e3dfd5] hover:bg-slate-700 text-[#261b07] text-xs font-bold border border-[#d5d2cd] transition"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Sync Telemetry ({lastRefreshed})</span>
           </button>
           <Link
             href="/alert-management"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold shadow-lg shadow-rose-600/30 transition"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 hover:bg-[#f0624f] text-[#261b07] text-xs font-bold shadow-lg shadow-rose-600/30 transition"
           >
             <Send className="w-4 h-4" />
             <span>CAP Studio</span>
@@ -200,65 +200,65 @@ export default function AdminDashboardPage() {
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Basin Composite Risk */}
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-2">
+          <div className="flex items-center justify-between text-xs text-[#8f897e]">
             <span className="font-bold uppercase tracking-wider text-[10px] font-mono">Catchment Threat</span>
-            <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 font-mono text-[10px] font-bold">
+            <span className="px-2 py-0.5 rounded bg-[#f0624f]/20 text-[#d94b3b] font-mono text-[10px] font-bold">
               CRITICAL
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-white font-mono">78</span>
-            <span className="text-xs text-slate-400 font-mono">/ 100</span>
+            <span className="text-3xl font-black text-[#261b07] font-mono">78</span>
+            <span className="text-xs text-[#8f897e] font-mono">/ 100</span>
           </div>
-          <p className="text-[11px] text-rose-300 flex items-center gap-1 font-medium">
+          <p className="text-[11px] text-[#d94b3b] flex items-center gap-1 font-medium">
             <TrendingUp className="w-3.5 h-3.5" /> +14 pts in past 90 mins
           </p>
         </div>
 
         {/* KPI 2: Active SOS Beacons */}
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-2">
+          <div className="flex items-center justify-between text-xs text-[#8f897e]">
             <span className="font-bold uppercase tracking-wider text-[10px] font-mono">Active SOS Beacons</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#f0624f] animate-ping" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-rose-400 font-mono">
+            <span className="text-3xl font-black text-[#d94b3b] font-mono">
               {beacons.filter((b) => b.status !== "RESOLVED").length}
             </span>
-            <span className="text-xs text-slate-400 font-mono">Incidents Unresolved</span>
+            <span className="text-xs text-[#8f897e] font-mono">Incidents Unresolved</span>
           </div>
-          <p className="text-[11px] text-slate-400">
+          <p className="text-[11px] text-[#8f897e]">
             {beacons.filter((b) => b.status === "DISPATCHED").length} Teams En Route • 1 In-Rescue
           </p>
         </div>
 
         {/* KPI 3: River Level vs HFL */}
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-2">
+          <div className="flex items-center justify-between text-xs text-[#8f897e]">
             <span className="font-bold uppercase tracking-wider text-[10px] font-mono">Khad River Stage</span>
-            <span className="text-xs font-mono text-amber-400 font-bold">DANGER: 3.5m</span>
+            <span className="text-xs font-mono text-[#e89b01] font-bold">DANGER: 3.5m</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-amber-400 font-mono">2.84</span>
-            <span className="text-xs text-slate-400 font-mono">meters MSL</span>
+            <span className="text-3xl font-black text-[#e89b01] font-mono">2.84</span>
+            <span className="text-xs text-[#8f897e] font-mono">meters MSL</span>
           </div>
-          <p className="text-[11px] text-amber-300">
+          <p className="text-[11px] text-[#e89b01]">
             0.66m below crest • Rate: +0.22 m/hr
           </p>
         </div>
 
         {/* KPI 4: Shelter Capacity */}
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-400">
+        <div className="p-5 rounded-2xl bg-white border border-[#e3dfd5] shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-2">
+          <div className="flex items-center justify-between text-xs text-[#8f897e]">
             <span className="font-bold uppercase tracking-wider text-[10px] font-mono">Sheltered Citizens</span>
-            <span className="text-xs font-mono text-emerald-400 font-bold">770 / 1,400</span>
+            <span className="text-xs font-mono text-[#6f8d54] font-bold">770 / 1,400</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-emerald-400 font-mono">55%</span>
-            <span className="text-xs text-slate-400 font-mono">Total Occupancy</span>
+            <span className="text-3xl font-black text-[#6f8d54] font-mono">55%</span>
+            <span className="text-xs text-[#8f897e] font-mono">Total Occupancy</span>
           </div>
-          <p className="text-[11px] text-slate-400">
+          <p className="text-[11px] text-[#8f897e]">
             Model High School (75%) • College (40%)
           </p>
         </div>
@@ -269,22 +269,22 @@ export default function AdminDashboardPage() {
         {/* Left: Active SOS Queue & Catchment Zones (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Active SOS Incident Triage Queue */}
-          <div className="rounded-3xl bg-slate-900 border border-slate-800 p-6 shadow-2xl space-y-4">
+          <div className="rounded-3xl bg-white border border-[#e3dfd5] p-6 shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400">
+                <div className="p-2 rounded-xl bg-[#f0624f]/10 text-[#d94b3b]">
                   <ShieldAlert className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-white">
+                  <h2 className="text-base font-bold text-[#261b07]">
                     Emergency SOS Incident Triage ({beacons.length} Logged)
                   </h2>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-[#8f897e]">
                     Live beacon uplinks from residents requiring urgent rescue
                   </p>
                 </div>
               </div>
-              <span className="text-[10px] font-mono text-cyan-400 font-bold uppercase">
+              <span className="text-[10px] font-mono text-[#e89b01] font-bold uppercase">
                 AUTO-SYNC ON
               </span>
             </div>
@@ -296,23 +296,23 @@ export default function AdminDashboardPage() {
                   key={beacon.id}
                   className={`p-4 rounded-2xl border transition-all space-y-2.5 ${
                     beacon.status === "PENDING"
-                      ? "bg-rose-950/40 border-rose-500/50 ring-1 ring-rose-500/20"
+                      ? "bg-[#fff0ed]/40 border-[#f0624f]/50 ring-1 ring-rose-500/20"
                       : beacon.status === "DISPATCHED"
-                      ? "bg-amber-950/30 border-amber-500/40"
+                      ? "bg-[#fff4d6]/30 border-[#e89b01]/40"
                       : beacon.status === "IN_RESCUE"
-                      ? "bg-cyan-950/30 border-cyan-500/40"
-                      : "bg-slate-800/40 border-slate-700/60 opacity-70"
+                      ? "bg-[#fff8e7]/30 border-[#e89b01]/40"
+                      : "bg-[#e3dfd5]/40 border-[#d5d2cd]/60 opacity-70"
                   }`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-slate-800 text-white">
+                      <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-[#e3dfd5] text-[#261b07]">
                         {beacon.id}
                       </span>
-                      <span className="text-xs font-bold text-white">{beacon.name}</span>
+                      <span className="text-xs font-bold text-[#261b07]">{beacon.name}</span>
                       <a
                         href={`tel:${beacon.phone}`}
-                        className="text-[11px] font-mono text-cyan-400 hover:underline flex items-center gap-1"
+                        className="text-[11px] font-mono text-[#e89b01] hover:underline flex items-center gap-1"
                       >
                         <Phone className="w-3 h-3" />
                         {beacon.phone}
@@ -323,35 +323,35 @@ export default function AdminDashboardPage() {
                     <span
                       className={`self-start sm:self-auto px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold ${
                         beacon.status === "PENDING"
-                          ? "bg-rose-500 text-white animate-pulse"
+                          ? "bg-[#f0624f] text-[#261b07] animate-pulse"
                           : beacon.status === "DISPATCHED"
-                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                          ? "bg-[#f9a600]/20 text-[#e89b01] border border-[#e89b01]/40"
                           : beacon.status === "IN_RESCUE"
-                          ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
-                          : "bg-emerald-500/20 text-emerald-400"
+                          ? "bg-[#f9a600]/20 text-[#e89b01] border border-[#e89b01]/40"
+                          : "bg-[#6f8d54]/20 text-[#6f8d54]"
                       }`}
                     >
                       {beacon.status}
                     </span>
                   </div>
 
-                  <div className="text-xs text-slate-300 space-y-1">
+                  <div className="text-xs text-[#61594a] space-y-1">
                     <div className="flex items-center gap-2">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span className="font-semibold text-white">{beacon.locationName}</span>
-                      <span className="text-slate-500 font-mono text-[10px]">
+                      <MapPin className="w-3.5 h-3.5 text-[#8f897e] shrink-0" />
+                      <span className="font-semibold text-[#261b07]">{beacon.locationName}</span>
+                      <span className="text-[#aca89f] font-mono text-[10px]">
                         ({beacon.latitude}, {beacon.longitude})
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-400">
+                    <p className="text-[11px] text-[#8f897e]">
                       👥 <strong>{beacon.dependents} trapped</strong> • ⚠️ {beacon.medicalNotes}
                     </p>
                   </div>
 
                   {/* Dispatch Unit Info & Actions */}
-                  <div className="pt-2 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                    <div className="text-[11px] text-slate-400 font-mono">
-                      Unit: <strong className="text-cyan-300">{beacon.assignedUnit}</strong> (Lead:{" "}
+                  <div className="pt-2 border-t border-[#e3dfd5] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                    <div className="text-[11px] text-[#8f897e] font-mono">
+                      Unit: <strong className="text-[#e89b01]">{beacon.assignedUnit}</strong> (Lead:{" "}
                       {beacon.teamLeader})
                     </div>
 
@@ -359,7 +359,7 @@ export default function AdminDashboardPage() {
                       {beacon.status !== "IN_RESCUE" && beacon.status !== "RESOLVED" && (
                         <button
                           onClick={() => updateBeaconStatus(beacon.id, "IN_RESCUE")}
-                          className="px-2.5 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-200 text-[10px] font-bold border border-cyan-500/40"
+                          className="px-2.5 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-200 text-[10px] font-bold border border-[#e89b01]/40"
                         >
                           Mark In-Rescue
                         </button>
@@ -367,7 +367,7 @@ export default function AdminDashboardPage() {
                       {beacon.status !== "RESOLVED" && (
                         <button
                           onClick={() => updateBeaconStatus(beacon.id, "RESOLVED")}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 text-[10px] font-bold border border-emerald-500/40"
+                          className="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 text-[10px] font-bold border border-[#6f8d54]/40"
                         >
                           Mark Resolved
                         </button>
@@ -380,9 +380,9 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Catchment Sub-Basin Risk Matrix */}
-          <div className="rounded-3xl bg-slate-900 border border-slate-800 p-6 shadow-2xl space-y-4">
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
-              <Compass className="w-4 h-4 text-cyan-400" />
+          <div className="rounded-3xl bg-white border border-[#e3dfd5] p-6 shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-4">
+            <h2 className="text-base font-bold text-[#261b07] flex items-center gap-2">
+              <Compass className="w-4 h-4 text-[#e89b01]" />
               <span>Solan Basin Sector Threat Distribution</span>
             </h2>
 
@@ -419,24 +419,24 @@ export default function AdminDashboardPage() {
               ].map((sec, i) => (
                 <div
                   key={i}
-                  className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-1.5"
+                  className="p-3.5 rounded-xl bg-[#e3dfd5]/60 border border-[#d5d2cd]/60 space-y-1.5"
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold text-white">{sec.sector}</h3>
+                    <h3 className="text-xs font-bold text-[#261b07]">{sec.sector}</h3>
                     <span
                       className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${
                         sec.color === "emerald"
-                          ? "bg-emerald-500/20 text-emerald-400"
+                          ? "bg-[#6f8d54]/20 text-[#6f8d54]"
                           : sec.color === "amber"
-                          ? "bg-amber-500/20 text-amber-400"
-                          : "bg-rose-500/20 text-rose-400"
+                          ? "bg-[#f9a600]/20 text-[#e89b01]"
+                          : "bg-[#f0624f]/20 text-[#d94b3b]"
                       }`}
                     >
                       {sec.status}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-300 font-mono">{sec.risk}</p>
-                  <p className="text-[11px] text-slate-400 leading-relaxed">{sec.desc}</p>
+                  <p className="text-[11px] text-[#61594a] font-mono">{sec.risk}</p>
+                  <p className="text-[11px] text-[#8f897e] leading-relaxed">{sec.desc}</p>
                 </div>
               ))}
             </div>
@@ -446,20 +446,20 @@ export default function AdminDashboardPage() {
         {/* Right: Quick CAP Alert Dispatcher & Quick Links (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
           {/* Quick CAP Broadcast Box */}
-          <div className="rounded-3xl bg-slate-900 border border-slate-800 p-6 shadow-2xl space-y-4">
+          <div className="rounded-3xl bg-white border border-[#e3dfd5] p-6 shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-4">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400">
+              <div className="p-2 rounded-xl bg-[#f0624f]/20 text-[#d94b3b]">
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white">Emergency CAP Broadcast</h3>
-                <p className="text-xs text-slate-400">Simultaneous Multi-Channel Cell &amp; Siren</p>
+                <h3 className="text-base font-bold text-[#261b07]">Emergency CAP Broadcast</h3>
+                <p className="text-xs text-[#8f897e]">Simultaneous Multi-Channel Cell &amp; Siren</p>
               </div>
             </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="font-semibold text-slate-300 block mb-1">Alert Severity Level</label>
+                <label className="font-semibold text-[#61594a] block mb-1">Alert Severity Level</label>
                 <div className="grid grid-cols-3 gap-2">
                   {(["ADVISORY", "WARNING", "CRITICAL"] as const).map((sev) => (
                     <button
@@ -468,11 +468,11 @@ export default function AdminDashboardPage() {
                       className={`py-2 rounded-xl font-bold font-mono transition text-[11px] ${
                         broadcastSeverity === sev
                           ? sev === "CRITICAL"
-                            ? "bg-rose-600 text-white"
+                            ? "bg-rose-600 text-[#261b07]"
                             : sev === "WARNING"
-                            ? "bg-amber-500 text-slate-950"
-                            : "bg-cyan-600 text-white"
-                          : "bg-slate-800 text-slate-400 hover:text-white"
+                            ? "bg-[#f9a600] text-slate-950"
+                            : "bg-cyan-600 text-[#261b07]"
+                          : "bg-[#e3dfd5] text-[#8f897e] hover:text-[#261b07]"
                       }`}
                     >
                       {sev}
@@ -482,37 +482,37 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="font-semibold text-slate-300 block mb-1">Target Geofence Zone</label>
+                <label className="font-semibold text-[#61594a] block mb-1">Target Geofence Zone</label>
                 <input
                   type="text"
                   value={broadcastZone}
                   onChange={(e) => setBroadcastZone(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs font-medium focus:outline-none focus:border-cyan-500"
+                  className="w-full px-3 py-2 rounded-xl bg-[#e3dfd5] border border-[#d5d2cd] text-[#261b07] text-xs font-medium focus:outline-none focus:border-[#e89b01]"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-slate-300 block mb-1">Alert Message</label>
+                <label className="font-semibold text-[#61594a] block mb-1">Alert Message</label>
                 <textarea
                   rows={3}
                   value={broadcastHeadline}
                   onChange={(e) => setBroadcastHeadline(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs font-medium focus:outline-none focus:border-cyan-500 leading-relaxed"
+                  className="w-full px-3 py-2 rounded-xl bg-[#e3dfd5] border border-[#d5d2cd] text-[#261b07] text-xs font-medium focus:outline-none focus:border-[#e89b01] leading-relaxed"
                 />
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-1.5">
-                <span className="text-[10px] font-mono uppercase text-slate-400 block font-bold">
+              <div className="p-3 rounded-xl bg-[#e3dfd5]/60 border border-[#d5d2cd]/60 space-y-1.5">
+                <span className="text-[10px] font-mono uppercase text-[#8f897e] block font-bold">
                   Target Channels Selected:
                 </span>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-mono">
+                  <span className="px-2 py-0.5 rounded bg-[#f9a600]/20 text-[#e89b01] text-[10px] font-mono">
                     ✓ Cell Broadcast SMS (3,420 Subscribed)
                   </span>
-                  <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[10px] font-mono">
+                  <span className="px-2 py-0.5 rounded bg-[#f0624f]/20 text-[#d94b3b] text-[10px] font-mono">
                     ✓ 120dB Mountain Siren Towers (x2)
                   </span>
-                  <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono">
+                  <span className="px-2 py-0.5 rounded bg-[#6f8d54]/20 text-[#6f8d54] text-[10px] font-mono">
                     ✓ WhatsApp EOC Broadcast Group
                   </span>
                 </div>
@@ -522,7 +522,7 @@ export default function AdminDashboardPage() {
                 id="send-cap-broadcast-btn"
                 onClick={handleSendBroadcast}
                 disabled={isBroadcasting}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold text-xs shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2 transition"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-[#261b07] font-bold text-xs shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2 transition"
               >
                 <Send className="w-4 h-4" />
                 <span>{isBroadcasting ? "Transmitting CAP Signal..." : "Transmit Emergency Broadcast"}</span>
@@ -531,64 +531,64 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Quick Navigation Cards */}
-          <div className="rounded-3xl bg-slate-900 border border-slate-800 p-6 shadow-2xl space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+          <div className="rounded-3xl bg-white border border-[#e3dfd5] p-6 shadow-[0_4px_8px_rgba(38,27,7,.06)] space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#8f897e] font-mono">
               Specialized DDMA Control Consoles
             </h3>
 
             <div className="space-y-2">
               <Link
                 href="/risk-analytics"
-                className="p-3 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 flex items-center justify-between transition group"
+                className="p-3 rounded-xl bg-[#e3dfd5]/60 hover:bg-[#e3dfd5] border border-[#d5d2cd]/60 flex items-center justify-between transition group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-400">
+                  <div className="p-2 rounded-lg bg-[#f9a600]/20 text-[#e89b01]">
                     <Activity className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white group-hover:text-cyan-400 transition">
+                    <h4 className="text-xs font-bold text-[#261b07] group-hover:text-[#e89b01] transition">
                       Risk Analytics &amp; Ensemble ML
                     </h4>
-                    <p className="text-[11px] text-slate-400">LSTM, XGBoost, GNN &amp; PINN weights</p>
+                    <p className="text-[11px] text-[#8f897e]">LSTM, XGBoost, GNN &amp; PINN weights</p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition" />
+                <ArrowRight className="w-4 h-4 text-[#aca89f] group-hover:text-[#e89b01] group-hover:translate-x-0.5 transition" />
               </Link>
 
               <Link
                 href="/evacuation-tracker"
-                className="p-3 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 flex items-center justify-between transition group"
+                className="p-3 rounded-xl bg-[#e3dfd5]/60 hover:bg-[#e3dfd5] border border-[#d5d2cd]/60 flex items-center justify-between transition group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
+                  <div className="p-2 rounded-lg bg-[#6f8d54]/20 text-[#6f8d54]">
                     <Route className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white group-hover:text-cyan-400 transition">
+                    <h4 className="text-xs font-bold text-[#261b07] group-hover:text-[#e89b01] transition">
                       Evacuation Tracker &amp; Shelters
                     </h4>
-                    <p className="text-[11px] text-slate-400">Live bed capacity &amp; bus convoy transit</p>
+                    <p className="text-[11px] text-[#8f897e]">Live bed capacity &amp; bus convoy transit</p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition" />
+                <ArrowRight className="w-4 h-4 text-[#aca89f] group-hover:text-[#e89b01] group-hover:translate-x-0.5 transition" />
               </Link>
 
               <Link
                 href="/sensor-network"
-                className="p-3 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 flex items-center justify-between transition group"
+                className="p-3 rounded-xl bg-[#e3dfd5]/60 hover:bg-[#e3dfd5] border border-[#d5d2cd]/60 flex items-center justify-between transition group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
+                  <div className="p-2 rounded-lg bg-[#f9a600]/20 text-[#e89b01]">
                     <Radio className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white group-hover:text-cyan-400 transition">
+                    <h4 className="text-xs font-bold text-[#261b07] group-hover:text-[#e89b01] transition">
                       IoT Sensor Telemetry Network
                     </h4>
-                    <p className="text-[11px] text-slate-400">Ultrasonic water gauges &amp; rain sensors</p>
+                    <p className="text-[11px] text-[#8f897e]">Ultrasonic water gauges &amp; rain sensors</p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition" />
+                <ArrowRight className="w-4 h-4 text-[#aca89f] group-hover:text-[#e89b01] group-hover:translate-x-0.5 transition" />
               </Link>
             </div>
           </div>

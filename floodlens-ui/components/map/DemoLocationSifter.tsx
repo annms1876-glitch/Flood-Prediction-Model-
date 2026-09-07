@@ -55,15 +55,15 @@ export function DemoLocationSifter({
   const getCategoryIcon = (category: LocationCategory) => {
     switch (category) {
       case "resident_house":
-        return <Home className="w-4 h-4 text-cyan-400" />;
+        return <Home className="w-4 h-4 text-[#e89b01]" />;
       case "flood_zone":
-        return <Waves className="w-4 h-4 text-rose-400" />;
+        return <Waves className="w-4 h-4 text-[#d94b3b]" />;
       case "shelter":
-        return <Building className="w-4 h-4 text-emerald-400" />;
+        return <Building className="w-4 h-4 text-[#6f8d54]" />;
       case "sensor":
-        return <Radio className="w-4 h-4 text-amber-400" />;
+        return <Radio className="w-4 h-4 text-[#e89b01]" />;
       default:
-        return <Compass className="w-4 h-4 text-slate-400" />;
+        return <Compass className="w-4 h-4 text-[#8f897e]" />;
     }
   };
 
@@ -71,35 +71,35 @@ export function DemoLocationSifter({
     switch (severity) {
       case "inundated":
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/40">
-            <ShieldAlert className="w-3 h-3 text-rose-400 animate-pulse" />
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-[#f0624f]/20 text-[#d94b3b] border border-[#f0624f]/40">
+            <ShieldAlert className="w-3 h-3 text-[#d94b3b] animate-pulse" />
             Inundated
           </span>
         );
       case "hazardous":
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-red-500/15 text-red-300 border border-red-500/30">
-            <AlertTriangle className="w-3 h-3 text-red-400" />
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-red-500/15 text-[#d94b3b] border border-red-500/30">
+            <AlertTriangle className="w-3 h-3 text-[#d94b3b]" />
             Hazardous
           </span>
         );
       case "warning":
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
-            <AlertTriangle className="w-3 h-3 text-amber-400" />
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-[#f9a600]/15 text-[#e89b01] border border-[#e89b01]/30">
+            <AlertTriangle className="w-3 h-3 text-[#e89b01]" />
             Warning
           </span>
         );
       case "watch":
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-[#f9a600]/15 text-[#e89b01] border border-[#e89b01]/30">
             Watch Level
           </span>
         );
       case "safe":
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-            <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-[#6f8d54]/15 text-[#6f8d54] border border-[#6f8d54]/30">
+            <CheckCircle2 className="w-3 h-3 text-[#6f8d54]" />
             Safe Shelter
           </span>
         );
@@ -109,30 +109,30 @@ export function DemoLocationSifter({
   return (
     <div
       id="demo-location-sifter"
-      className="bg-slate-900/95 border border-slate-800 rounded-2xl p-4 flex flex-col space-y-3 shadow-xl backdrop-blur-md"
+      className="demo-location-sifter rise-in bg-white/95 border border-[#e3dfd5] rounded-2xl p-4 flex flex-col space-y-3 shadow-[0_4px_8px_rgba(38,27,7,.06)] backdrop-blur-md"
     >
       {/* Sifter Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#e3dfd5] pb-3">
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-cyan-400" />
-          <h3 className="text-sm font-bold text-white tracking-wide uppercase font-mono">
+          <Filter className="w-4 h-4 text-[#e89b01]" />
+          <h3 className="text-sm font-bold text-[#261b07] tracking-wide uppercase font-mono">
             Sift Demo Flood Locations
           </h3>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-[#e3dfd5] text-[#61594a] font-mono">
             {filteredLocations.length}/{locations.length}
           </span>
         </div>
 
         {/* Search Bar */}
         <div className="relative w-full sm:w-56">
-          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-[#8f897e]" />
           <input
             id="sifter-search-input"
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search hazard or shelter..."
-            className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+            className="w-full bg-[#f2efe8] border border-[#e3dfd5] rounded-lg pl-8 pr-3 py-1 text-xs text-[#261b07] placeholder-slate-500 focus:outline-none focus:border-[#e89b01]"
           />
         </div>
       </div>
@@ -145,8 +145,8 @@ export function DemoLocationSifter({
           onClick={() => setCategoryFilter("all")}
           className={`px-2.5 py-1 rounded-lg font-medium transition-all ${
             categoryFilter === "all"
-              ? "bg-cyan-500 text-slate-950 font-bold"
-              : "bg-slate-800/80 text-slate-300 hover:bg-slate-700"
+              ? "bg-[#f9a600] text-slate-950 font-bold"
+              : "bg-[#e3dfd5]/80 text-[#61594a] hover:bg-slate-700"
           }`}
         >
           All ({locations.length})
@@ -157,8 +157,8 @@ export function DemoLocationSifter({
           onClick={() => setCategoryFilter("flood_zone")}
           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-medium transition-all ${
             categoryFilter === "flood_zone"
-              ? "bg-rose-500 text-white font-bold"
-              : "bg-slate-800/80 text-rose-300 hover:bg-rose-950/40"
+              ? "bg-[#f0624f] text-[#261b07] font-bold"
+              : "bg-[#e3dfd5]/80 text-[#d94b3b] hover:bg-[#fff0ed]/40"
           }`}
         >
           <Waves className="w-3 h-3" />
@@ -170,8 +170,8 @@ export function DemoLocationSifter({
           onClick={() => setCategoryFilter("shelter")}
           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-medium transition-all ${
             categoryFilter === "shelter"
-              ? "bg-emerald-500 text-slate-950 font-bold"
-              : "bg-slate-800/80 text-emerald-300 hover:bg-emerald-950/40"
+              ? "bg-[#6f8d54] text-slate-950 font-bold"
+              : "bg-[#e3dfd5]/80 text-[#6f8d54] hover:bg-[#edf3e8]/40"
           }`}
         >
           <Building className="w-3 h-3" />
@@ -183,8 +183,8 @@ export function DemoLocationSifter({
           onClick={() => setCategoryFilter("resident_house")}
           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-medium transition-all ${
             categoryFilter === "resident_house"
-              ? "bg-cyan-500 text-slate-950 font-bold"
-              : "bg-slate-800/80 text-cyan-300 hover:bg-cyan-950/40"
+              ? "bg-[#f9a600] text-slate-950 font-bold"
+              : "bg-[#e3dfd5]/80 text-[#e89b01] hover:bg-[#fff8e7]/40"
           }`}
         >
           <Home className="w-3 h-3" />
@@ -212,39 +212,39 @@ export function DemoLocationSifter({
               }}
               className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
                 isSelected
-                  ? "bg-cyan-950/40 border-cyan-500 ring-1 ring-cyan-500/50 shadow-lg"
-                  : "bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/60"
+                  ? "bg-[#fff8e7]/40 border-[#e89b01] ring-1 ring-cyan-500/50 shadow-lg"
+                  : "bg-[#f2efe8]/60 border-[#e3dfd5] hover:border-[#d5d2cd] hover:bg-white/60"
               }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-1.5 min-w-0">
-                  <div className="p-1 rounded-md bg-slate-800/90 shrink-0">
+                  <div className="p-1 rounded-md bg-[#e3dfd5]/90 shrink-0">
                     {getCategoryIcon(loc.category)}
                   </div>
-                  <div className="truncate font-semibold text-xs text-white">
+                  <div className="truncate font-semibold text-xs text-[#261b07]">
                     {loc.shortName}
                   </div>
                 </div>
                 {getSeverityBadge(loc.severity)}
               </div>
 
-              <p className="text-[11px] text-slate-400 mt-1 line-clamp-1">
+              <p className="text-[11px] text-[#8f897e] mt-1 line-clamp-1">
                 {loc.description}
               </p>
 
-              <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 mt-2 pt-1 border-t border-slate-800/60">
+              <div className="flex items-center justify-between text-[10px] font-mono text-[#8f897e] mt-2 pt-1 border-t border-[#e3dfd5]/60">
                 <span>Elev: {loc.elevationMeters}m</span>
                 {loc.waterDepthMeters !== undefined && (
-                  <span className="text-rose-400 font-bold">
+                  <span className="text-[#d94b3b] font-bold">
                     Depth: {loc.waterDepthMeters}m
                   </span>
                 )}
                 {loc.safeCapacity && (
-                  <span className="text-emerald-400 font-bold">
+                  <span className="text-[#6f8d54] font-bold">
                     Cap: {loc.currentOccupancy}/{loc.safeCapacity}
                   </span>
                 )}
-                <span className="text-cyan-400 flex items-center gap-0.5 hover:underline">
+                <span className="text-[#e89b01] flex items-center gap-0.5 hover:underline">
                   Fly-to <ChevronRight className="w-2.5 h-2.5" />
                 </span>
               </div>

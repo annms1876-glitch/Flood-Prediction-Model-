@@ -57,7 +57,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const shouldRenderContent = !isAdminRoute || (isUserAdmin && !loading);
 
   return (
-    <div data-theme={theme} className="min-h-screen bg-[#f4f7f8] text-[#102331] selection:bg-teal-100 selection:text-teal-950">
+    <div data-theme={theme} className="app-root min-h-screen selection:bg-[#f8da9d] selection:text-[#261b07]">
       <AppHeader />
       {isAuthority && <AdminSidebar />}
       <div className={`flex min-h-screen flex-col transition-all duration-300 ${isAuthority ? "lg:pl-72" : ""}`}>

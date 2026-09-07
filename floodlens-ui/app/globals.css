@@ -45,6 +45,12 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(249,166,0,.35); 
 .escape-guide-panel [id^="route-step-card-"]:nth-child(2) { animation-delay: 45ms; }
 .escape-guide-panel [id^="route-step-card-"]:nth-child(3) { animation-delay: 90ms; }
 .escape-guide-panel [id^="route-step-card-"]:nth-child(4) { animation-delay: 135ms; }
+.demo-location-sifter, .command-centre-page > div { transition: transform .18s ease, box-shadow .18s ease; }
+.demo-location-sifter:hover, .command-centre-page > div:hover { box-shadow: 0 8px 18px rgba(38,27,7,.08); }
+.demo-location-sifter [id^="sifter-card-"] { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.demo-location-sifter [id^="sifter-card-"]:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(38,27,7,.08); }
+.command-centre-page [id^="beacon-"] { transition: transform .18s ease, box-shadow .18s ease; }
+.command-centre-page [id^="beacon-"]:hover { transform: translateX(3px); box-shadow: 0 5px 12px rgba(38,27,7,.09); }
 @keyframes guide-pulse { 0%, 100% { box-shadow: 0 4px 8px rgba(38,27,7,.06); } 50% { box-shadow: 0 8px 20px rgba(249,166,0,.13); } }
 @keyframes step-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -58,8 +64,17 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(249,166,0,.35); 
 
 @layer utilities { .text-balance { text-wrap: balance; } }
 
-[data-theme="dark"] { color-scheme: light; }
-[data-theme="dark"] body, [data-theme="dark"] .dashboard-grid { background-color: var(--canvas); color: var(--espresso); }
+[data-theme="dark"] { color-scheme: dark; --canvas: #17130d; --paper: #241d13; --linen: #4a3c27; --stone: #5f4e34; --ash: #968264; --driftwood: #c1ad8d; --bark: #e2d3b8; --espresso: #fff8e7; --amber: #f9b52f; --gold: #f0a51f; }
+[data-theme="dark"] body, [data-theme="dark"] .dashboard-grid, [data-theme="dark"] .app-root { background-color: var(--canvas); color: var(--espresso); }
+[data-theme="dark"] .paper-card, [data-theme="dark"] .bg-white, [data-theme="dark"] .bg-\[\#fffdf8\] { background-color: var(--paper) !important; border-color: var(--linen) !important; }
+[data-theme="dark"] .bg-\[\#f2efe8\], [data-theme="dark"] .bg-\[\#e3dfd5\] { background-color: #312719 !important; }
+[data-theme="dark"] .text-\[\#261b07\] { color: var(--espresso) !important; }
+[data-theme="dark"] .text-\[\#61594a\] { color: var(--bark) !important; }
+[data-theme="dark"] .text-\[\#8f897e\] { color: var(--driftwood) !important; }
+[data-theme="dark"] .border-\[\#e3dfd5\], [data-theme="dark"] .border-\[\#d5d2cd\] { border-color: var(--linen) !important; }
+[data-theme="dark"] input, [data-theme="dark"] select { background-color: #1d170f !important; color: var(--espresso) !important; border-color: var(--linen) !important; }
+[data-theme="dark"] .command-centre-page .bg-gradient-to-r { background: linear-gradient(100deg, #302312, #3b2b12 65%, #4d2b22) !important; }
+[data-theme="dark"] .dashboard-grid { background-image: linear-gradient(rgba(255,248,231,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,248,231,.035) 1px, transparent 1px); }
 
 ::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-track { background: var(--canvas); }
