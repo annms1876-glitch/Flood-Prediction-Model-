@@ -13,46 +13,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { portal, setPortal } = useUIStore();
 
-  const isAdminRoute =
-    pathname.startsWith("/admin") ||
-    pathname.startsWith("/risk-analytics") ||
-    pathname.startsWith("/evacuation-tracker") ||
-    pathname.startsWith("/alert-management") ||
-    pathname.startsWith("/sensor-network");
+  const isAdminRoute = [
+    "/admin",
+    "/risk-analytics",
+    "/evacuation-tracker",
+    "/alert-management",
+    "/sensor-network",
+  ].some((route) => pathname.startsWith(route));
 
   useEffect(() => {
-    if (isAdminRoute && portal !== "authority") {
-      setPortal("authority");
-    } else if (!isAdminRoute && portal === "authority" && (pathname === "/" || pathname === "/3d-map-view" || pathname === "/evacuation-routes" || pathname === "/safety-tips" || pathname === "/sos-emergency")) {
-      setPortal("villager");
-    }
+    if (isAdminRoute && portal !== "authority") setPortal("authority");
+    if (!isAdminRoute && portal === "authority" && pathname === "/") setPortal("villager");
   }, [pathname, isAdminRoute, portal, setPortal]);
 
   const isAuthority = isAdminRoute || portal === "authority";
 
   return (
-    <div className="min-h-screen bg-[#0f131f] text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
-      {/* Header */}
+    <div className="min-h-screen bg-[#f4f7f8] text-[#102331] selection:bg-teal-100 selection:text-teal-950">
       <AppHeader />
-
-      {/* Admin Sidebar if Authority Portal */}
       {isAuthority && <AdminSidebar />}
-
-      {/* Main Content Area */}
-      <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${
-          isAuthority ? "lg:pl-72" : ""
-        }`}
-      >
-        <main className="w-full pt-20 pb-16 min-h-[calc(100vh-80px)] flex flex-col">
+      <div className={`flex min-h-screen flex-col transition-all duration-300 ${isAuthority ? "lg:pl-72" : ""}`}>
+        <main className="dashboard-grid flex-1 pt-20 pb-12">
           {children}
         </main>
+        <TacticalFooter />
       </div>
-
-      {/* Global Tactical Footer */}
-      <TacticalFooter />
-
-      {/* Auth and Profile Modals */}
       <AuthModal />
       <ProfileModal />
     </div>

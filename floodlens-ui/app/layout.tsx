@@ -4,13 +4,12 @@ import { AuthProvider } from "@/lib/context/AuthContext";
 import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  title: "FloodShield AI — Flash Flood Prediction & Evacuation System",
+  title: "FloodShield AI — Community Flood Safety",
   description:
-    "Real-time flood prediction and evacuation management system with dual User and Admin command portals for hilly regions in India.",
+    "A calm, real-time flood safety dashboard for communities and response teams in hilly regions.",
   openGraph: {
-    title: "FloodShield AI — Flash Flood Prediction & Evacuation System",
-    description:
-      "Real-time flood prediction and evacuation management system with dual User and Admin command portals for hilly regions in India.",
+    title: "FloodShield AI — Community Flood Safety",
+    description: "Real-time flood safety, sensor monitoring and evacuation guidance.",
   },
   icons: {
     icon: "/favicon.ico",
@@ -36,7 +35,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#0f131f] text-slate-100 min-h-screen antialiased">
+      <body className="min-h-screen antialiased">
         <AuthProvider>
           <AppShell>{children}</AppShell>
         </AuthProvider>
