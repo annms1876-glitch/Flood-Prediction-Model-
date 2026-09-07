@@ -71,7 +71,7 @@ export default function ModelPage() {
       <div>
         <h1 className="text-2xl font-bold text-white">Model Architecture</h1>
         <p className="text-gray-400 mt-1">
-          Ensemble AI system powering FloodLens predictions
+          Ensemble AI system powering Umeed AI predictions
         </p>
       </div>
 

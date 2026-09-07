@@ -1,4 +1,4 @@
-# Security Specification & Test Suite for FloodLens
+# Security Specification & Test Suite for Umeed AI
 
 ## 1. Data Invariants
 - **User Ownership Invariant**: A user profile document `/users/{userId}` can only be created, read, or updated if `request.auth.uid == userId`.

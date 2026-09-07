@@ -37,7 +37,7 @@ export function Sidebar() {
       <div className="h-16 flex items-center px-4 border-b border-white/5 shrink-0">
         {sidebarOpen && (
           <span className="text-lg font-bold text-white">
-            FloodLens
+            Umeed AI
             <span className="text-brand-accent"> AI</span>
           </span>
         )}

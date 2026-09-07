@@ -50,7 +50,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="FloodLens ML Service",
+    title="Umeed AI ML Service",
     version="2.0.0",
     lifespan=lifespan
 )
@@ -83,7 +83,7 @@ class PredictionRequest(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"service": "FloodLens ML", "status": "running", "version": "2.0.0"}
+    return {"service": "Umeed AI ML", "status": "running", "version": "2.0.0"}
 
 
 @app.get("/health")
