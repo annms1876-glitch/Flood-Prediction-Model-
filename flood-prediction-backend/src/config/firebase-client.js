@@ -24,9 +24,8 @@ try {
   const requiredKeys = ['apiKey', 'authDomain', 'projectId', 'appId'];
   const missing = requiredKeys.filter((key) => !firebaseConfig[key]);
 
-  if (missing.length > 0) {
-    console.warn('⚠️  Firebase client config incomplete. Missing:', missing.join(', '));
-    console.log('   Client-side auth endpoints will return 503 until configured.');
+  if (missing.length > 0 || (firebaseConfig.apiKey && firebaseConfig.apiKey.includes('your-firebase'))) {
+    console.warn('⚠️  Firebase client config incomplete or using placeholder values. Skipping init.');
   } else {
     firebaseApp = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
     auth = getAuth(firebaseApp);

@@ -21,7 +21,12 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
-const swaggerSpec = yaml.load(fs.readFileSync(path.join(__dirname, '../swagger.yaml'), 'utf8'));
+let swaggerSpec = {};
+try {
+  swaggerSpec = yaml.load(fs.readFileSync(path.join(__dirname, '../swagger.yaml'), 'utf8'));
+} catch (e) {
+  console.warn('⚠️  swagger.yaml not found or invalid, docs disabled');
+}
 const { rateLimitMiddleware } = require('./middleware/rateLimit');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 const riskService = require('./services/riskService');
