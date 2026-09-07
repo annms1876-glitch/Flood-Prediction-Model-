@@ -106,6 +106,6 @@ export const FEATURES: {
 ];
 
 export const API_BASE = {
-  ml: process.env.NEXT_PUBLIC_ML_URL || "http://localhost:8000",
-  backend: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000",
+  ml: process.env.NEXT_PUBLIC_ML_URL || "http://flood-prediction-model.railway.internal",
+  backend: process.env.NEXT_PUBLIC_BACKEND_URL || "http://umeedai.railway.internal",
 };
