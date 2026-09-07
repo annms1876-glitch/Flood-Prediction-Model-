@@ -2,22 +2,27 @@
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_ML_URL: process.env.NEXT_PUBLIC_ML_URL || "http://flood-prediction-model.railway.internal",
-    NEXT_PUBLIC_BACKEND_URL:
-      process.env.NEXT_PUBLIC_BACKEND_URL || "http://umeedai.railway.internal",
-  },
   async rewrites() {
-    return [
-      {
+    const mlUrl = process.env.NEXT_PUBLIC_ML_URL || "";
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+
+    const rewrites = [];
+
+    if (mlUrl) {
+      rewrites.push({
         source: "/api/ml/:path*",
-        destination: `${process.env.NEXT_PUBLIC_ML_URL || "http://localhost:8000"}/:path*`,
-      },
-      {
+        destination: `${mlUrl}/:path*`,
+      });
+    }
+
+    if (backendUrl) {
+      rewrites.push({
         source: "/api/backend/:path*",
-        destination: `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000"}/:path*`,
-      },
-    ];
+        destination: `${backendUrl}/:path*`,
+      });
+    }
+
+    return rewrites;
   },
 };
 
