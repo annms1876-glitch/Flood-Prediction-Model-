@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import { useAuth } from "@/lib/context/AuthContext";
+import { EmergencyAlertPermission } from "@/components/notifications/EmergencyAlertPermission";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -30,6 +32,7 @@ interface BroadcastLog {
 }
 
 export default function AlertManagementPage() {
+  const { user } = useAuth();
   const [eventType, setEventType] = useState("Flash Flood Inundation");
   const [severity, setSeverity] = useState<"EXTREME" | "SEVERE" | "MODERATE">("EXTREME");
   const [urgency, setUrgency] = useState("Immediate");
@@ -86,9 +89,13 @@ export default function AlertManagementPage() {
     setChannels({ ...channels, [ch]: !channels[ch] });
   };
 
-  const handleBroadcast = () => {
+  const handleBroadcast = async () => {
     setIsSending(true);
-    setTimeout(() => {
+    try {
+      const idToken = await user?.getIdToken();
+      const response = await fetch("/api/admin/alerts/broadcast", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${idToken || ""}` }, body: JSON.stringify({ title: eventType, body: `${headlineEn}. ${instructionHi}`, severity: severity.toLowerCase(), type: "voice_alert" }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Broadcast failed");
       setIsSending(false);
       const newEntry: BroadcastLog = {
         id: `CAP-HP-2026-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -103,9 +110,12 @@ export default function AlertManagementPage() {
         sentCount: 3420,
         ackRatePct: 92,
       };
-      setHistory([newEntry, ...history]);
-      showToast("CAP Broadcast Dispatched via all selected channels!");
-    }, 1200);
+      setHistory((current) => [newEntry, ...current]);
+      showToast(`CAP broadcast dispatched: ${result.sent} device(s) reached.`);
+    } catch (error) {
+      setIsSending(false);
+      showToast(error instanceof Error ? error.message : "Broadcast failed");
+    }
   };
 
   return (
@@ -147,6 +157,8 @@ export default function AlertManagementPage() {
           </Link>
         </div>
       </div>
+
+      <EmergencyAlertPermission />
 
       {/* 2-Column Broadcast Composer */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
