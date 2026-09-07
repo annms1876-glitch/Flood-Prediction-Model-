@@ -1,7 +1,7 @@
 "use client";
 
 import { Alert } from "@/lib/types";
-import { cn, getRiskBadgeClass } from "@/lib/utils";
+import { getRiskBadgeClass } from "@/lib/utils";
 
 interface AlertHistoryProps {
   alerts: Alert[];

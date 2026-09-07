@@ -1,4 +1,4 @@
-import { cn, getRiskColor } from "@/lib/utils";
+import { getRiskColor } from "@/lib/utils";
 
 interface RiskGaugeProps {
   score: number;

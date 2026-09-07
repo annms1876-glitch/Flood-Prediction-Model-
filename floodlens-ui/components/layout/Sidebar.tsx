@@ -17,8 +17,8 @@ import Link from "next/link";
 const navItems = [
   { href: "/", label: "Home", icon: LayoutDashboard },
   { href: "/dashboard", label: "Dashboard", icon: Gauge },
-  { href: "/predict", label: "Predict", icon: Droplets },
-  { href: "/predict/spatial", label: "Spatial", icon: MapPinned },
+  { href: "/predictions", label: "Predict", icon: Droplets },
+  { href: "/predictions", label: "Spatial", icon: MapPinned },
   { href: "/sensors", label: "Sensors", icon: Camera },
   { href: "/alerts", label: "Alerts", icon: AlertTriangle },
   { href: "/demo", label: "Demo", icon: FlaskConical },

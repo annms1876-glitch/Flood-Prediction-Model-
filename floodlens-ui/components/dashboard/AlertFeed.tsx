@@ -1,5 +1,5 @@
 import { Alert } from "@/lib/types";
-import { cn, getRiskBadgeClass } from "@/lib/utils";
+import { getRiskBadgeClass } from "@/lib/utils";
 
 interface AlertFeedProps {
   maxItems?: number;

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { usePredictionStore } from "@/lib/store/predictionStore";
 import { mlApi } from "@/lib/api/mlClient";
-import { AlertTriangle, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export function PredictionForm() {
   const { setPrediction, addToHistory, setLoading, setError } = usePredictionStore();

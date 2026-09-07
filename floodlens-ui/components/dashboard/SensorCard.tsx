@@ -1,5 +1,5 @@
 import { Sensor } from "@/lib/types";
-import { cn, getRiskBadgeClass } from "@/lib/utils";
+import { getRiskBadgeClass } from "@/lib/utils";
 
 interface SensorCardProps {
   sensor: Sensor;

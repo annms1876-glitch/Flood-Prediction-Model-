@@ -3,8 +3,6 @@
 import { PredictionResponse } from "@/lib/types";
 import { RiskGauge } from "@/components/dashboard/RiskGauge";
 import { Badge } from "@/components/ui/badge";
-import { getRiskColor, getRiskBadgeClass, getRiskLabel } from "@/lib/utils";
-import { cn } from "@/lib/utils";
 
 interface PredictionResultProps {
   prediction: PredictionResponse;

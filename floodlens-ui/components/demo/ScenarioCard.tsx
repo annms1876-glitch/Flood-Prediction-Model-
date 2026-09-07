@@ -1,8 +1,6 @@
 "use client";
 
 import { DemoScenario } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { getRiskBadgeClass } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 

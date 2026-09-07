@@ -3,8 +3,6 @@
 import { DemoPrediction } from "@/lib/types";
 import { RiskGauge } from "@/components/dashboard/RiskGauge";
 import { Badge } from "@/components/ui/badge";
-import { getRiskColor } from "@/lib/utils";
-import { cn } from "@/lib/utils";
 import { ModelBreakdown } from "@/components/prediction/ModelBreakdown";
 
 interface ScenarioResultsProps {
