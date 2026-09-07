@@ -25,6 +25,7 @@ interface UIState {
   setActivePage: (page: string) => void;
   setPortal: (portal: PortalType) => void;
   toggleTheme: () => void;
+  setTheme: (theme: "dark" | "light") => void;
   setSimulationProgress: (val: number) => void;
   setSimulationPlaying: (playing: boolean) => void;
   setSelectedRoute: (route: "A" | "B" | "C") => void;
@@ -36,7 +37,7 @@ export const useUIStore = create<UIState>((set) => ({
   sidebarOpen: true,
   activePage: "dashboard",
   portal: "villager",
-  theme: "dark",
+  theme: "light",
   activeLocation: "Solan, Himachal Pradesh",
   weatherInfo: {
     temp: "24°C",
@@ -56,6 +57,7 @@ export const useUIStore = create<UIState>((set) => ({
   setPortal: (portal) => set({ portal }),
   toggleTheme: () =>
     set((state) => ({ theme: state.theme === "dark" ? "light" : "dark" })),
+  setTheme: (theme) => set({ theme }),
   setSimulationProgress: (simulationProgress) => set({ simulationProgress }),
   setSimulationPlaying: (simulationPlaying) => set({ simulationPlaying }),
   setSelectedRoute: (selectedRoute) => set({ selectedRoute }),

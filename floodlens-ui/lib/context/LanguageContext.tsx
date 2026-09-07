@@ -15,7 +15,7 @@ const resources = {
     tip1: "Stay indoors if flooding starts", tip2: "Keep your emergency kit ready", tip3: "Move to higher ground when advised",
     viewMap: "View evacuation map", mapHelp: "See your location, safe zones and the safest route home.", emergency: "Emergency contacts",
     callEmergency: "Call 112", callSdrf: "SDRF helpline", routeReady: "Safe routes are available", routeSub: "The nearest safe shelter is 1.2 km away.",
-    viewRoutes: "View safe routes", language: "Language", english: "English", hindi: "हिन्दी", close: "Close", gps: "Use my location",
+    viewRoutes: "View safe routes", language: "Language", english: "English", hindi: "हिन्दी", close: "Close", gps: "Use my location", darkTheme: "Use dark theme", lightTheme: "Use light theme",
   }},
   hi: { translation: {
     brand: "उम्मीद AI", tagline: "आपका स्थानीय बाढ़ सुरक्षा साथी", community: "समुदाय", command: "कमांड सेंटर",
@@ -27,7 +27,7 @@ const resources = {
     tip1: "बाढ़ शुरू होने पर घर के अंदर रहें", tip2: "आपातकालीन किट तैयार रखें", tip3: "सलाह मिलने पर ऊंची जगह पर जाएं",
     viewMap: "निकासी मानचित्र देखें", mapHelp: "अपना स्थान, सुरक्षित क्षेत्र और सबसे सुरक्षित रास्ता देखें।", emergency: "आपातकालीन संपर्क",
     callEmergency: "112 पर कॉल करें", callSdrf: "SDRF हेल्पलाइन", routeReady: "सुरक्षित रास्ते उपलब्ध हैं", routeSub: "नजदीकी सुरक्षित आश्रय 1.2 किमी दूर है।",
-    viewRoutes: "सुरक्षित रास्ते देखें", language: "भाषा", english: "English", hindi: "हिन्दी", close: "बंद करें", gps: "मेरा स्थान उपयोग करें",
+    viewRoutes: "सुरक्षित रास्ते देखें", language: "भाषा", english: "English", hindi: "हिन्दी", close: "बंद करें", gps: "मेरा स्थान उपयोग करें", darkTheme: "डार्क थीम चालू करें", lightTheme: "लाइट थीम चालू करें",
   }},
 };
 
