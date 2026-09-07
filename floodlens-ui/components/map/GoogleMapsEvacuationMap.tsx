@@ -271,49 +271,6 @@ export function GoogleMapsEvacuationMap({
         id="google-maps-canvas-wrapper"
         className="relative w-full h-[520px] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950"
       >
-        {/* Route Stats Overlay on Map */}
-        <div 
-          id="route-stats-overlay"
-          className="absolute top-3 left-3 z-30 bg-slate-950/90 border border-slate-800/80 backdrop-blur-md rounded-2xl p-4 shadow-2xl max-w-xs text-xs space-y-3 pointer-events-auto"
-        >
-          <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
-            <span className="font-extrabold text-slate-400 font-mono text-[9px] uppercase tracking-wider">
-              CORRIDOR OVERLAY
-            </span>
-            <span className={`px-2 py-0.5 rounded text-[9px] font-mono uppercase font-bold ${
-              currentRoute.tier === "recommended"
-                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                : currentRoute.tier === "alternative"
-                ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                : "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-            }`}>
-              {currentRoute.tier}
-            </span>
-          </div>
-          <div>
-            <div className="text-[10px] text-slate-500 font-medium font-sans">Selected Corridor</div>
-            <div className="text-white font-extrabold text-sm truncate mt-0.5">
-              Route {selectedRouteId}: {currentRoute.name}
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3 pt-1">
-            <div className="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800/50">
-              <div className="text-slate-400 font-mono text-[9px] uppercase">Distance</div>
-              <div id="route-overlay-distance" className="text-white font-mono font-bold text-base mt-0.5 flex items-baseline gap-1">
-                <span>{currentRoute.totalDistanceKm}</span>
-                <span className="text-[10px] text-slate-400 font-normal">km</span>
-              </div>
-            </div>
-            <div className="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800/50">
-              <div className="text-slate-400 font-mono text-[9px] uppercase">Est. Time</div>
-              <div id="route-overlay-time" className="text-emerald-400 font-mono font-bold text-base mt-0.5 flex items-baseline gap-1 animate-pulse">
-                <span>{currentRoute.estimatedMinutes}</span>
-                <span className="text-[10px] text-emerald-500 font-normal">mins</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {apiKey ? (
           /* Live Google Maps Platform Instance */
           <APIProvider apiKey={apiKey}>
@@ -345,6 +302,28 @@ export function GoogleMapsEvacuationMap({
                 strokeWeight={currentRoute.tier === "hazardous" ? 7 : 6}
                 strokeOpacity={currentRoute.tier === "hazardous" ? 0.75 : 0.95}
               />
+
+              {/* Route Distance Badge rendered on the map itself at the midpoint waypoint */}
+              <AdvancedMarker
+                position={{
+                  lat: currentRoute.waypoints[Math.floor(currentRoute.waypoints.length / 2)].lat,
+                  lng: currentRoute.waypoints[Math.floor(currentRoute.waypoints.length / 2)].lng
+                }}
+                title="Evacuation corridor distance information"
+              >
+                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono font-bold text-white shadow-xl border backdrop-blur-sm transition-all duration-300 hover:scale-105 active:scale-95 ${
+                  currentRoute.tier === "recommended"
+                    ? "bg-emerald-950/95 border-emerald-400 text-emerald-300 shadow-emerald-500/10"
+                    : currentRoute.tier === "alternative"
+                    ? "bg-amber-950/95 border-amber-400 text-amber-300 shadow-amber-500/10"
+                    : "bg-rose-950/95 border-rose-400 text-rose-300 shadow-rose-500/10"
+                }`}>
+                  <Navigation className="w-3 h-3 rotate-45 text-cyan-400" />
+                  <span>{currentRoute.totalDistanceKm} km</span>
+                  <span className="opacity-40 font-normal">|</span>
+                  <span className="animate-pulse">{currentRoute.estimatedMinutes} mins</span>
+                </div>
+              </AdvancedMarker>
 
               {/* Markers for all demo locations */}
               {DEMO_LOCATIONS.map((loc) => {
