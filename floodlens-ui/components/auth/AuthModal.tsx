@@ -90,30 +90,30 @@ export function AuthModal() {
   return (
     <div
       id="auth-modal-backdrop"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#261b07]/45 backdrop-blur-xs p-4 overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) closeAuthModal();
       }}
     >
       <div
         id="auth-modal-card"
-        className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden relative my-8"
+        className="bg-white border border-[#d5d2cd] rounded-2xl w-full max-w-md shadow-[0_8px_18px_rgba(38,27,7,.10)] overflow-hidden relative my-8"
       >
         {/* Header */}
-        <div className="p-6 pb-4 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-6 pb-4 border-b border-[#e3dfd5] flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-cyan-400" />
+            <h2 className="text-xl font-bold text-[#261b07] flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-[#e89b01]" />
               {mode === "signin" ? "Sign In to FloodLens" : "Create Your Account"}
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[#8f897e] mt-1">
               Secure flood alerting & community risk monitoring
             </p>
           </div>
           <button
             id="close-auth-modal-btn"
             onClick={closeAuthModal}
-            className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition"
+            className="text-[#8f897e] hover:text-[#261b07] p-2 rounded-lg hover:bg-[#f2efe8] transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -124,9 +124,9 @@ export function AuthModal() {
           {error && (
             <div
               id="auth-error-banner"
-              className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-lg text-rose-300 text-xs flex items-start gap-2 leading-relaxed"
+              className="p-3 bg-[#f0624f]/10 border border-[#f0624f]/30 rounded-lg text-[#d94b3b] text-xs flex items-start gap-2 leading-relaxed"
             >
-              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 text-[#d94b3b] shrink-0 mt-0.5" />
               <div>{error}</div>
             </div>
           )}
@@ -165,11 +165,11 @@ export function AuthModal() {
           </div>
 
           <div className="flex items-center my-3">
-            <div className="flex-grow border-t border-slate-800"></div>
-            <span className="shrink-0 px-3 text-xs text-slate-500 uppercase tracking-wider">
+            <div className="flex-grow border-t border-[#e3dfd5]"></div>
+            <span className="shrink-0 px-3 text-xs text-[#aca89f] uppercase tracking-wider">
               Or with email
             </span>
-            <div className="flex-grow border-t border-slate-800"></div>
+            <div className="flex-grow border-t border-[#e3dfd5]"></div>
           </div>
 
           {/* Email / Password Form */}
@@ -177,25 +177,25 @@ export function AuthModal() {
             {mode === "signup" && (
               <>
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
+                  <label className="block text-xs font-medium text-[#61594a] mb-1">
                     Full Name *
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                    <User className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
                     <input
                       type="text"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Jane Doe"
-                      className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                      className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl pl-9 pr-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">
+                    <label className="block text-xs font-medium text-[#61594a] mb-1">
                       Age
                     </label>
                     <input
@@ -207,17 +207,17 @@ export function AuthModal() {
                         setAge(e.target.value ? parseInt(e.target.value, 10) : "")
                       }
                       placeholder="e.g. 32"
-                      className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                      className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl px-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">
+                    <label className="block text-xs font-medium text-[#61594a] mb-1">
                       Gender
                     </label>
                     <select
                       value={gender}
                       onChange={(e) => setGender(e.target.value as any)}
-                      className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                      className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl px-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                     >
                       <option value="prefer_not_to_say">Prefer not to say</option>
                       <option value="female">Female</option>
@@ -229,29 +229,29 @@ export function AuthModal() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">
+                    <label className="block text-xs font-medium text-[#61594a] mb-1">
                       Location / Village *
                     </label>
                     <div className="relative">
-                      <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                      <MapPin className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
                       <input
                         type="text"
                         required
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder="valley_junction_1"
-                        className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                        className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl pl-9 pr-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">
+                    <label className="block text-xs font-medium text-[#61594a] mb-1">
                       Role
                     </label>
                     <select
                       value={role}
                       onChange={(e) => setRole(e.target.value as any)}
-                      className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                      className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl px-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                     >
                       <option value="resident">Resident</option>
                       <option value="first_responder">First Responder</option>
@@ -264,28 +264,28 @@ export function AuthModal() {
             )}
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">
+              <label className="block text-xs font-medium text-[#61594a] mb-1">
                 Email Address *
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                <Mail className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                  className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl pl-9 pr-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">
+              <label className="block text-xs font-medium text-[#61594a] mb-1">
                 Password *
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                <Lock className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
                 <input
                   type="password"
                   required
@@ -293,7 +293,7 @@ export function AuthModal() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                  className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl pl-9 pr-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                 />
               </div>
             </div>
@@ -302,7 +302,7 @@ export function AuthModal() {
               id="auth-submit-btn"
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-cyan-600 hover:bg-cyan-500 text-white font-medium rounded-xl transition duration-150 disabled:opacity-50 text-sm mt-2 shadow-lg shadow-cyan-600/20"
+              className="w-full py-2.5 px-4 bg-[#f9a600] hover:bg-[#f9a600] text-[#261b07] font-medium rounded-xl transition duration-150 disabled:opacity-50 text-sm mt-2 shadow-lg shadow-[#e89b01]/20"
             >
               {loading
                 ? "Processing..."
@@ -321,7 +321,7 @@ export function AuthModal() {
                 setMode(mode === "signin" ? "signup" : "signin");
                 setError(null);
               }}
-              className="text-xs text-cyan-400 hover:text-cyan-300 hover:underline"
+              className="text-xs text-[#e89b01] hover:text-[#e89b01] hover:underline"
             >
               {mode === "signin"
                 ? "Don't have an account? Register profile"

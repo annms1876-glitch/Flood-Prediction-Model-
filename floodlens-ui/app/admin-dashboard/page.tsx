@@ -146,7 +146,7 @@ export default function AdminDashboardPage() {
     <div className="command-centre-page mx-auto w-full max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed top-24 right-6 z-50 p-4 rounded-xl bg-cyan-600 text-[#261b07] shadow-[0_4px_8px_rgba(38,27,7,.06)] flex items-center gap-3 border border-cyan-400/40 animate-slide-in">
+        <div className="fixed top-24 right-6 z-50 p-4 rounded-xl bg-[#f9a600] text-[#261b07] shadow-[0_4px_8px_rgba(38,27,7,.06)] flex items-center gap-3 border border-[#e89b01]/40 animate-slide-in">
           <CheckCircle2 className="w-5 h-5 shrink-0" />
           <span className="text-xs font-semibold">{toastMessage}</span>
         </div>
@@ -182,14 +182,14 @@ export default function AdminDashboardPage() {
         <div className="flex items-center gap-2 self-start md:self-center">
           <button
             onClick={refreshData}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#e3dfd5] hover:bg-slate-700 text-[#261b07] text-xs font-bold border border-[#d5d2cd] transition"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#e3dfd5] hover:bg-[#e3dfd5] text-[#261b07] text-xs font-bold border border-[#d5d2cd] transition"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Sync Telemetry ({lastRefreshed})</span>
           </button>
           <Link
             href="/alert-management"
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 hover:bg-[#f0624f] text-[#261b07] text-xs font-bold shadow-lg shadow-rose-600/30 transition"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#f0624f] hover:bg-[#f0624f] text-[#261b07] text-xs font-bold shadow-lg shadow-[#f0624f]/20 transition"
           >
             <Send className="w-4 h-4" />
             <span>CAP Studio</span>
@@ -296,7 +296,7 @@ export default function AdminDashboardPage() {
                   key={beacon.id}
                   className={`p-4 rounded-2xl border transition-all space-y-2.5 ${
                     beacon.status === "PENDING"
-                      ? "bg-[#fff0ed]/40 border-[#f0624f]/50 ring-1 ring-rose-500/20"
+                      ? "bg-[#fff0ed]/40 border-[#f0624f]/50 ring-1 ring-[#f0624f]/20"
                       : beacon.status === "DISPATCHED"
                       ? "bg-[#fff4d6]/30 border-[#e89b01]/40"
                       : beacon.status === "IN_RESCUE"
@@ -359,7 +359,7 @@ export default function AdminDashboardPage() {
                       {beacon.status !== "IN_RESCUE" && beacon.status !== "RESOLVED" && (
                         <button
                           onClick={() => updateBeaconStatus(beacon.id, "IN_RESCUE")}
-                          className="px-2.5 py-1 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-200 text-[10px] font-bold border border-[#e89b01]/40"
+                          className="px-2.5 py-1 rounded-lg bg-[#f9a600]/30 hover:bg-[#f9a600]/50 text-[#e89b01] text-[10px] font-bold border border-[#e89b01]/40"
                         >
                           Mark In-Rescue
                         </button>
@@ -367,7 +367,7 @@ export default function AdminDashboardPage() {
                       {beacon.status !== "RESOLVED" && (
                         <button
                           onClick={() => updateBeaconStatus(beacon.id, "RESOLVED")}
-                          className="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 text-[10px] font-bold border border-[#6f8d54]/40"
+                          className="px-2.5 py-1 rounded-lg bg-[#6f8d54]/30 hover:bg-[#6f8d54]/50 text-[#6f8d54] text-[10px] font-bold border border-[#6f8d54]/40"
                         >
                           Mark Resolved
                         </button>
@@ -468,10 +468,10 @@ export default function AdminDashboardPage() {
                       className={`py-2 rounded-xl font-bold font-mono transition text-[11px] ${
                         broadcastSeverity === sev
                           ? sev === "CRITICAL"
-                            ? "bg-rose-600 text-[#261b07]"
+                            ? "bg-[#f0624f] text-[#261b07]"
                             : sev === "WARNING"
                             ? "bg-[#f9a600] text-slate-950"
-                            : "bg-cyan-600 text-[#261b07]"
+                            : "bg-[#f9a600] text-[#261b07]"
                           : "bg-[#e3dfd5] text-[#8f897e] hover:text-[#261b07]"
                       }`}
                     >
@@ -522,7 +522,7 @@ export default function AdminDashboardPage() {
                 id="send-cap-broadcast-btn"
                 onClick={handleSendBroadcast}
                 disabled={isBroadcasting}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-[#261b07] font-bold text-xs shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2 transition"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#f0624f] to-[#d94b3b] hover:from-[#f0624f] hover:to-[#d94b3b] text-[#261b07] font-bold text-xs shadow-lg shadow-[#f0624f]/20 flex items-center justify-center gap-2 transition"
               >
                 <Send className="w-4 h-4" />
                 <span>{isBroadcasting ? "Transmitting CAP Signal..." : "Transmit Emergency Broadcast"}</span>

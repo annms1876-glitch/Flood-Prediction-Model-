@@ -83,26 +83,26 @@ export function ProfileModal() {
   return (
     <div
       id="profile-modal-backdrop"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#261b07]/45 backdrop-blur-xs p-4 overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) closeProfileModal();
       }}
     >
       <div
         id="profile-modal-card"
-        className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden relative my-8"
+        className="bg-white border border-[#d5d2cd] rounded-2xl w-full max-w-lg shadow-[0_8px_18px_rgba(38,27,7,.10)] overflow-hidden relative my-8"
       >
         {/* Header */}
-        <div className="p-6 pb-4 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-6 pb-4 border-b border-[#e3dfd5] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold">
+            <div className="w-10 h-10 rounded-full bg-[#f9a600]/20 border border-[#e89b01]/30 flex items-center justify-center text-[#e89b01] font-bold">
               {profile?.name ? profile.name[0].toUpperCase() : user.email?.[0].toUpperCase() || "U"}
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+              <h2 className="text-lg font-bold text-[#261b07] flex items-center gap-2">
                 User Profile & Firestore Data
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#8f897e]">
                 Synchronized with Firebase Firestore (/users/{user.uid})
               </p>
             </div>
@@ -110,7 +110,7 @@ export function ProfileModal() {
           <button
             id="close-profile-modal-btn"
             onClick={closeProfileModal}
-            className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition"
+            className="text-[#8f897e] hover:text-[#261b07] p-2 rounded-lg hover:bg-[#f2efe8] transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -119,24 +119,24 @@ export function ProfileModal() {
         {/* Content */}
         <div className="p-6 space-y-5">
           {/* User ID Card */}
-          <div className="p-3.5 bg-slate-800/60 rounded-xl border border-slate-700/60 flex items-center justify-between">
+          <div className="p-3.5 bg-[#f2efe8]/60 rounded-xl border border-[#d5d2cd]/60 flex items-center justify-between">
             <div className="overflow-hidden">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+              <span className="text-[11px] font-semibold text-[#8f897e] uppercase tracking-wider block">
                 Firebase User ID (UID)
               </span>
-              <span className="text-xs font-mono text-cyan-300 truncate block max-w-xs">
+              <span className="text-xs font-mono text-[#e89b01] truncate block max-w-xs">
                 {user.uid}
               </span>
             </div>
             <button
               id="copy-uid-btn"
               onClick={copyUid}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs text-slate-200 transition"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#e3dfd5] hover:bg-[#d5d2cd] rounded-lg text-xs text-[#261b07] transition"
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">Copied</span>
+                  <Check className="w-3.5 h-3.5 text-[#6f8d54]" />
+                  <span className="text-[#6f8d54]">Copied</span>
                 </>
               ) : (
                 <>
@@ -148,14 +148,14 @@ export function ProfileModal() {
           </div>
 
           {error && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-lg text-rose-300 text-xs">
+            <div className="p-3 bg-[#f0624f]/10 border border-[#f0624f]/30 rounded-lg text-[#d94b3b] text-xs">
               {error}
             </div>
           )}
 
           {savedSuccess && (
-            <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-300 text-xs flex items-center gap-2">
-              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+            <div className="p-3 bg-[#edf3e8] border border-[#6f8d54]/30 rounded-lg text-[#6f8d54] text-xs flex items-center gap-2">
+              <Check className="w-4 h-4 text-[#6f8d54] shrink-0" />
               Profile changes committed to Cloud Firestore!
             </div>
           )}
@@ -164,32 +164,32 @@ export function ProfileModal() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[#61594a] mb-1">
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                  <User className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                    className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl pl-9 pr-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[#61594a] mb-1">
                   Email (Auth Verified)
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
+                  <Mail className="w-4 h-4 text-[#aca89f] absolute left-3 top-2.5" />
                   <input
                     type="text"
                     disabled
                     value={user.email || "No email"}
-                    className="w-full bg-slate-800/40 border border-slate-700/40 rounded-xl pl-9 pr-3 py-2 text-sm text-slate-400 cursor-not-allowed"
+                    className="w-full bg-[#f2efe8]/40 border border-[#d5d2cd]/40 rounded-xl pl-9 pr-3 py-2 text-sm text-[#8f897e] cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -197,33 +197,33 @@ export function ProfileModal() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[#61594a] mb-1">
                   Assigned Location / Village *
                 </label>
                 <div className="relative">
-                  <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                  <MapPin className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
                   <input
                     type="text"
                     required
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                    className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl pl-9 pr-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[#61594a] mb-1">
                   Phone Number
                 </label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                  <Phone className="w-4 h-4 text-[#8f897e] absolute left-3 top-2.5" />
                   <input
                     type="tel"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     placeholder="+1 555-0199"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                    className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl pl-9 pr-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                   />
                 </div>
               </div>
@@ -231,7 +231,7 @@ export function ProfileModal() {
 
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[#61594a] mb-1">
                   Age
                 </label>
                 <input
@@ -242,18 +242,18 @@ export function ProfileModal() {
                   onChange={(e) =>
                     setAge(e.target.value ? parseInt(e.target.value, 10) : "")
                   }
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                  className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl px-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[#61594a] mb-1">
                   Gender
                 </label>
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value as any)}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                  className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl px-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                 >
                   <option value="prefer_not_to_say">Prefer not to say</option>
                   <option value="female">Female</option>
@@ -263,13 +263,13 @@ export function ProfileModal() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">
+                <label className="block text-xs font-medium text-[#61594a] mb-1">
                   Role
                 </label>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value as any)}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-hidden focus:border-cyan-500"
+                  className="w-full bg-[#f2efe8] border border-[#d5d2cd] rounded-xl px-3 py-2 text-sm text-[#261b07] focus:outline-hidden focus:border-[#e89b01]"
                 >
                   <option value="resident">Resident</option>
                   <option value="first_responder">First Responder</option>
@@ -279,7 +279,7 @@ export function ProfileModal() {
               </div>
             </div>
 
-            <div className="pt-2 flex items-center justify-between border-t border-slate-800">
+            <div className="pt-2 flex items-center justify-between border-t border-[#e3dfd5]">
               <button
                 id="logout-btn"
                 type="button"
@@ -287,7 +287,7 @@ export function ProfileModal() {
                   await logout();
                   closeProfileModal();
                 }}
-                className="px-4 py-2 text-xs font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-xl transition"
+                className="px-4 py-2 text-xs font-medium text-[#d94b3b] hover:text-[#d94b3b] hover:bg-[#f0624f]/10 rounded-xl transition"
               >
                 Sign Out
               </button>
@@ -296,7 +296,7 @@ export function ProfileModal() {
                 id="save-profile-btn"
                 type="submit"
                 disabled={saving}
-                className="flex items-center gap-2 px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-medium rounded-xl transition disabled:opacity-50 text-sm shadow-lg shadow-cyan-600/20"
+                className="flex items-center gap-2 px-5 py-2.5 bg-[#f9a600] hover:bg-[#f9a600] text-[#261b07] font-medium rounded-xl transition disabled:opacity-50 text-sm shadow-lg shadow-[#e89b01]/20"
               >
                 <Save className="w-4 h-4" />
                 {saving ? "Updating..." : "Save to Database"}
