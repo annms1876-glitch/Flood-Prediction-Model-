@@ -29,10 +29,11 @@ export function AuthModal() {
   if (!isAuthModalOpen) return null;
 
   const handleGoogle = async () => {
-    setLoading(true);
     setError(null);
     try {
-      await signInWithGoogle();
+      const signInPromise = signInWithGoogle();
+      setLoading(true);
+      await signInPromise;
     } catch (err: any) {
       setError(err.message || "Failed to sign in with Google");
     } finally {
@@ -41,10 +42,11 @@ export function AuthModal() {
   };
 
   const handleOAuth = async () => {
-    setLoading(true);
     setError(null);
     try {
-      await signInWithGithub();
+      const signInPromise = signInWithGithub();
+      setLoading(true);
+      await signInPromise;
     } catch (err: any) {
       setError(err.message || "Failed to sign in with OAuth provider");
     } finally {

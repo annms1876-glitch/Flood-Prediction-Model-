@@ -8,6 +8,9 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  signInWithCredential,
+  GoogleAuthProvider,
+  GithubAuthProvider,
 } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
 import {
@@ -115,23 +118,88 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const signInWithPopupFallback = (providerName: "google" | "github"): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const width = 500;
+      const height = 650;
+      const left = window.screen.width / 2 - width / 2;
+      const top = window.screen.height / 2 - height / 2;
+      const popup = window.open(
+        `/auth-popup?provider=${providerName}`,
+        "firebase_auth_popup",
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+
+      if (!popup) {
+        reject(new Error("Popup blocked by browser. Please allow popups for this site."));
+        return;
+      }
+
+      const handleMessage = async (event: MessageEvent) => {
+        if (event.origin !== window.location.origin) return;
+
+        if (event.data?.type === "FIREBASE_AUTH_SUCCESS") {
+          window.removeEventListener("message", handleMessage);
+          try {
+            const { idToken, accessToken } = event.data;
+            let credential;
+            if (providerName === "google") {
+              credential = GoogleAuthProvider.credential(idToken, accessToken);
+            } else {
+              credential = GithubAuthProvider.credential(accessToken);
+            }
+            await signInWithCredential(auth, credential);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
+        } else if (event.data?.type === "FIREBASE_AUTH_ERROR") {
+          window.removeEventListener("message", handleMessage);
+          reject(new Error(event.data.error || "Authentication failed"));
+        }
+      };
+
+      window.addEventListener("message", handleMessage);
+
+      const checkClosed = setInterval(() => {
+        if (popup.closed) {
+          clearInterval(checkClosed);
+          window.removeEventListener("message", handleMessage);
+          resolve();
+        }
+      }, 1000);
+    });
+  };
+
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithPopupFallback("google");
       setIsAuthModalOpen(false);
-    } catch (error: any) {
-      console.error("Google sign in error:", error);
-      throw error;
+    } catch (fallbackError: any) {
+      console.warn("Popup fallback sign in error, trying direct popup:", fallbackError);
+      try {
+        await signInWithPopup(auth, googleProvider);
+        setIsAuthModalOpen(false);
+      } catch (error: any) {
+        console.error("Google sign in error:", error);
+        throw error;
+      }
     }
   };
 
   const signInWithGithub = async () => {
     try {
-      await signInWithPopup(auth, githubProvider);
+      await signInWithPopupFallback("github");
       setIsAuthModalOpen(false);
-    } catch (error: any) {
-      console.error("OAuth sign in error:", error);
-      throw error;
+    } catch (fallbackError: any) {
+      console.warn("Popup fallback sign in error, trying direct popup:", fallbackError);
+      try {
+        await signInWithPopup(auth, githubProvider);
+        setIsAuthModalOpen(false);
+      } catch (error: any) {
+        console.error("OAuth sign in error:", error);
+        throw error;
+      }
     }
   };
 
