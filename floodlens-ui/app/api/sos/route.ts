@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { adminDb } from "@/lib/firebase/admin";
 
 interface SOSPayload {
   userId?: string;
@@ -38,6 +39,11 @@ export async function POST(request: Request) {
     };
 
     inMemorySOSLog.unshift(record);
+    try {
+      await adminDb.collection("sosIncidents").doc(id).set(record);
+    } catch (storageError) {
+      console.warn("SOS incident persistence unavailable; retaining local runtime record", storageError);
+    }
 
     return NextResponse.json({
       success: true,
@@ -53,6 +59,13 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
+  try {
+    const snapshot = await adminDb.collection("sosIncidents").orderBy("timestamp", "desc").limit(25).get();
+    const persisted = snapshot.docs.map((doc) => doc.data());
+    return NextResponse.json({ active_beacons_count: persisted.filter((item) => item.status !== "RESOLVED").length, recent_dispatches: persisted });
+  } catch (storageError) {
+    console.warn("SOS incident persistence unavailable; reading local runtime records", storageError);
+  }
   return NextResponse.json({
     active_beacons_count: inMemorySOSLog.length,
     recent_dispatches: inMemorySOSLog.slice(0, 10),

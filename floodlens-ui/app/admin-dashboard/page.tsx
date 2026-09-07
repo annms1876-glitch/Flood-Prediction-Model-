@@ -113,9 +113,10 @@ export default function AdminDashboardPage() {
       const data = await res.json();
       if (data.recent_dispatches && data.recent_dispatches.length > 0) {
         // Merge with existing
-        const combined = [...data.recent_dispatches, ...beacons];
-        const unique = Array.from(new Map(combined.map((item) => [item.id, item])).values());
-        setBeacons(unique as SOSBeaconItem[]);
+        setBeacons((current) => {
+          const combined = [...data.recent_dispatches, ...current];
+          return Array.from(new Map(combined.map((item) => [item.id, item])).values()) as SOSBeaconItem[];
+        });
       }
       setLastRefreshed(new Date().toLocaleTimeString());
       showToast("Telemetry & SOS incident log updated.");
@@ -131,6 +132,12 @@ export default function AdminDashboardPage() {
     );
     showToast(`Beacon ${id} status updated to: ${newStatus}`);
   };
+
+  useEffect(() => {
+    void refreshData();
+    const syncTimer = window.setInterval(() => void refreshData(), 10000);
+    return () => window.clearInterval(syncTimer);
+  }, []);
 
   const handleSendBroadcast = () => {
     setIsBroadcasting(true);
