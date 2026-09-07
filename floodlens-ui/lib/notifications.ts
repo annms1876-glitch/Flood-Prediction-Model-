@@ -30,6 +30,17 @@ export function speakFloodAlert(message: string) {
   return true;
 }
 
+export async function playEmergencySiren() {
+  const audio = new Audio("/audio/umeed-emergency-siren.mp3");
+  audio.volume = 1;
+  try {
+    await audio.play();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function listenForForegroundFloodAlerts(onAlert: (data: Record<string, string>) => void) {
   if (!(await isSupported())) return () => undefined;
   return onMessage(getMessaging(app), (payload) => onAlert((payload.data || {}) as Record<string, string>));

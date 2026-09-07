@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@/lib/context/AuthContext";
 import { EmergencyAlertPermission } from "@/components/notifications/EmergencyAlertPermission";
+import { playEmergencySiren } from "@/lib/notifications";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -143,7 +144,7 @@ export default function AlertManagementPage() {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => showToast("Sounded 5-second diagnostic chirp on Mountain Siren Tower 1 & 2.")}
+            onClick={async () => { await playEmergencySiren(); showToast("Played the Umeed emergency siren preview."); }}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#e3dfd5] hover:bg-slate-700 text-[#261b07] text-xs font-bold border border-[#d5d2cd] transition"
           >
             <Volume2 className="w-4 h-4 text-[#e89b01]" />

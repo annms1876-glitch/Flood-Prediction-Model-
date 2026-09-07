@@ -1,0 +1,8 @@
+Umeed emergency siren asset
+
+Source: Wikimedia Commons, File: Alarm or siren.ogg
+Original URL: https://upload.wikimedia.org/wikipedia/commons/8/81/Alarm_or_siren.ogg
+License: Public domain dedication by author stephan, as documented at:
+https://commons.wikimedia.org/wiki/File:Alarm_or_siren.ogg
+
+The repository copy was converted from Ogg Vorbis to MP3 for browser playback.
