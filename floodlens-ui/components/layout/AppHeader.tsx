@@ -18,19 +18,117 @@ export function AppHeader() {
   const isAuthority = isAdminRoute || portal === "authority";
   const switchPortal = (next: "villager" | "authority") => { setPortal(next); router.push(next === "authority" ? "/admin-dashboard" : "/"); };
 
-  return <header className="fixed inset-x-0 top-0 z-50 h-20 border-b border-[#b8dec1] bg-white/95 shadow-[0_4px_18px_rgba(33,33,33,0.08)] backdrop-blur-xl">
-    <div className="mx-auto flex h-full max-w-[1500px] items-center gap-3 px-4 sm:px-6 lg:px-8">
-      {isAuthority && <button onClick={() => setSidebarOpen(!sidebarOpen)} className="min-h-12 min-w-12 rounded-xl border border-slate-200 p-2 text-slate-700 hover:bg-slate-50 lg:hidden" aria-label="Toggle menu"><Menu className="mx-auto h-5 w-5" /></button>}
-      <Link href="/" className="flex shrink-0 items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#212121] text-[#26c6da] shadow-sm"><Waves className="h-6 w-6" /></span><span className="hidden sm:block"><span className="block text-lg font-black tracking-tight text-[#212121]">Umeed <span className="text-[#0097a7]">AI</span></span><span className="block text-[10px] font-bold uppercase tracking-[.14em] text-slate-500">{t("tagline")}</span></span></Link>
-      <div className="hidden h-8 w-px bg-slate-200 xl:block" />
-      <div className="hidden items-center gap-1 rounded-xl bg-slate-100 p-1 xl:flex"><button onClick={() => switchPortal("villager")} className={`min-h-10 rounded-lg px-3 text-sm font-bold ${!isAuthority ? "bg-white text-[#212121] shadow-sm" : "text-slate-500"}`}>{t("community")}</button><button onClick={() => switchPortal("authority")} className={`min-h-10 rounded-lg px-3 text-sm font-bold ${isAuthority ? "bg-[#212121] text-white" : "text-slate-500"}`}>{t("command")}</button></div>
-      {!isAuthority && <nav className="hidden items-center gap-1 lg:flex"><Link href="/" className={`rounded-lg px-3 py-2 text-sm font-bold ${pathname === "/" ? "bg-[#e8f5e9] text-[#00796b]" : "text-slate-600 hover:bg-slate-50"}`}>{t("overview")}</Link><Link href="/3d-map-view" className={`rounded-lg px-3 py-2 text-sm font-bold ${pathname.includes("map") ? "bg-[#e8f5e9] text-[#00796b]" : "text-slate-600 hover:bg-slate-50"}`}>{t("liveMap")}</Link><Link href="/safety-tips" className="rounded-lg px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">{t("preparedness")}</Link></nav>}
-      <div className="ml-auto flex items-center gap-2">
-        <div className="flex items-center gap-1 rounded-xl border border-[#80cbc4] bg-[#e8f5e9] p-1" aria-label={t("language")}><Languages className="ml-2 h-4 w-4 text-[#00796b]" /><button onClick={() => setLanguage("en")} className={`min-h-10 rounded-lg px-2.5 text-sm font-bold ${language === "en" ? "bg-white text-[#212121] shadow-sm" : "text-slate-500"}`}>EN</button><button onClick={() => setLanguage("hi")} className={`min-h-10 rounded-lg px-2.5 text-sm font-bold ${language === "hi" ? "bg-white text-[#212121] shadow-sm" : "text-slate-500"}`}>हिन्दी</button></div>
-        <button onClick={toggleTheme} className="flex min-h-12 min-w-12 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-[#e8f5e9]" aria-label={theme === "dark" ? t("lightTheme") : t("darkTheme")} title={theme === "dark" ? t("lightTheme") : t("darkTheme")}>{theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}</button>
-        <Link href={isAuthority ? "/alert-management" : "/dashboard"} className="relative flex min-h-12 min-w-12 items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-[#e8f5e9]" aria-label={t("alerts")}><Bell className="h-5 w-5" /><span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#d32f2f] px-1 text-[10px] font-black text-white">12</span></Link>
-        <Link href="/sos-emergency" className="hidden min-h-12 items-center gap-2 rounded-xl bg-[#d32f2f] px-4 text-sm font-black text-white shadow-sm transition hover:bg-[#b71c1c] sm:flex"><ShieldCheck className="h-4 w-4" />SOS</Link>
-        {user ? <button onClick={openProfileModal} className="flex min-h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white p-1.5 pr-3 hover:bg-slate-50"><span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#e0f2f1] text-sm font-black text-[#00796b]">{profile?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || "U"}</span><span className="hidden max-w-[100px] truncate text-sm font-bold text-slate-700 md:block">{profile?.name || user.displayName || user.email?.split("@")[0]}</span><ChevronDown className="hidden h-4 w-4 text-slate-400 md:block" /></button> : <button onClick={openAuthModal} className="flex min-h-12 items-center gap-2 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-700 hover:bg-slate-50"><LogIn className="h-4 w-4" />{t("signIn")}</button>}
+  return <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-[#b8dec1] bg-white/95 shadow-[0_2px_12px_rgba(33,33,33,0.06)] backdrop-blur-xl transition-all duration-300">
+    <div className="mx-auto flex h-full max-w-[1500px] items-center gap-2 px-4 sm:px-6 lg:px-8">
+      {isAuthority && (
+        <button 
+          onClick={() => setSidebarOpen(!sidebarOpen)} 
+          className="h-9 w-9 flex items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 lg:hidden transition-all duration-200 hover:scale-105 active:scale-95" 
+          aria-label="Toggle menu"
+        >
+          <Menu className="h-4 w-4" />
+        </button>
+      )}
+      <Link href="/" className="flex shrink-0 items-center gap-2.5 transition-all duration-200 hover:opacity-90">
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#212121] text-[#26c6da] shadow-sm">
+          <Waves className="h-5 w-5" />
+        </span>
+        <span className="hidden sm:block">
+          <span className="block text-base font-black tracking-tight text-[#212121] leading-none">Umeed <span className="text-[#0097a7]">AI</span></span>
+          <span className="block text-[8px] font-extrabold uppercase tracking-[.14em] text-slate-500 mt-0.5 leading-none">{t("tagline")}</span>
+        </span>
+      </Link>
+      <div className="hidden h-6 w-px bg-slate-200 xl:block" />
+      <div className="hidden items-center gap-0.5 rounded-lg bg-slate-100 p-0.5 xl:flex">
+        <button 
+          onClick={() => switchPortal("villager")} 
+          className={`h-7 rounded px-2.5 text-xs font-bold transition-all duration-200 ${!isAuthority ? "bg-white text-[#212121] shadow-xs scale-102" : "text-slate-500 hover:text-slate-800"}`}
+        >
+          {t("community")}
+        </button>
+        <button 
+          onClick={() => switchPortal("authority")} 
+          className={`h-7 rounded px-2.5 text-xs font-bold transition-all duration-200 ${isAuthority ? "bg-[#212121] text-white shadow-xs scale-102" : "text-slate-500 hover:text-slate-800"}`}
+        >
+          {t("command")}
+        </button>
+      </div>
+      {!isAuthority && (
+        <nav className="hidden items-center gap-0.5 lg:flex">
+          <Link href="/" className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all duration-200 hover:scale-102 ${pathname === "/" ? "bg-[#e8f5e9] text-[#00796b]" : "text-slate-600 hover:bg-slate-50"}`}>
+            {t("overview")}
+          </Link>
+          <Link href="/3d-map-view" className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all duration-200 hover:scale-102 ${pathname.includes("map") ? "bg-[#e8f5e9] text-[#00796b]" : "text-slate-600 hover:bg-slate-50"}`}>
+            {t("liveMap")}
+          </Link>
+          <Link href="/safety-tips" className="rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all duration-200 hover:scale-102">
+            {t("preparedness")}
+          </Link>
+        </nav>
+      )}
+      <div className="ml-auto flex items-center gap-1.5">
+        <div className="flex items-center gap-0.5 rounded-lg border border-[#80cbc4] bg-[#e8f5e9] p-0.5 transition-all duration-200" aria-label={t("language")}>
+          <Languages className="ml-1.5 mr-0.5 h-3.5 w-3.5 text-[#00796b]" />
+          <button 
+            onClick={() => setLanguage("en")} 
+            className={`h-7 rounded px-2 text-[11px] font-bold transition-all duration-200 ${language === "en" ? "bg-white text-[#212121] shadow-xs hover:scale-102" : "text-slate-500 hover:text-slate-800"}`}
+          >
+            EN
+          </button>
+          <button 
+            onClick={() => setLanguage("hi")} 
+            className={`h-7 rounded px-2 text-[11px] font-bold transition-all duration-200 ${language === "hi" ? "bg-white text-[#212121] shadow-xs hover:scale-102" : "text-slate-500 hover:text-slate-800"}`}
+          >
+            हिन्दी
+          </button>
+        </div>
+        <button 
+          onClick={toggleTheme} 
+          className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-[#e8f5e9] hover:text-[#00796b] transition-all duration-200 hover:scale-105 active:scale-95" 
+          aria-label={theme === "dark" ? t("lightTheme") : t("darkTheme")} 
+          title={theme === "dark" ? t("lightTheme") : t("darkTheme")}
+        >
+          {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        </button>
+        <Link 
+          href={isAuthority ? "/alert-management" : "/dashboard"} 
+          className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-[#e8f5e9] hover:text-[#00796b] transition-all duration-200 hover:scale-105 active:scale-95" 
+          aria-label={t("alerts")}
+        >
+          <Bell className="h-4 w-4" />
+          <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d32f2f] px-0.5 text-[8px] font-black text-white leading-none">
+            12
+          </span>
+        </Link>
+        <Link 
+          href="/sos-emergency" 
+          className="hidden h-8 items-center gap-1.5 rounded-lg bg-[#d32f2f] px-3 text-xs font-black text-white shadow-sm transition-all duration-200 hover:bg-[#b71c1c] hover:scale-105 active:scale-95 sm:flex"
+        >
+          <ShieldCheck className="h-3.5 w-3.5" />
+          SOS
+        </Link>
+        {user ? (
+          <button 
+            onClick={openProfileModal} 
+            className="flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 bg-white p-0.5 pr-2.5 hover:bg-slate-50 transition-all duration-200 hover:scale-103 active:scale-97"
+          >
+            <span className="flex h-6.5 w-6.5 items-center justify-center rounded bg-[#e0f2f1] text-[11px] font-black text-[#00796b]">
+              {profile?.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || "U"}
+            </span>
+            <span className="hidden max-w-[80px] truncate text-xs font-bold text-slate-700 md:block">
+              {profile?.name || user.displayName || user.email?.split("@")[0]}
+            </span>
+            <ChevronDown className="hidden h-3 w-3 text-slate-400 md:block" />
+          </button>
+        ) : (
+          <button 
+            onClick={openAuthModal} 
+            className="flex h-8 items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all duration-200 hover:scale-105 active:scale-95"
+          >
+            <LogIn className="h-3.5 w-3.5" />
+            {t("signIn")}
+          </button>
+        )}
       </div>
     </div>
   </header>;
