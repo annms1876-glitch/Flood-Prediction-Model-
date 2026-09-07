@@ -54,6 +54,13 @@ button:focus-visible, a:focus-visible { outline: 3px solid rgba(249,166,0,.35); 
 .evacuation-tracker-page > div, .alert-dispatch-page > div, .sensor-telemetry-page > div { transition: transform .18s ease, box-shadow .18s ease; }
 .evacuation-tracker-page > div:hover, .alert-dispatch-page > div:hover, .sensor-telemetry-page > div:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(38,27,7,.08); }
 .risk-analytics-page input[type="range"]:disabled { cursor: not-allowed; opacity: .72; filter: saturate(.7); }
+.map-control-deck { transition: box-shadow .18s ease, transform .18s ease; }
+.map-control-deck:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(38,27,7,.08); }
+.map-flood-slider { accent-color: var(--amber); }
+.map-preset { transition: transform .16s ease, background-color .16s ease, border-color .16s ease; }
+.map-preset:hover { transform: translateY(-1px); background: #f8da9d; border-color: #e89b01; }
+[data-theme="dark"] .map-control-deck { background: var(--paper) !important; border-color: var(--linen) !important; }
+[data-theme="dark"] .map-control-deck .border-\[\#e3dfd5\] { border-color: var(--linen) !important; }
 @keyframes guide-pulse { 0%, 100% { box-shadow: 0 4px 8px rgba(38,27,7,.06); } 50% { box-shadow: 0 8px 20px rgba(249,166,0,.13); } }
 @keyframes step-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 

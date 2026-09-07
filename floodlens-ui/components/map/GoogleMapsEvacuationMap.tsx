@@ -135,6 +135,9 @@ export function GoogleMapsEvacuationMap({
   const [tilt, setTilt] = useState(45); // 3D Tilt perspective
   const [heading, setHeading] = useState(0); // 3D Camera Heading
   const [mapType, setMapType] = useState<"hybrid" | "terrain" | "satellite">("hybrid");
+  const [floodLevel, setFloodLevel] = useState(42);
+  const [showSafeRoutes, setShowSafeRoutes] = useState(true);
+  const [showHazards, setShowHazards] = useState(true);
 
   // Selection & Modal State
   const [selectedLocation, setSelectedLocation] = useState<DemoLocation | null>(DEMO_LOCATIONS[0]);
@@ -224,6 +227,13 @@ export function GoogleMapsEvacuationMap({
 
       </div>
 
+      <div className="map-control-deck flex flex-col gap-3 rounded-2xl border border-[#e3dfd5] bg-[#fffdf8] p-4 shadow-[0_4px_8px_rgba(38,27,7,.06)] sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3"><div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f8da9d] text-[#261b07]"><Waves className="h-4 w-4" /></div><div><p className="text-xs font-semibold uppercase tracking-[.12em] text-[#8f897e]">Live flood level</p><p className="text-sm font-semibold text-[#261b07]">{floodLevel}% basin saturation signal</p></div></div>
+        <div className="flex flex-1 items-center gap-3 sm:max-w-sm"><input aria-label="Flood level" type="range" min="0" max="100" value={floodLevel} onChange={(event) => setFloodLevel(Number(event.target.value))} className="map-flood-slider w-full accent-[#f9a600]" /><span className="w-12 text-right font-mono text-xs font-semibold text-[#e89b01]">{floodLevel}%</span></div>
+        <div className="flex items-center gap-2"><button type="button" onClick={() => setFloodLevel(20)} className="map-preset rounded-md border border-[#e3dfd5] px-2 py-1.5 text-[11px] font-semibold text-[#61594a]">LOW</button><button type="button" onClick={() => setFloodLevel(55)} className="map-preset rounded-md border border-[#e3dfd5] px-2 py-1.5 text-[11px] font-semibold text-[#61594a]">WATCH</button><button type="button" onClick={() => setFloodLevel(82)} className="map-preset rounded-md border border-[#e3dfd5] px-2 py-1.5 text-[11px] font-semibold text-[#61594a]">SURGE</button></div>
+        <div className="flex items-center gap-2 border-l border-[#e3dfd5] pl-3"><button type="button" aria-pressed={showSafeRoutes} onClick={() => setShowSafeRoutes((value) => !value)} className={`rounded-md px-2 py-1.5 text-[11px] font-semibold ${showSafeRoutes ? "bg-[#edf3e8] text-[#6f8d54]" : "bg-[#e3dfd5] text-[#8f897e]"}`}>Safe routes</button><button type="button" aria-pressed={showHazards} onClick={() => setShowHazards((value) => !value)} className={`rounded-md px-2 py-1.5 text-[11px] font-semibold ${showHazards ? "bg-[#fff0ed] text-[#d94b3b]" : "bg-[#e3dfd5] text-[#8f897e]"}`}>Hazards</button></div>
+      </div>
+
       {/* API Key Modal / Dropdown */}
       {showKeyInput && (
         <div className="p-4 rounded-xl bg-[#f2efe8] border border-[#e89b01]/50 space-y-2 text-xs">
@@ -300,7 +310,7 @@ export function GoogleMapsEvacuationMap({
                 path={currentRoute.waypoints}
                 strokeColor={getRouteColor(currentRoute.tier)}
                 strokeWeight={currentRoute.tier === "hazardous" ? 7 : 6}
-                strokeOpacity={currentRoute.tier === "hazardous" ? 0.75 : 0.95}
+                strokeOpacity={showSafeRoutes ? (currentRoute.tier === "hazardous" ? 0.75 : 0.95) : 0}
               />
 
               {/* Route Distance Badge rendered on the map itself at the midpoint waypoint */}
@@ -327,6 +337,7 @@ export function GoogleMapsEvacuationMap({
 
               {/* Markers for all demo locations */}
               {DEMO_LOCATIONS.map((loc) => {
+                if (!showHazards && loc.category === "flood_zone") return null;
                 const isHouse = loc.category === "resident_house";
                 const isShelter = loc.category === "shelter";
                 const isFlood = loc.category === "flood_zone";
@@ -428,6 +439,9 @@ export function GoogleMapsEvacuationMap({
             heading={heading}
             zoom={zoom}
             activeStepIndex={activeStepIndex}
+            floodLevel={floodLevel}
+            showSafeRoutes={showSafeRoutes}
+            showHazards={showHazards}
           />
         )}
 
@@ -561,6 +575,9 @@ function Interactive3DTerrainEngine({
   heading,
   zoom,
   activeStepIndex,
+  floodLevel,
+  showSafeRoutes,
+  showHazards,
 }: {
   route: EvacuationRoute3D;
   selectedLocation: DemoLocation | null;
@@ -569,6 +586,9 @@ function Interactive3DTerrainEngine({
   heading: number;
   zoom: number;
   activeStepIndex: number;
+  floodLevel: number;
+  showSafeRoutes: boolean;
+  showHazards: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -630,7 +650,8 @@ function Interactive3DTerrainEngine({
 
       // 4. Animated 3D Floodwater Surge Plane in Low Khad Basin
       ctx.beginPath();
-      ctx.ellipse(120, 110, 160, 90, 0.2, 0, Math.PI * 2);
+      const floodScale = 0.7 + floodLevel / 100;
+      ctx.ellipse(120, 110, 160 * floodScale, 90 * floodScale, 0.2, 0, Math.PI * 2);
       const floodGrad = ctx.createLinearGradient(0, 50, 200, 180);
       floodGrad.addColorStop(0, "rgba(225, 29, 72, 0.25)");
       floodGrad.addColorStop(0.5, "rgba(239, 68, 68, 0.45)");
@@ -663,7 +684,7 @@ function Interactive3DTerrainEngine({
 
       // Draw Route Path Lines
       const waypoints = route.waypoints.map((pt) => mapGeoToScreen(pt.lat, pt.lng, pt.elevation));
-      if (waypoints.length > 1) {
+      if (showSafeRoutes && waypoints.length > 1) {
         ctx.beginPath();
         ctx.moveTo(waypoints[0].x, waypoints[0].y);
         for (let i = 1; i < waypoints.length; i++) {
@@ -701,7 +722,7 @@ function Interactive3DTerrainEngine({
       draw3DShelter(ctx, shelterPos.x, shelterPos.y, route.destinationName);
 
       // 8. Flood Hazard Demo Locations Pins
-      DEMO_LOCATIONS.filter((l) => l.category === "flood_zone").forEach((floodLoc) => {
+      DEMO_LOCATIONS.filter((l) => showHazards && l.category === "flood_zone").forEach((floodLoc) => {
         const p = mapGeoToScreen(floodLoc.coordinates.lat, floodLoc.coordinates.lng, floodLoc.elevationMeters);
         drawFloodHazardPin(ctx, p.x, p.y, floodLoc.shortName, floodLoc.waterDepthMeters || 1.5);
       });
@@ -714,7 +735,7 @@ function Interactive3DTerrainEngine({
     render();
 
     return () => cancelAnimationFrame(animFrame);
-  }, [route, tilt, heading, zoom, activeStepIndex]);
+  }, [route, tilt, heading, zoom, activeStepIndex, floodLevel, showSafeRoutes, showHazards]);
 
   return (
     <div className="relative w-full h-full">
