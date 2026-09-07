@@ -52,7 +52,7 @@ interface GoogleMapsEvacuationMapProps {
 // Native Polyline Renderer for Google Maps
 function GoogleMapRoutePolyline({
   path,
-  strokeColor = "#10b981",
+  strokeColor = "#6f8d54",
   strokeOpacity = 0.9,
   strokeWeight = 6,
 }: {
@@ -156,11 +156,11 @@ export function GoogleMapsEvacuationMap({
   const getRouteColor = (tier: EvacuationRoute3D["tier"]) => {
     switch (tier) {
       case "recommended":
-        return "#10b981"; // Emerald
+        return "#6f8d54"; // Emerald
       case "alternative":
-        return "#f59e0b"; // Amber
+        return "#f9a600"; // Amber
       case "hazardous":
-        return "#ef4444"; // Rose/Red
+        return "#f0624f"; // Rose/Red
     }
   };
 
@@ -170,10 +170,10 @@ export function GoogleMapsEvacuationMap({
       className={`flex flex-col space-y-5 GoogleMapsEvacuationMap ${className || ""}`}
     >
       {/* Route Selection Tabs Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 p-3 rounded-2xl shadow-xl">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#fffdf8]/95 border border-[#e3dfd5] p-3 rounded-2xl shadow-xl">
         <div className="flex items-center gap-2">
-          <Navigation className="w-5 h-5 text-cyan-400" />
-          <span className="text-sm font-extrabold text-white uppercase tracking-wider font-mono">
+          <Navigation className="w-5 h-5 text-[#e89b01]" />
+          <span className="text-sm font-extrabold text-[#261b07] uppercase tracking-wider font-mono">
             Evacuation Corridor
           </span>
         </div>
@@ -198,8 +198,8 @@ export function GoogleMapsEvacuationMap({
                       ? "bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20"
                       : r.tier === "alternative"
                       ? "bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20"
-                      : "bg-rose-600 text-white shadow-lg shadow-rose-600/30"
-                    : "bg-slate-800/80 text-slate-300 hover:bg-slate-700"
+                      : "bg-rose-600 text-[#261b07] shadow-lg shadow-rose-600/30"
+                    : "bg-[#e3dfd5] text-[#61594a] hover:bg-slate-700"
                 }`}
               >
                 <span>Route {rId}: {r.name}</span>
@@ -207,7 +207,7 @@ export function GoogleMapsEvacuationMap({
                   className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
                     isSelected
                       ? "bg-black/20 text-slate-950"
-                      : "bg-slate-700 text-slate-300"
+                      : "bg-slate-700 text-[#61594a]"
                   }`}
                 >
                   {r.tier === "recommended"
@@ -226,21 +226,21 @@ export function GoogleMapsEvacuationMap({
 
       {/* API Key Modal / Dropdown */}
       {showKeyInput && (
-        <div className="p-4 rounded-xl bg-slate-950 border border-cyan-500/40 space-y-2 text-xs">
+        <div className="p-4 rounded-xl bg-[#f2efe8] border border-[#e89b01]/50 space-y-2 text-xs">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-white font-mono flex items-center gap-2">
-              <Key className="w-4 h-4 text-cyan-400" />
+            <span className="font-bold text-[#261b07] font-mono flex items-center gap-2">
+              <Key className="w-4 h-4 text-[#e89b01]" />
               Google Maps Platform Configuration
             </span>
             <button
               onClick={() => setShowKeyInput(false)}
-              className="text-slate-400 hover:text-white"
+              className="text-[#8f897e] hover:text-[#261b07]"
             >
               ✕
             </button>
           </div>
-          <p className="text-slate-400">
-            For production, set <code className="text-cyan-300">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> in your environment variables.
+          <p className="text-[#8f897e]">
+            For production, set <code className="text-[#e89b01]">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> in your environment variables.
             You can also test directly by pasting your Google Maps API Key below:
           </p>
           <div className="flex items-center gap-2">
@@ -258,7 +258,7 @@ export function GoogleMapsEvacuationMap({
                   setShowKeyInput(false);
                 }
               }}
-              className="px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold"
+              className="px-3 py-1.5 rounded-lg bg-[#f9a600] hover:bg-cyan-400 text-slate-950 font-bold"
             >
               Apply Key
             </button>
@@ -269,7 +269,7 @@ export function GoogleMapsEvacuationMap({
       {/* Main Interactive Map Canvas Container */}
       <div
         id="google-maps-canvas-wrapper"
-        className="relative w-full h-[520px] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950"
+        className="relative w-full h-[520px] rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-[#f2efe8]"
       >
         {apiKey ? (
           /* Live Google Maps Platform Instance */
@@ -311,14 +311,14 @@ export function GoogleMapsEvacuationMap({
                 }}
                 title="Evacuation corridor distance information"
               >
-                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono font-bold text-white shadow-xl border backdrop-blur-sm transition-all duration-300 hover:scale-105 active:scale-95 ${
+                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono font-bold text-[#261b07] shadow-xl border backdrop-blur-sm transition-all duration-300 hover:scale-105 active:scale-95 ${
                   currentRoute.tier === "recommended"
                     ? "bg-emerald-950/95 border-emerald-400 text-emerald-300 shadow-emerald-500/10"
                     : currentRoute.tier === "alternative"
                     ? "bg-amber-950/95 border-amber-400 text-amber-300 shadow-amber-500/10"
                     : "bg-rose-950/95 border-rose-400 text-rose-300 shadow-rose-500/10"
                 }`}>
-                  <Navigation className="w-3 h-3 rotate-45 text-cyan-400" />
+                  <Navigation className="w-3 h-3 rotate-45 text-[#e89b01]" />
                   <span>{currentRoute.totalDistanceKm} km</span>
                   <span className="opacity-40 font-normal">|</span>
                   <span className="animate-pulse">{currentRoute.estimatedMinutes} mins</span>
@@ -344,22 +344,22 @@ export function GoogleMapsEvacuationMap({
                     {isHouse ? (
                       /* Resident House 3D Marker */
                       <div className="flex flex-col items-center group cursor-pointer animate-bounce">
-                        <div className="px-2 py-0.5 rounded-full bg-cyan-500 text-slate-950 font-mono font-extrabold text-[10px] shadow-lg border border-cyan-300">
+                        <div className="px-2 py-0.5 rounded-full bg-[#f9a600] text-slate-950 font-mono font-extrabold text-[10px] shadow-lg border border-cyan-300">
                           YOUR HOUSE
                         </div>
                         <div className="w-8 h-8 rounded-xl bg-cyan-900/90 border-2 border-cyan-400 flex items-center justify-center shadow-2xl">
-                          <Home className="w-4 h-4 text-cyan-300" />
+                          <Home className="w-4 h-4 text-[#e89b01]" />
                         </div>
                       </div>
                     ) : isShelter ? (
                       /* Safe Shelter Pin */
                       <div className="flex flex-col items-center group cursor-pointer">
-                        <div className="px-1.5 py-0.5 rounded bg-emerald-600 text-white font-mono text-[9px] font-bold shadow-md">
+                        <div className="px-1.5 py-0.5 rounded bg-emerald-600 text-[#261b07] font-mono text-[9px] font-bold shadow-md">
                           SAFE SHELTER
                         </div>
                         <Pin
-                          background="#059669"
-                          borderColor="#10b981"
+                          background="#6f8d54"
+                          borderColor="#6f8d54"
                           glyphColor="#ffffff"
                           scale={1.1}
                         />
@@ -367,18 +367,18 @@ export function GoogleMapsEvacuationMap({
                     ) : isFlood ? (
                       /* Flood Inundation Pin */
                       <div className="flex flex-col items-center group cursor-pointer animate-pulse">
-                        <div className="px-1.5 py-0.5 rounded bg-rose-600 text-white font-mono text-[9px] font-bold shadow-md">
+                        <div className="px-1.5 py-0.5 rounded bg-rose-600 text-[#261b07] font-mono text-[9px] font-bold shadow-md">
                           FLOOD SURGE
                         </div>
                         <Pin
-                          background="#dc2626"
+                          background="#f0624f"
                           borderColor="#f87171"
                           glyphColor="#ffffff"
                           scale={1.2}
                         />
                       </div>
                     ) : (
-                      <Pin background="#d97706" borderColor="#f59e0b" glyphColor="#ffffff" />
+                      <Pin background="#e89b01" borderColor="#f9a600" glyphColor="#ffffff" />
                     )}
                   </AdvancedMarker>
                 );
@@ -434,8 +434,8 @@ export function GoogleMapsEvacuationMap({
         {/* 3D Camera Floating HUD Controls */}
         <div className="absolute top-3 right-3 flex flex-col items-end gap-2 z-20 pointer-events-auto">
           {/* Tilt Angle Selector */}
-          <div className="flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl shadow-lg backdrop-blur-md">
-            <span className="text-[10px] font-mono text-slate-400 px-1.5 uppercase">
+          <div className="flex items-center gap-1 bg-[#fffdf8]/95 border border-[#e3dfd5] p-1 rounded-xl shadow-lg backdrop-blur-md">
+            <span className="text-[10px] font-mono text-[#8f897e] px-1.5 uppercase">
               3D Tilt
             </span>
             {[30, 45, 60].map((tVal) => (
@@ -445,8 +445,8 @@ export function GoogleMapsEvacuationMap({
                 onClick={() => setTilt(tVal)}
                 className={`px-2 py-1 rounded-lg text-[10px] font-mono font-bold transition-colors ${
                   tilt === tVal
-                    ? "bg-cyan-500 text-slate-950"
-                    : "text-slate-300 hover:bg-slate-800"
+                    ? "bg-[#f9a600] text-slate-950"
+                    : "text-[#61594a] hover:bg-[#e3dfd5]"
                 }`}
               >
                 {tVal}°
@@ -455,8 +455,8 @@ export function GoogleMapsEvacuationMap({
           </div>
 
           {/* Heading Compass Rotation Controls */}
-          <div className="flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl shadow-lg backdrop-blur-md">
-            <span className="text-[10px] font-mono text-slate-400 px-1.5 uppercase">
+          <div className="flex items-center gap-1 bg-[#fffdf8]/95 border border-[#e3dfd5] p-1 rounded-xl shadow-lg backdrop-blur-md">
+            <span className="text-[10px] font-mono text-[#8f897e] px-1.5 uppercase">
               Rotate
             </span>
             {[0, 90, 180, 270].map((hVal) => (
@@ -466,8 +466,8 @@ export function GoogleMapsEvacuationMap({
                 onClick={() => setHeading(hVal)}
                 className={`px-1.5 py-1 rounded-lg text-[10px] font-mono font-bold transition-colors ${
                   heading === hVal
-                    ? "bg-cyan-500 text-slate-950"
-                    : "text-slate-300 hover:bg-slate-800"
+                    ? "bg-[#f9a600] text-slate-950"
+                    : "text-[#61594a] hover:bg-[#e3dfd5]"
                 }`}
               >
                 {hVal === 0 ? "N" : hVal === 90 ? "E" : hVal === 180 ? "S" : "W"}
@@ -476,11 +476,11 @@ export function GoogleMapsEvacuationMap({
           </div>
 
           {/* Zoom and Reset Controls */}
-          <div className="flex items-center gap-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl shadow-lg backdrop-blur-md">
+          <div className="flex items-center gap-1 bg-[#fffdf8]/95 border border-[#e3dfd5] p-1 rounded-xl shadow-lg backdrop-blur-md">
             <button
               type="button"
               onClick={() => setZoom((z) => Math.min(z + 1, 19))}
-              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-300"
+              className="p-1.5 rounded-lg hover:bg-[#e3dfd5] text-[#61594a]"
               title="Zoom In"
             >
               <ZoomIn className="w-3.5 h-3.5" />
@@ -488,7 +488,7 @@ export function GoogleMapsEvacuationMap({
             <button
               type="button"
               onClick={() => setZoom((z) => Math.max(z - 1, 12))}
-              className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-300"
+              className="p-1.5 rounded-lg hover:bg-[#e3dfd5] text-[#61594a]"
               title="Zoom Out"
             >
               <ZoomOut className="w-3.5 h-3.5" />
@@ -501,7 +501,7 @@ export function GoogleMapsEvacuationMap({
                 setTilt(45);
                 setHeading(0);
               }}
-              className="p-1.5 rounded-lg hover:bg-slate-800 text-cyan-400"
+              className="p-1.5 rounded-lg hover:bg-[#e3dfd5] text-[#e89b01]"
               title="Fly to Your House"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -513,9 +513,9 @@ export function GoogleMapsEvacuationMap({
         <div className="absolute bottom-3 left-3 bg-slate-900/95 border border-slate-800 px-3 py-2 rounded-xl text-xs font-mono shadow-2xl backdrop-blur-md z-20 pointer-events-auto space-y-1">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span className="text-white font-bold">Corridor: {currentRoute.name}</span>
+            <span className="text-[#261b07] font-bold">Corridor: {currentRoute.name}</span>
           </div>
-          <div className="text-[11px] text-slate-400 flex items-center gap-2">
+          <div className="text-[11px] text-[#8f897e] flex items-center gap-2">
             <span>Distance: {currentRoute.totalDistanceKm} km</span>
             <span>•</span>
             <span className="text-emerald-400 font-bold">
@@ -590,9 +590,9 @@ function Interactive3DTerrainEngine({
 
       // 1. Mountain Topography Base Gradient
       const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-      bgGrad.addColorStop(0, "#090d16");
-      bgGrad.addColorStop(0.5, "#0d1424");
-      bgGrad.addColorStop(1, "#070a10");
+      bgGrad.addColorStop(0, "#e8e2d6");
+      bgGrad.addColorStop(0.5, "#f2efe8");
+      bgGrad.addColorStop(1, "#f8f7f5");
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
@@ -606,11 +606,11 @@ function Interactive3DTerrainEngine({
 
       // 3. Draw Topographic Elevation Contours (1400m to 1700m MSL)
       const contourLevels = [
-        { elev: 1420, color: "#141c2e", stroke: "#1e293b", radiusX: 340, radiusY: 200 },
-        { elev: 1480, color: "#16233b", stroke: "#25344d", radiusX: 280, radiusY: 160 },
-        { elev: 1540, color: "#1b2d4b", stroke: "#2e4263", radiusX: 210, radiusY: 120 },
-        { elev: 1600, color: "#20375c", stroke: "#3b5580", radiusX: 140, radiusY: 80 },
-        { elev: 1680, color: "#254370", stroke: "#49699e", radiusX: 70, radiusY: 40 },
+        { elev: 1420, color: "#e4ddcf", stroke: "#9a8c73", radiusX: 340, radiusY: 200 },
+        { elev: 1480, color: "#ded4c2", stroke: "#a9997f", radiusX: 280, radiusY: 160 },
+        { elev: 1540, color: "#d4c7b0", stroke: "#98866a", radiusX: 210, radiusY: 120 },
+        { elev: 1600, color: "#c9b99c", stroke: "#8b7656", radiusX: 140, radiusY: 80 },
+        { elev: 1680, color: "#bda985", stroke: "#7b6545", radiusX: 70, radiusY: 40 },
       ];
 
       contourLevels.forEach((level) => {
@@ -676,7 +676,7 @@ function Interactive3DTerrainEngine({
         ctx.stroke();
 
         ctx.lineWidth = 3;
-        ctx.strokeStyle = isHazardous ? "#ef4444" : "#10b981";
+        ctx.strokeStyle = isHazardous ? "#f0624f" : "#6f8d54";
         ctx.stroke();
 
         // Pulsing active step waypoint
@@ -684,7 +684,7 @@ function Interactive3DTerrainEngine({
         if (activeWp) {
           ctx.beginPath();
           ctx.arc(activeWp.x, activeWp.y, 10 + Math.sin(waveOffset * 3) * 3, 0, Math.PI * 2);
-          ctx.fillStyle = "#06b6d4";
+          ctx.fillStyle = "#f9a600";
           ctx.fill();
           ctx.strokeStyle = "#ffffff";
           ctx.lineWidth = 2;
@@ -720,8 +720,8 @@ function Interactive3DTerrainEngine({
     <div className="relative w-full h-full">
       <canvas ref={canvasRef} className="w-full h-full block cursor-grab active:cursor-grabbing" />
       {/* 3D Visual Banner */}
-      <div className="absolute top-3 left-3 bg-slate-900/90 border border-cyan-500/30 px-3 py-1.5 rounded-xl text-xs font-mono text-cyan-300 shadow-xl backdrop-blur-md flex items-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+      <div className="absolute top-3 left-3 bg-slate-900/90 border border-[#e89b01]/50 px-3 py-1.5 rounded-xl text-xs font-mono text-[#e89b01] shadow-xl backdrop-blur-md flex items-center gap-2">
+        <Sparkles className="w-3.5 h-3.5 text-[#e89b01]" />
         <span>3D Terrain Engine (Solan Catchment • Elev. 1,420m–1,680m)</span>
       </div>
     </div>
@@ -783,11 +783,11 @@ function draw3DShelter(ctx: CanvasRenderingContext2D, x: number, y: number, name
   ctx.fillStyle = "rgba(16, 185, 129, 0.2)";
   ctx.fill();
   ctx.lineWidth = 2;
-  ctx.strokeStyle = "#10b981";
+  ctx.strokeStyle = "#6f8d54";
   ctx.stroke();
 
   // Shelter Building Block
-  ctx.fillStyle = "#059669";
+  ctx.fillStyle = "#6f8d54";
   ctx.fillRect(-10, -10, 20, 16);
 
   // Roof
@@ -818,7 +818,7 @@ function drawFloodHazardPin(ctx: CanvasRenderingContext2D, x: number, y: number,
 
   ctx.beginPath();
   ctx.arc(0, 0, 8, 0, Math.PI * 2);
-  ctx.fillStyle = "#ef4444";
+  ctx.fillStyle = "#f0624f";
   ctx.fill();
   ctx.strokeStyle = "#ffffff";
   ctx.lineWidth = 1.5;
