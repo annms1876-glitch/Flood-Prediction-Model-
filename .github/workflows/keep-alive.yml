@@ -1,0 +1,20 @@
+name: Keep Services Alive
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-services:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Backend
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
+            "${{ secrets.BACKEND_URL }}/health" || true
+
+      - name: Ping ML Service
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
+            "${{ secrets.ML_URL }}/health" || true
