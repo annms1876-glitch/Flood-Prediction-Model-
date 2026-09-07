@@ -133,6 +133,11 @@ if (supabase) {
 // ROUTES
 // ============================================================
 
+// Dead-simple health check - always responds, no dependencies
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Health check endpoint (Render health check lives at /api/health)
 app.get('/', (req, res) => {
   res.json({
@@ -539,12 +544,10 @@ process.on('SIGINT', () => {
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
-  process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
 });
 
 // Export for testing
