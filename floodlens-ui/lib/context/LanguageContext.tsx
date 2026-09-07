@@ -42,8 +42,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem("umeed-language") as "en" | "hi" | null;
-    if (stored === "en" || stored === "hi") setLanguageState(stored);
-  }, []);
+    if (stored === "en" || stored === "hi") {
+      setLanguageState(stored);
+      void i18n.changeLanguage(stored);
+    } else {
+      void i18n.changeLanguage(language);
+    }
+  }, [language]);
 
   const setLanguage = (next: "en" | "hi") => {
     setLanguageState(next);
