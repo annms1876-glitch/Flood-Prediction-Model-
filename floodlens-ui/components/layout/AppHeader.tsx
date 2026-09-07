@@ -39,33 +39,22 @@ export function AppHeader() {
         </span>
       </Link>
       <div className="hidden h-6 w-px bg-slate-200 xl:block" />
-      <div className="hidden items-center gap-0.5 rounded-lg bg-slate-100 p-0.5 xl:flex">
-        <button 
-          onClick={() => switchPortal("villager")} 
-          className={`h-7 rounded px-2.5 text-xs font-bold transition-all duration-200 ${!isAuthority ? "bg-white text-[#212121] shadow-xs scale-102" : "text-slate-500 hover:text-slate-800"}`}
-        >
-          {t("community")}
-        </button>
-        <button 
-          onClick={() => switchPortal("authority")} 
-          className={`h-7 rounded px-2.5 text-xs font-bold transition-all duration-200 ${isAuthority ? "bg-[#212121] text-white shadow-xs scale-102" : "text-slate-500 hover:text-slate-800"}`}
-        >
-          {t("command")}
-        </button>
-      </div>
-      {!isAuthority && (
-        <nav className="hidden items-center gap-0.5 lg:flex">
-          <Link href="/" className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all duration-200 hover:scale-102 ${pathname === "/" ? "bg-[#e8f5e9] text-[#00796b]" : "text-slate-600 hover:bg-slate-50"}`}>
-            {t("overview")}
+      <nav className="hidden items-center gap-0.5 lg:flex">
+        <Link href="/" className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all duration-200 hover:scale-102 ${pathname === "/" ? "bg-[#e8f5e9] text-[#00796b]" : "text-slate-600 hover:bg-slate-50"}`}>
+          {t("overview")}
+        </Link>
+        <Link href="/3d-map-view" className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all duration-200 hover:scale-102 ${pathname.includes("map") ? "bg-[#e8f5e9] text-[#00796b]" : "text-slate-600 hover:bg-slate-50"}`}>
+          {t("liveMap")}
+        </Link>
+        <Link href="/safety-tips" className="rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all duration-200 hover:scale-102">
+          {t("preparedness")}
+        </Link>
+        {user && user.email === "somenbarik75@gmail.com" && (
+          <Link href="/admin-dashboard" className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all duration-200 hover:scale-102 ${pathname.startsWith("/admin") || pathname === "/risk-analytics" || pathname === "/evacuation-tracker" || pathname === "/alert-management" || pathname === "/sensor-network" ? "bg-cyan-500/10 text-cyan-500 border border-cyan-500/20" : "text-cyan-600 hover:bg-cyan-50"}`}>
+            Command Centre
           </Link>
-          <Link href="/3d-map-view" className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition-all duration-200 hover:scale-102 ${pathname.includes("map") ? "bg-[#e8f5e9] text-[#00796b]" : "text-slate-600 hover:bg-slate-50"}`}>
-            {t("liveMap")}
-          </Link>
-          <Link href="/safety-tips" className="rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all duration-200 hover:scale-102">
-            {t("preparedness")}
-          </Link>
-        </nav>
-      )}
+        )}
+      </nav>
       <div className="ml-auto flex items-center gap-1.5">
         <div className="flex items-center gap-0.5 rounded-lg border border-[#80cbc4] bg-[#e8f5e9] p-0.5 transition-all duration-200" aria-label={t("language")}>
           <Languages className="ml-1.5 mr-0.5 h-3.5 w-3.5 text-[#00796b]" />

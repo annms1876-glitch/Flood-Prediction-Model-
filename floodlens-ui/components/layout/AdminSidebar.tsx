@@ -71,31 +71,7 @@ export function AdminSidebar() {
           </div>
         </div>
 
-        {/* Portal Switcher In Sidebar */}
-        <div className="px-6 py-3.5">
-          <div className="flex items-center justify-between p-1 rounded-xl bg-slate-900 border border-slate-800">
-            <button
-              id="sidebar-switch-villager"
-              onClick={() => {
-                setPortal("villager");
-                router.push("/");
-              }}
-              className="flex-1 text-center py-1.5 rounded-lg text-xs text-slate-400 hover:text-white transition-colors font-medium"
-            >
-              Villager
-            </button>
-            <button
-              id="sidebar-switch-authority"
-              onClick={() => {
-                setPortal("authority");
-                router.push("/admin-dashboard");
-              }}
-              className="flex-1 text-center py-1.5 rounded-lg bg-cyan-600 text-white text-xs font-bold shadow transition-colors"
-            >
-              Authority
-            </button>
-          </div>
-        </div>
+
 
         {/* Operations Hub Navigation */}
         <div className="px-4 py-2">

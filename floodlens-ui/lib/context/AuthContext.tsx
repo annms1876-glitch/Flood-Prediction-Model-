@@ -81,7 +81,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           userDocRef,
           (docSnap) => {
             if (docSnap.exists()) {
-              setProfile(docSnap.data() as UserProfileData);
+              const data = docSnap.data() as UserProfileData;
+              // Enforce primary admin role if the logged in email matches somenbarik75@gmail.com
+              if (currentUser.email === "somenbarik75@gmail.com" && data.role !== "emergency_coordinator") {
+                data.role = "emergency_coordinator";
+              }
+              setProfile(data);
             } else {
               // Create default profile for first-time login
               const defaultProfile: UserProfileData = {
@@ -90,7 +95,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 name: currentUser.displayName || currentUser.email?.split("@")[0] || "User",
                 location: "Regional Station",
                 gender: "prefer_not_to_say",
-                role: "resident",
+                role: currentUser.email === "somenbarik75@gmail.com" ? "emergency_coordinator" : "resident",
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
               };
@@ -116,6 +121,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       unsubscribeAuth();
       if (unsubscribeProfile) unsubscribeProfile();
     };
+  }, []);
+
+  useEffect(() => {
+    const seedAdminUser = async () => {
+      try {
+        await createUserWithEmailAndPassword(auth, "somenbarik75@gmail.com", "p@Ssword.19");
+        console.log("Primary admin user (somenbarik75@gmail.com) seeded successfully.");
+      } catch (err: any) {
+        if (err.code !== "auth/email-already-in-use") {
+          console.warn("Seeding administrator account warning:", err.message);
+        }
+      }
+    };
+    seedAdminUser();
   }, []);
 
   const signInWithPopupFallback = (providerName: "google" | "github"): Promise<void> => {
