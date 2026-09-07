@@ -1,24 +1,7 @@
-module.exports = {
-  reactStrictMode: true,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   output: "standalone",
-  swcMinify: false,
-  webpack: function (config, { isServer }) {
-    config.module.rules.push({
-      test: /\.[jt]sx?$/,
-      exclude: /node_modules/,
-      use: {
-        loader: "babel-loader",
-        options: {
-          presets: [
-            "@babel/preset-env",
-            ["@babel/preset-react", { runtime: "automatic" }],
-            "@babel/preset-typescript",
-          ],
-        },
-      },
-    });
-    return config;
-  },
+  reactStrictMode: true,
   env: {
     NEXT_PUBLIC_ML_URL: process.env.NEXT_PUBLIC_ML_URL || "http://localhost:8000",
     NEXT_PUBLIC_BACKEND_URL:
@@ -36,4 +19,23 @@ module.exports = {
       },
     ];
   },
+  webpack: function (config, { isServer }) {
+    config.module.rules.push({
+      test: /\.[jt]sx?$/,
+      exclude: /node_modules/,
+      use: {
+        loader: "babel-loader",
+        options: {
+          presets: [
+            "@babel/preset-env",
+            ["@babel/preset-react", { runtime: "automatic" }],
+            "@babel/preset-typescript",
+          ],
+        },
+      },
+    });
+    return config;
+  },
 };
+
+module.exports = nextConfig;

@@ -1,0 +1,3 @@
+postcss
+tailwindcss
+autoprefixer
