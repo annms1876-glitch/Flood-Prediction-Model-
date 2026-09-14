@@ -8,14 +8,11 @@ import {
   getHazardColor,
   getStatusColor,
 } from "@/lib/api/routeService";
-import type { EvacuationRoute3D, EvacuationStep } from "./types";
+import type { EvacuationStep } from "./types";
 import {
   Navigation,
-  Clock,
   Mountain,
-  Shield,
   AlertTriangle,
-  CheckCircle2,
   ChevronRight,
   MapPin,
   TrendingUp,
@@ -30,6 +27,46 @@ interface RouteDetailsPanelProps {
   activeStepIndex: number;
   onSelectStep: (index: number) => void;
   onFlyToStep: (coords: any, zoom: number, tilt: number, heading: number) => void;
+}
+
+function ElevationProfileSvg({ route }: { route: RouteWithHazards }) {
+  const { fillPath, linePath, minElev, maxElev } = useMemo(() => {
+    const profile = route.elevationProfile;
+    if (!profile || profile.length === 0) {
+      return { fillPath: "M0,80 L300,80 Z", linePath: "", minElev: 0, maxElev: 0 };
+    }
+
+    const elevations = profile.map((p) => p.elevation);
+    const min = Math.min(...elevations);
+    const max = Math.max(...elevations);
+    const range = max - min || 1;
+
+    const points = profile.map((p, i) => {
+      const x = (i / (profile.length - 1)) * 300;
+      const y = 80 - ((p.elevation - min) / range) * 60;
+      return x + "," + y;
+    });
+
+    const fill = "M0,80 " + points.map((pt) => "L" + pt).join(" ") + " L300,80 Z";
+    const line = points.map((pt) => "L" + pt).join(" ");
+
+    return { fillPath: fill, linePath: line, minElev: min, maxElev: max };
+  }, [route.elevationProfile]);
+
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 300 80" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={"elevGrad-" + route.id} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#22c55e" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#22c55e" stopOpacity="0.2" />
+        </linearGradient>
+      </defs>
+      <path d={fillPath} fill={"url(#elevGrad-" + route.id + ")"} />
+      {linePath && (
+        <path d={"M" + linePath.substring(1)} fill="none" stroke="#22c55e" strokeWidth="2" />
+      )}
+    </svg>
+  );
 }
 
 export function RouteDetailsPanel({
@@ -109,42 +146,7 @@ export function RouteDetailsPanel({
           Elevation Profile
         </h4>
         <div className="h-20 bg-gray-100 rounded-lg overflow-hidden relative">
-          <svg width="100%" height="100%" viewBox="0 0 300 80" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id={`elevGrad-${route.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#22c55e" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#22c55e" stopOpacity="0.2" />
-              </linearGradient>
-            </defs>
-            <path
-              d={`M0,80 ${route.elevationProfile
-                .map((p, i) => {
-                  const x = (i / (route.elevationProfile.length - 1)) * 300;
-                  const minElev = Math.min(...route.elevationProfile.map((ep) => ep.elevation));
-                  const maxElev = Math.max(...route.elevationProfile.map((ep) => ep.elevation));
-                  const range = maxElev - minElev || 1;
-                  const y = 80 - ((p.elevation - minElev) / range) * 60;
-                  return `L${x},${y}`;
-                })
-                .join(" ")} L300,80 Z`}
-              fill={`url(#elevGrad-${route.id})`}
-            />
-            <path
-              d={`M0,${80 - ((route.elevationProfile[0]?.elevation || 1500) - Math.min(...route.elevationProfile.map((p) => p.elevation))) / (Math.max(...route.elevationProfile.map((p) => p.elevation)) - Math.min(...route.elevationProfile.map((p) => p.elevation)) || 1) * 60} ${route.elevationProfile
-                .map((p, i) => {
-                  const x = (i / (route.elevationProfile.length - 1)) * 300;
-                  const minElev = Math.min(...route.elevationProfile.map((ep) => ep.elevation));
-                  const maxElev = Math.max(...route.elevationProfile.map((ep) => ep.elevation));
-                  const range = maxElev - minElev || 1;
-                  const y = 80 - ((p.elevation - minElev) / range) * 60;
-                  return `L${x},${y}`;
-                })
-                .join(" ")}`}
-              fill="none"
-              stroke="#22c55e"
-              strokeWidth="2"
-            />
-          </svg>
+          <ElevationProfileSvg route={route} />
           <div className="absolute bottom-1 left-2 text-[10px] text-gray-500">
             {route.waypoints[0]?.elevation || 1550}m
           </div>

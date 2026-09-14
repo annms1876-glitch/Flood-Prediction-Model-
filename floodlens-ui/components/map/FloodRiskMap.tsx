@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import {
-  GoogleMap,
-  useLoadScript,
-  Marker,
-  Circle,
+  APIProvider,
+  Map,
+  AdvancedMarker,
   InfoWindow,
+  useMap,
 } from "@vis.gl/react-google-maps";
 import {
   riskColor,
@@ -24,16 +24,105 @@ interface FloodRiskMapProps {
   height?: string;
 }
 
+function MapMarkers({
+  predictions,
+  selectedFeature,
+  onSelectFeature,
+  onCloseInfoWindow,
+}: {
+  predictions: Array<PredictionResponse & { lat: number; lon: number }>;
+  selectedFeature: FloodFeature | null;
+  onSelectFeature: (f: FloodFeature) => void;
+  onCloseInfoWindow: () => void;
+}) {
+  return (
+    <>
+      {predictions.map((pred, idx) => {
+        const color = riskColor(pred.risk_level);
+        return (
+          <AdvancedMarker
+            key={`flood-${pred.location}-${idx}`}
+            position={{ lat: pred.lat, lng: pred.lon }}
+            onClick={() => {
+              onSelectFeature({
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: [pred.lon, pred.lat],
+                },
+                properties: {
+                  id: `flood-${pred.location}`,
+                  name: pred.location,
+                  riskScore: pred.risk_score,
+                  riskLevel: pred.risk_level,
+                  riskLabel: riskLabel(pred.risk_level),
+                  riskColor: color,
+                  floodProbability: pred.flood_probability,
+                  modelVersion: pred.model_version || "unknown",
+                  updatedAt: new Date().toISOString(),
+                },
+              });
+            }}
+          >
+            <div
+              className="rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg border-2 border-white"
+              style={{
+                backgroundColor: color,
+                width: "32px",
+                height: "32px",
+              }}
+            >
+              {pred.risk_score}
+            </div>
+          </AdvancedMarker>
+        );
+      })}
+
+      {selectedFeature && (
+        <InfoWindow
+          position={{
+            lat: selectedFeature.geometry.coordinates[1],
+            lng: selectedFeature.geometry.coordinates[0],
+          }}
+          onCloseClick={onCloseInfoWindow}
+        >
+          <div className="p-2 min-w-[200px]">
+            <h3 className="font-bold text-lg mb-1">
+              {selectedFeature.properties.name}
+            </h3>
+            <div className="flex items-center gap-2 mb-2">
+              <span
+                className="px-2 py-0.5 rounded-full text-white text-sm font-medium"
+                style={{
+                  backgroundColor: selectedFeature.properties.riskColor,
+                }}
+              >
+                {selectedFeature.properties.riskLabel}
+              </span>
+              <span className="text-gray-600">
+                Score: {selectedFeature.properties.riskScore}/100
+              </span>
+            </div>
+            <p className="text-sm text-gray-600">
+              Flood Probability:{" "}
+              {(selectedFeature.properties.floodProbability * 100).toFixed(1)}%
+            </p>
+            <p className="text-xs text-gray-400 mt-2">
+              Model: {selectedFeature.properties.modelVersion}
+            </p>
+          </div>
+        </InfoWindow>
+      )}
+    </>
+  );
+}
+
 export default function FloodRiskMap({
   center = { lat: 31.0, lng: 77.0 },
   zoom = 8,
   showDemoLocations = true,
   height = "500px",
 }: FloodRiskMapProps) {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-  });
-
   const [predictions, setPredictions] = useState<
     Array<PredictionResponse & { lat: number; lon: number }>
   >([]);
@@ -85,119 +174,31 @@ export default function FloodRiskMap({
     }
   }, [showDemoLocations, loadDemoPredictions]);
 
-  if (loadError) return <div>Error loading maps</div>;
-  if (!isLoaded) return <div>Loading Maps...</div>;
-
   return (
     <div className="relative" style={{ height }}>
-      {loading && (
-        <div className="absolute top-2 right-2 z-10 bg-white px-3 py-1 rounded-full shadow-md text-sm">
-          Loading flood data...
-        </div>
-      )}
-
-      <GoogleMap
-        mapContainerStyle={{ width: "100%", height: "100%" }}
-        center={center}
-        zoom={zoom}
-        options={{
-          mapTypeControl: true,
-          streetViewControl: false,
-          fullscreenControl: true,
-        }}
-      >
-        {predictions.map((pred, idx) => {
-          const color = riskColor(pred.risk_level);
-          return (
-            <React.Fragment key={`flood-${pred.location}-${idx}`}>
-              <Circle
-                center={{ lat: pred.lat, lng: pred.lon }}
-                radius={5000 + (pred.risk_score / 100) * 10000}
-                options={{
-                  fillColor: color,
-                  fillOpacity: 0.3,
-                  strokeColor: color,
-                  strokeOpacity: 0.9,
-                  strokeWeight: pred.risk_score >= 60 ? 3 : 2,
-                }}
-                onClick={() => {
-                  setSelectedFeature({
-                    type: "Feature",
-                    geometry: {
-                      type: "Point",
-                      coordinates: [pred.lon, pred.lat],
-                    },
-                    properties: {
-                      id: `flood-${pred.location}`,
-                      name: pred.location,
-                      riskScore: pred.risk_score,
-                      riskLevel: pred.risk_level,
-                      riskLabel: riskLabel(pred.risk_level),
-                      riskColor: color,
-                      floodProbability: pred.flood_probability,
-                      modelVersion: pred.model_version || "unknown",
-                      updatedAt: new Date().toISOString(),
-                    },
-                  });
-                }}
-              />
-              <Marker
-                position={{ lat: pred.lat, lng: pred.lon }}
-                label={{
-                  text: `${pred.risk_score}`,
-                  color: "white",
-                  fontSize: "12px",
-                  fontWeight: "bold",
-                }}
-                icon={{
-                  path: window.google?.maps?.SymbolPath?.CIRCLE || 0,
-                  scale: 8,
-                  fillColor: color,
-                  fillOpacity: 0.9,
-                  strokeColor: "#ffffff",
-                  strokeWeight: 2,
-                }}
-              />
-            </React.Fragment>
-          );
-        })}
-
-        {selectedFeature && (
-          <InfoWindow
-            position={{
-              lat: selectedFeature.geometry.coordinates[1],
-              lng: selectedFeature.geometry.coordinates[0],
-            }}
-            onCloseClick={() => setSelectedFeature(null)}
-          >
-            <div className="p-2 min-w-[200px]">
-              <h3 className="font-bold text-lg mb-1">
-                {selectedFeature.properties.name}
-              </h3>
-              <div className="flex items-center gap-2 mb-2">
-                <span
-                  className="px-2 py-0.5 rounded-full text-white text-sm font-medium"
-                  style={{
-                    backgroundColor: selectedFeature.properties.riskColor,
-                  }}
-                >
-                  {selectedFeature.properties.riskLabel}
-                </span>
-                <span className="text-gray-600">
-                  Score: {selectedFeature.properties.riskScore}/100
-                </span>
-              </div>
-              <p className="text-sm text-gray-600">
-                Flood Probability:{" "}
-                {(selectedFeature.properties.floodProbability * 100).toFixed(1)}%
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                Model: {selectedFeature.properties.modelVersion}
-              </p>
-            </div>
-          </InfoWindow>
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
+        {loading && (
+          <div className="absolute top-2 right-2 z-10 bg-white px-3 py-1 rounded-full shadow-md text-sm">
+            Loading flood data...
+          </div>
         )}
-      </GoogleMap>
+
+        <Map
+          mapId="flood-risk-map"
+          style={{ width: "100%", height: "100%" }}
+          defaultCenter={center}
+          defaultZoom={zoom}
+          gestureHandling="greedy"
+          disableDefaultUI={false}
+        >
+          <MapMarkers
+            predictions={predictions}
+            selectedFeature={selectedFeature}
+            onSelectFeature={setSelectedFeature}
+            onCloseInfoWindow={() => setSelectedFeature(null)}
+          />
+        </Map>
+      </APIProvider>
     </div>
   );
 }

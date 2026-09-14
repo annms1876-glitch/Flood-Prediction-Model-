@@ -1,4 +1,4 @@
-import type { GeoLocation, EvacuationRoute3D, EvacuationStep } from "@/components/map/types";
+import type { GeoLocation, EvacuationRoute3D } from "@/components/map/types";
 
 export interface RouteHazard {
   id: string;
