@@ -18,6 +18,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: Gauge },
   { href: "/predictions", label: "Predict", icon: Droplets },
   { href: "/map", label: "3D Map", icon: MapPinned },
+  { href: "/flood-map", label: "Flood Map", icon: Droplets },
   { href: "/sensors", label: "Sensors", icon: Camera },
   { href: "/alerts", label: "Alerts", icon: AlertTriangle },
   { href: "/model", label: "Model", icon: Settings },
