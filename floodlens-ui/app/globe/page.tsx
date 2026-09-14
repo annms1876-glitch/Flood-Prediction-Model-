@@ -1,31 +1,24 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import {
   Navigation,
   MapPin,
   AlertTriangle,
   Gauge,
-  Radio,
-  Satellite,
   Layers,
   ChevronDown,
   ChevronUp,
-  X,
-  Eye,
-  EyeOff,
-  Wind,
   Water,
   Mountain,
-  Radio as RadioIcon,
 } from "lucide-react";
 import {
   EVACUATION_ROUTES_3D,
   DEMO_LOCATIONS,
-} from "./demoLocations";
-import type { EvacuationRoute3D, GeoLocation, DemoLocation } from "./types";
-import { calculateRouteStats, getStatusColor } from "@/lib/api/routeService";
+} from "@/components/map/demoLocations";
+import type { EvacuationRoute3D, GeoLocation, DemoLocation } from "@/components/map/types";
+import { calculateRouteStats } from "@/lib/api/routeService";
 
 const CesiumViewer = dynamic(
   () => import("@/components/map/CesiumViewer"),
