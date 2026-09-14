@@ -9,6 +9,7 @@ import {
   Camera,
   Settings,
   Droplets,
+  Navigation,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -19,6 +20,7 @@ const navItems = [
   { href: "/predictions", label: "Predict", icon: Droplets },
   { href: "/map", label: "3D Map", icon: MapPinned },
   { href: "/flood-map", label: "Flood Map", icon: Droplets },
+  { href: "/evacuation-3d", label: "Evacuation Routes", icon: Navigation },
   { href: "/sensors", label: "Sensors", icon: Camera },
   { href: "/alerts", label: "Alerts", icon: AlertTriangle },
   { href: "/model", label: "Model", icon: Settings },
