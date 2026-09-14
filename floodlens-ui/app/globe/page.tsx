@@ -8,10 +8,7 @@ import {
   AlertTriangle,
   Gauge,
   Layers,
-  ChevronDown,
-  ChevronUp,
   Water,
-  Mountain,
 } from "lucide-react";
 import {
   EVACUATION_ROUTES_3D,
