@@ -3,7 +3,6 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { LanguageProvider } from "@/lib/context/LanguageContext";
 import { AppShell } from "@/components/layout/AppShell";
-import "@/lib/cesium-polyfill";
 
 export const metadata: Metadata = {
   title: "Umeed AI",
