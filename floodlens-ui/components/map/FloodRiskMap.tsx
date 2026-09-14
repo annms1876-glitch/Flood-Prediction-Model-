@@ -9,7 +9,6 @@ import {
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 import {
-  buildFloodGeoJSON,
   riskColor,
   riskLabel,
   DEMO_FLOOD_LOCATIONS,

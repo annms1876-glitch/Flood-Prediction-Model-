@@ -20,11 +20,8 @@ import { RouteDetailsPanel } from "./RouteDetailsPanel";
 import {
   Navigation,
   RotateCcw,
-  Layers,
   Maximize2,
   Minimize2,
-  Info,
-  AlertTriangle,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";

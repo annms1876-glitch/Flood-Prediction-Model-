@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import {
   riskColor,
   riskLabel,
-  riskScoreToLevel,
   DEMO_FLOOD_LOCATIONS,
 } from "@/lib/api/floodGeoJson";
 import { mlApi } from "@/lib/api/mlClient";
