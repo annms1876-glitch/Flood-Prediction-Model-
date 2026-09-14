@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebase/admin";
+import { getAdminDb } from "@/lib/firebase/admin";
+
+export const dynamic = "force-dynamic";
 
 interface SOSPayload {
   userId?: string;
@@ -40,7 +42,7 @@ export async function POST(request: Request) {
 
     inMemorySOSLog.unshift(record);
     try {
-      await adminDb.collection("sosIncidents").doc(id).set(record);
+      await getAdminDb().collection("sosIncidents").doc(id).set(record);
     } catch (storageError) {
       console.warn("SOS incident persistence unavailable; retaining local runtime record", storageError);
     }
@@ -60,7 +62,7 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    const snapshot = await adminDb.collection("sosIncidents").orderBy("timestamp", "desc").limit(25).get();
+    const snapshot = await getAdminDb().collection("sosIncidents").orderBy("timestamp", "desc").limit(25).get();
     const persisted = snapshot.docs.map((doc) => doc.data());
     return NextResponse.json({ active_beacons_count: persisted.filter((item) => item.status !== "RESOLVED").length, recent_dispatches: persisted });
   } catch (storageError) {
