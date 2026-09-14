@@ -151,33 +151,36 @@ export default function EvacuationRoute3DView({
           })}
 
           {/* Hazard Markers */}
-          {route.hazards.map((hazard) => (
-            <Marker
-              key={hazard.id}
-              position={{
-                lat: hazard.location.lat,
-                lng: hazard.location.lng,
-              }}
-              icon={{
-                url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${getStatusColor(route.liveStatus)}">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                  </svg>
-                `)`,
-                scaledSize: new window.google.maps.Size(24, 24),
-              }}
-              onClick={() => {
-                setSelectedStepInfo({
-                  step: {
-                    instruction: hazard.description,
-                    safetyCaution: `Hazard: ${hazard.type}`,
-                    distanceText: `${(hazard.waterDepthM || 0).toFixed(1)}m water depth`,
-                  },
-                  position: hazard.location,
-                });
-              }}
-            />
-          ))}
+          {route.hazards.map((hazard) => {
+            const hazardColor = getStatusColor(route.liveStatus);
+            const hazardSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="' + hazardColor + '"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
+            const hazardUrl = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(hazardSvg);
+            const hazardLabel = "Hazard: " + hazard.type;
+            const hazardDepth = (hazard.waterDepthM || 0).toFixed(1) + "m water depth";
+            return (
+              <Marker
+                key={hazard.id}
+                position={{
+                  lat: hazard.location.lat,
+                  lng: hazard.location.lng,
+                }}
+                icon={{
+                  url: hazardUrl,
+                  scaledSize: new window.google.maps.Size(24, 24),
+                }}
+                onClick={() => {
+                  setSelectedStepInfo({
+                    step: {
+                      instruction: hazard.description,
+                      safetyCaution: hazardLabel,
+                      distanceText: hazardDepth,
+                    },
+                    position: hazard.location,
+                  });
+                }}
+              />
+            );
+          })}
 
           {/* InfoWindow for selected step */}
           {selectedStepInfo && (
